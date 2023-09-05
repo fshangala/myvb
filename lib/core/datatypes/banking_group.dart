@@ -71,11 +71,11 @@ class BankingGroup {
     var bankingGroup = await getById(bankingGroupId);
     if (bankingGroup != null) {
       bool alreadyJoined = false;
-      bankingGroup.members.forEach((element) {
+      for (var element in bankingGroup.members) {
         if (element.username == username) {
           alreadyJoined = true;
         }
-      });
+      }
       if (alreadyJoined) {
         return null;
       } else {

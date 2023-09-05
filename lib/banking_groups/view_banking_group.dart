@@ -20,9 +20,7 @@ class _ViewBankingGroupState extends State<ViewBankingGroupScreen> {
   Widget build(BuildContext context) {
     var args =
         ModalRoute.of(context)!.settings.arguments as ArgumentsViewBankingGroup;
-    if (args.id != null) {
-      bankingGroup = BankingGroup.getById(args.id!);
-    }
+    bankingGroup = BankingGroup.getById(args.id);
 
     return Scaffold(
       appBar: appBar(context, 'View Banking Group'),
