@@ -45,6 +45,16 @@ class User {
     }
   }
 
+  static Future<User?> getUserWhere(String name, String value) async {
+    var userData = await Database.getDatabase()
+        .getItemWhereEqual('users', 'username', value);
+    if (userData == null) {
+      return null;
+    } else {
+      return User.fromMap(userData);
+    }
+  }
+
   Future<void> save() {
     return Database.getDatabase().createOrUpdateItem('users', toMap());
   }
@@ -57,5 +67,16 @@ class User {
     } else {
       return User.getByid(userId);
     }
+  }
+
+  static Future<User?> login(String username, String password) async {
+    User? luser;
+    var user = await User.getUserWhere('username', username);
+    if (user != null && user.password == password) {
+      luser = user;
+      var instance = await SharedPreferences.getInstance();
+      instance.setString('loggedInUser', user.id!);
+    }
+    return luser;
   }
 }

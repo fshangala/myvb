@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
+import 'package:myvb/core/widgets/login_form.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,14 +14,26 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginState extends State<LoginScreen> {
+  User? user;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar('Login'),
       body: Container(
         padding: const EdgeInsets.all(16),
-        child: const Column(),
+        child: ListView(
+          children: [
+            LoginForm(setUser: setUser),
+          ],
+        ),
       ),
     );
+  }
+
+  void setUser(User luser) {
+    setState(() {
+      user = luser;
+    });
   }
 }
