@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
 
 class CreateBankingGroup extends StatefulWidget {
-  final String userId;
-  const CreateBankingGroup({super.key, required this.userId});
+  const CreateBankingGroup({super.key});
   static String routeName = '/banking_group/create';
 
   @override

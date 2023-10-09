@@ -2,23 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/create_banking_group.dart';
 import 'package:myvb/banking_groups/join_banking_group.dart';
 import 'package:myvb/home/home.dart';
+import 'package:myvb/users/login.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  @override
-  State<StatefulWidget> createState() {
-    return _MyAppState();
-  }
-}
-
-class _MyAppState extends State<MyApp> {
-  dynamic userId = 1;
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,13 +19,10 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
       ),
       routes: {
-        HomeScreen.routeName: (context) => HomeScreen(
-              userId: userId,
-            ),
-        CreateBankingGroup.routeName: (context) =>
-            CreateBankingGroup(userId: userId),
-        JoinBankingGroup.routeName: (context) =>
-            JoinBankingGroup(userId: userId),
+        HomeScreen.routeName: (context) => const HomeScreen(),
+        LoginScreen.routeName: (context) => const LoginScreen(),
+        CreateBankingGroup.routeName: (context) => const CreateBankingGroup(),
+        JoinBankingGroup.routeName: (context) => const JoinBankingGroup(),
       },
       initialRoute: '/',
     );

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/create_banking_group.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
+import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String userId;
-  const HomeScreen({super.key, required this.userId});
+  const HomeScreen({super.key});
   static String routeName = '/';
 
   @override
@@ -15,12 +15,20 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeState extends State<HomeScreen> {
-  late Future<List<BankingGroup>> bankingGroups;
+  late Future<User?> user;
+  Future<List<BankingGroup>> bankingGroups = Future.value(<BankingGroup>[]);
 
   @override
   void initState() {
     super.initState();
-    bankingGroups = BankingGroup.getUserBankingGroups(widget.userId);
+    user = User.loggedInUser();
+    user.then((value) {
+      if (value == null) {
+        Navigator.pushNamed(context, '/login');
+      } else {
+        bankingGroups = BankingGroup.getUserBankingGroups(value.id!);
+      }
+    });
   }
 
   @override

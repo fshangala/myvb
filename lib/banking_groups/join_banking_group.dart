@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
 
 class JoinBankingGroup extends StatefulWidget {
-  final String userId;
-  const JoinBankingGroup({super.key, required this.userId});
+  const JoinBankingGroup({super.key});
 
   static const routeName = 'banking_group/join';
 
