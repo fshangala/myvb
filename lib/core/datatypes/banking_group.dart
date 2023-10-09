@@ -24,7 +24,7 @@ class BankingGroup {
     return bankingGroups;
   }
 
-  Future<void> save(String userId) async {
+  Future<Map<String, dynamic>?> save(String userId) async {
     return Database.getDatabase().createOrUpdateItem(collection, toMap());
   }
 }

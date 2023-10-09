@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/user.dart';
+import 'package:myvb/users/register.dart';
 
 class LoginForm extends StatefulWidget {
   final void Function(User luser)? setUser;
@@ -22,34 +23,45 @@ class _LoginFormState extends State<LoginForm> {
       key: _formKey,
       child: Column(
         children: [
-          TextFormField(
-            decoration: const InputDecoration(
-                hintText: 'Username', label: Text('Username')),
-            onChanged: (value) {
-              username = value;
-            },
-            validator: (value) {
-              if (value == '') {
-                return 'Please enter some value';
-              } else {
-                return null;
-              }
-            },
-          ),
-          TextFormField(
-            decoration: const InputDecoration(label: Text('Password')),
-            obscureText: true,
-            onChanged: (value) {
-              password = value;
-            },
-          ),
-          ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  _login();
-                }
-              },
-              child: const Text('Login')),
+          Container(
+              padding: const EdgeInsets.all(8),
+              child: TextFormField(
+                decoration: const InputDecoration(label: Text('Username')),
+                onChanged: (value) {
+                  username = value;
+                },
+                validator: (value) {
+                  if (value == '') {
+                    return 'Please enter some value';
+                  } else {
+                    return null;
+                  }
+                },
+              )),
+          Container(
+              padding: const EdgeInsets.all(8),
+              child: TextFormField(
+                  obscureText: true,
+                  decoration: const InputDecoration(label: Text('Password')),
+                  onChanged: (value) {
+                    password = value;
+                  })),
+          Container(
+              padding: const EdgeInsets.all(8),
+              child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _login();
+                    }
+                  },
+                  child: const Text('Login'))),
+          Container(
+              padding: const EdgeInsets.all(8),
+              child: TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, RegisterScreen.routeName);
+                  },
+                  child: const Text('Create Account'))),
         ],
       ),
     );

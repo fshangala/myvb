@@ -47,22 +47,26 @@ abstract class Database {
     return items;
   }
 
-  Future<void> setItem(String collection, Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> setItem(
+      String collection, Map<String, dynamic> data) async {
     var items = await getAll(collection);
     data['id'] = items.length + 1;
     items.add(data);
     var instance = await SharedPreferences.getInstance();
     instance.setString(collection, jsonEncode(items));
+    return data;
   }
 
-  Future<void> createOrUpdateItem(
+  Future<Map<String, dynamic>?> createOrUpdateItem(
       String collection, Map<String, dynamic> data) async {
     if (data['id'] == null) {
-      await setItem(collection, data);
+      return setItem(collection, data);
     } else {
       var items = await getAll(collection);
+      Map<String, dynamic>? changedItem;
       var newthings = items.map((e) {
         if (e['id'] == data['id']) {
+          changedItem = data;
           return data;
         } else {
           return e;
@@ -70,6 +74,7 @@ abstract class Database {
       }).toList();
       var instance = await SharedPreferences.getInstance();
       instance.setString(collection, jsonEncode(newthings));
+      return changedItem;
     }
   }
 }

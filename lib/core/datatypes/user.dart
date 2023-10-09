@@ -55,8 +55,19 @@ class User {
     }
   }
 
-  Future<void> save() {
-    return Database.getDatabase().createOrUpdateItem('users', toMap());
+  Future<User?> save() async {
+    var userWithUsername = await User.getUserWhere('username', username);
+    if (id == null && userWithUsername != null) {
+      return null;
+    } else {
+      var savedUser =
+          await Database.getDatabase().createOrUpdateItem('users', toMap());
+      if (savedUser != null) {
+        return User.fromMap(savedUser);
+      } else {
+        return null;
+      }
+    }
   }
 
   static Future<User?> loggedInUser() async {
