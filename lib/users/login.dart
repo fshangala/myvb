@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
 import 'package:myvb/core/widgets/login_form.dart';
+import 'package:myvb/home/home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -32,8 +33,7 @@ class _LoginState extends State<LoginScreen> {
   }
 
   void setUser(User luser) {
-    setState(() {
-      user = luser;
-    });
+    Navigator.pop(context);
+    Navigator.pushNamed(context, HomeScreen.routeName);
   }
 }

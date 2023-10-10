@@ -3,6 +3,7 @@ import 'package:myvb/banking_groups/create_banking_group.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
+import 'package:myvb/users/login.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,7 +25,8 @@ class _HomeState extends State<HomeScreen> {
     user = User.loggedInUser();
     user.then((value) {
       if (value == null) {
-        Navigator.pushNamed(context, '/login');
+        Navigator.pop(context);
+        Navigator.pushNamed(context, LoginScreen.routeName);
       } else {
         bankingGroups = BankingGroup.getUserBankingGroups(value.id!);
       }

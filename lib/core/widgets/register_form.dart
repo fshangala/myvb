@@ -4,7 +4,8 @@ import 'package:myvb/users/login.dart';
 
 class RegisterForm extends StatefulWidget {
   final String? userId;
-  const RegisterForm({super.key, this.userId});
+  final void Function(User user)? setUser;
+  const RegisterForm({super.key, this.userId, this.setUser});
 
   @override
   State<StatefulWidget> createState() {
@@ -104,6 +105,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 padding: const EdgeInsets.all(8),
                 child: TextButton(
                     onPressed: () {
+                      Navigator.pop(context);
                       Navigator.pushNamed(context, LoginScreen.routeName);
                     },
                     child: const Text('Already have an account? Login'))),
@@ -117,6 +119,8 @@ class _RegisterFormState extends State<RegisterForm> {
         newUser = value;
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Account ${value.username} created!')));
+        Navigator.pop(context);
+        Navigator.pushNamed(context, LoginScreen.routeName);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Could not create account!')));

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
 import 'package:myvb/core/widgets/register_form.dart';
+import 'package:myvb/home/home.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -24,5 +26,10 @@ class _RegisterState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  void setUser(User luser) {
+    Navigator.pop(context);
+    Navigator.pushNamed(context, HomeScreen.routeName);
   }
 }
