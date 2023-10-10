@@ -50,7 +50,8 @@ abstract class Database {
   Future<Map<String, dynamic>> setItem(
       String collection, Map<String, dynamic> data) async {
     var items = await getAll(collection);
-    data['id'] = items.length + 1;
+    var newId = items.length + 1;
+    data['id'] = '$newId';
     items.add(data);
     var instance = await SharedPreferences.getInstance();
     instance.setString(collection, jsonEncode(items));
