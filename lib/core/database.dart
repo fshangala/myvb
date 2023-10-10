@@ -15,7 +15,10 @@ abstract class Database {
     List<Map<String, dynamic>> results = [];
     var resultsData = instance.getString(collection);
     if (resultsData != null) {
-      results = jsonDecode(resultsData);
+      results = (jsonDecode(resultsData) as List).map((e) {
+        Map<String, dynamic> a = e;
+        return a;
+      }).toList();
     }
 
     return results;
@@ -38,6 +41,13 @@ abstract class Database {
   Future<Map<String, dynamic>?> getItemWhereEqual(
       String collection, String key, dynamic value) async {
     Map<String, dynamic>? item;
+    var items = await getAll(collection);
+    for (var element in items) {
+      if (element[key] == value) {
+        item = element;
+        break;
+      }
+    }
     return item;
   }
 
