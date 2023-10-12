@@ -6,6 +6,37 @@ List<Database> databases = [
 ];
 
 abstract class Database {
+  Database() {
+    seed();
+  }
+
+  Map<String, List<Map<String, dynamic>>>? seeder() {
+    return {
+      'users': [
+        {
+          'id': 1,
+          'username': 'admin',
+          'firstName': 'Super',
+          'lastName': 'Admin',
+          'password': 'admin'
+        },
+      ],
+    };
+  }
+
+  void seed() async {
+    if (seeder() != null) {
+      seeder()!.forEach((key, value) async {
+        var data = await getAll(key);
+        if (data.isEmpty) {
+          for (var element in value) {
+            await setItem(key, element);
+          }
+        }
+      });
+    }
+  }
+
   static Database getDatabase() {
     return databases[0];
   }
@@ -54,6 +85,12 @@ abstract class Database {
   Future<List<Map<String, dynamic>>> getItemsWhereEqual(
       String collection, String key, dynamic value) async {
     List<Map<String, dynamic>> items = [];
+    var allItems = await getAll(collection);
+    for (var element in allItems) {
+      if (element[key] == value) {
+        items.add(element);
+      }
+    }
     return items;
   }
 

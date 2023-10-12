@@ -1,18 +1,29 @@
 import 'package:myvb/core/database.dart';
 
 class BankingGroup {
+  String? id;
   String owner;
   String name;
   static String collection = 'banking_groups';
 
-  BankingGroup({required this.owner, required this.name});
+  BankingGroup({this.id, required this.owner, required this.name});
 
   Map<String, dynamic> toMap() {
-    return {'name': name};
+    return {'id': id, 'owner': owner, 'name': name};
   }
 
   static BankingGroup fromMap(Map<String, dynamic> data) {
-    return BankingGroup(owner: data['owner'], name: data['name']);
+    return BankingGroup(
+        id: data['id'], owner: data['owner'], name: data['name']);
+  }
+
+  static Future<BankingGroup?> getById(String id) async {
+    var bankingGroup = await Database.getDatabase().getById(collection, id);
+    if (bankingGroup == null) {
+      return null;
+    } else {
+      return fromMap(bankingGroup);
+    }
   }
 
   static Future<List<BankingGroup>> getUserBankingGroups(String userId) async {
@@ -24,7 +35,13 @@ class BankingGroup {
     return bankingGroups;
   }
 
-  Future<Map<String, dynamic>?> save(String userId) async {
-    return Database.getDatabase().createOrUpdateItem(collection, toMap());
+  Future<BankingGroup?> save() async {
+    var savedBankingGroup =
+        await Database.getDatabase().createOrUpdateItem(collection, toMap());
+    if (savedBankingGroup == null) {
+      return null;
+    } else {
+      return BankingGroup.fromMap(savedBankingGroup);
+    }
   }
 }

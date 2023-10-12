@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/create_banking_group.dart';
-import 'package:myvb/core/datatypes/banking_group.dart';
+import 'package:myvb/banking_groups/join_banking_group.dart';
 import 'package:myvb/core/datatypes/user.dart';
+import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
+import 'package:myvb/core/widgets/banking_groups_by_user.dart';
 import 'package:myvb/users/login.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,7 +19,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeState extends State<HomeScreen> {
   late Future<User?> user;
-  Future<List<BankingGroup>> bankingGroups = Future.value(<BankingGroup>[]);
 
   @override
   void initState() {
@@ -25,10 +26,7 @@ class _HomeState extends State<HomeScreen> {
     user = User.loggedInUser();
     user.then((value) {
       if (value == null) {
-        Navigator.pop(context);
-        Navigator.pushNamed(context, LoginScreen.routeName);
-      } else {
-        bankingGroups = BankingGroup.getUserBankingGroups(value.id!);
+        goTo(context: context, routeName: LoginScreen.routeName);
       }
     });
   }
@@ -49,31 +47,35 @@ class _HomeState extends State<HomeScreen> {
                             context, CreateBankingGroup.routeName);
                       },
                       child: const Text('Create')),
-                  TextButton(onPressed: () {}, child: const Text('Join')),
+                  TextButton(
+                      onPressed: () {
+                        goTo(
+                            context: context,
+                            routeName: JoinBankingGroup.routeName,
+                            permanent: false);
+                      },
+                      child: const Text('Join')),
                 ],
               ),
               FutureBuilder(
-                  future: bankingGroups,
+                  future: user,
                   builder: ((context, snapshot) {
                     if (snapshot.hasData) {
-                      return Column(
-                        children: _bankingGroupsListTiles(snapshot.data!),
-                      );
+                      if (snapshot.data != null) {
+                        return BankingGroupsByUser(userId: snapshot.data!.id!);
+                      } else {
+                        return const Center(
+                          child: Text('Nothing to show'),
+                        );
+                      }
                     } else if (snapshot.hasError) {
-                      return Text('${snapshot.error}');
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
                     }
-                    return const CircularProgressIndicator();
                   }))
             ],
           )),
     );
-  }
-
-  List<ListTile> _bankingGroupsListTiles(List<BankingGroup> bankingGroups) {
-    return bankingGroups
-        .map((e) => ListTile(
-              title: Text(e.name),
-            ))
-        .toList();
   }
 }

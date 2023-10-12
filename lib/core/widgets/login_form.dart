@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/user.dart';
+import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/users/register.dart';
 
 class LoginForm extends StatefulWidget {
   final void Function(User luser)? setUser;
-  const LoginForm({super.key, this.setUser});
+  final bool permanetGoTo;
+  const LoginForm({super.key, this.setUser, this.permanetGoTo = true});
 
   @override
   State<StatefulWidget> createState() {
@@ -59,7 +61,10 @@ class _LoginFormState extends State<LoginForm> {
               padding: const EdgeInsets.all(8),
               child: TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, RegisterScreen.routeName);
+                    goTo(
+                        context: context,
+                        routeName: RegisterScreen.routeName,
+                        permanent: widget.permanetGoTo);
                   },
                   child: const Text('Create Account'))),
         ],
