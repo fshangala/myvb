@@ -1,16 +1,12 @@
 # myvb
 
-A new Flutter project.
+A village banking app
 
-## Getting Started
+## Features
+- List user banking groups
+- Join banking group
+- Invite users to join banking group
+- Create banking group
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### To Do
+- load user joined banking group at home
