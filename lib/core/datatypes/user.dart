@@ -90,4 +90,9 @@ class User {
     }
     return luser;
   }
+
+  Future<bool> logout() async {
+    var instance = await SharedPreferences.getInstance();
+    return await instance.remove('loggedInUser');
+  }
 }

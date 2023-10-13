@@ -34,7 +34,7 @@ class _HomeState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar('Home'),
+      appBar: appBar(context, 'Home'),
       body: Container(
           padding: const EdgeInsets.all(16),
           child: ListView(

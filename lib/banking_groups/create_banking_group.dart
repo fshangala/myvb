@@ -34,7 +34,7 @@ class _CreateBankingGroupState extends State<CreateBankingGroup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar('Create Banking Group'),
+      appBar: appBar(context, 'Create Banking Group'),
       body: Container(
         padding: const EdgeInsets.all(16),
         child: Column(

@@ -25,7 +25,7 @@ class _ViewBankingGroupState extends State<ViewBankingGroupScreen> {
     }
 
     return Scaffold(
-      appBar: appBar('View Banking Group'),
+      appBar: appBar(context, 'View Banking Group'),
       body: Container(
         padding: const EdgeInsets.all(16),
         child: ListView(

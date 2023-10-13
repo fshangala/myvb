@@ -25,14 +25,32 @@ class _BankingGroupByUserState extends State<BankingGroupsByUser> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: bankingGroups,
-        builder: ((context, snapshot) {
-          if (snapshot.hasData) {
-            return _renderBankingGroups(snapshot.data!);
-          }
-          return const Center(child: CircularProgressIndicator());
-        }));
+    return Column(
+      children: [
+        const Text('My Banking Groups'),
+        FutureBuilder(
+            future: bankingGroups,
+            builder: ((context, snapshot) {
+              if (snapshot.hasData) {
+                return _renderBankingGroups(snapshot.data!);
+              } else if (snapshot.hasError) {
+                return ListTile(
+                  title: const Text('Error'),
+                  subtitle: Text('${snapshot.error}'),
+                  trailing: const Text('RELOAD'),
+                  onTap: () {
+                    setState(() {
+                      bankingGroups =
+                          BankingGroup.getUserBankingGroups(widget.userId);
+                    });
+                  },
+                );
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            })),
+      ],
+    );
   }
 
   Widget _renderBankingGroups(List<BankingGroup> groups) {

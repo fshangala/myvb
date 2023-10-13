@@ -1,20 +1,41 @@
 import 'package:myvb/core/database.dart';
+import 'package:myvb/core/datatypes/banking_group_member.dart';
 
 class BankingGroup {
   String? id;
   String owner;
   String name;
+  List<BankingGroupMember> members;
+
   static String collection = 'banking_groups';
 
-  BankingGroup({this.id, required this.owner, required this.name});
+  BankingGroup(
+      {this.id,
+      required this.owner,
+      required this.name,
+      this.members = const []});
 
   Map<String, dynamic> toMap() {
-    return {'id': id, 'owner': owner, 'name': name};
+    return {
+      'id': id,
+      'owner': owner,
+      'name': name,
+      'members': members.map((e) => e.toMap()).toList()
+    };
   }
 
   static BankingGroup fromMap(Map<String, dynamic> data) {
+    List<BankingGroupMember> groupMembers = [];
+    if (data['members'].length > 0) {
+      groupMembers = data['members']
+          .map((Map<String, dynamic> e) => BankingGroupMember.fromMap(e))
+          .toList();
+    }
     return BankingGroup(
-        id: data['id'], owner: data['owner'], name: data['name']);
+        id: data['id'],
+        owner: data['owner'],
+        name: data['name'],
+        members: groupMembers);
   }
 
   static Future<BankingGroup?> getById(String id) async {
@@ -42,6 +63,28 @@ class BankingGroup {
       return null;
     } else {
       return BankingGroup.fromMap(savedBankingGroup);
+    }
+  }
+
+  Future<BankingGroup?> joinGroup(
+      String bankingGroupId, String userId, String username) async {
+    var bankingGroup = await getById(bankingGroupId);
+    if (bankingGroup != null) {
+      bool alreadyJoined = false;
+      bankingGroup.members.forEach((element) {
+        if (element.username == username) {
+          alreadyJoined = true;
+        }
+      });
+      if (alreadyJoined) {
+        return null;
+      } else {
+        bankingGroup.members
+            .add(BankingGroupMember(userId: userId, username: username));
+        return await bankingGroup.save();
+      }
+    } else {
+      return null;
     }
   }
 }
