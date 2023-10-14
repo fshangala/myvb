@@ -13,7 +13,7 @@ class NullFutureRenderer<T> extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data != null) {
-            return futureRenderer(snapshot.data!);
+            return futureRenderer(snapshot.data as T);
           } else {
             return const Center(
               child: Text('Nothing to show'),
