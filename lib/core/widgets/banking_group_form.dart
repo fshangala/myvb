@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
-import 'package:myvb/core/datatypes/banking_group_member.dart';
 import 'package:myvb/core/datatypes/user.dart';
 
 class BankingGroupForm extends StatefulWidget {
