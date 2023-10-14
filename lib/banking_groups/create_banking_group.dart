@@ -61,7 +61,7 @@ class _CreateBankingGroupState extends State<CreateBankingGroup> {
                   return Column(
                     children: [
                       BankingGroupForm(
-                        userId: snapshot.data!.id!,
+                        user: snapshot.data!,
                         onSaved: (bankingGroup) {
                           goTo(
                               context: context,

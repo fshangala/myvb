@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/datatypes/view_banking_group_screen_arguments.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
+import 'package:myvb/core/widgets/banking_group_members.dart';
 import 'package:myvb/core/widgets/banking_group_transactions.dart';
 
 class ViewBankingGroupScreen extends StatefulWidget {
@@ -38,12 +39,23 @@ class _ViewBankingGroupState extends State<ViewBankingGroupScreen> {
                     } else {
                       return Column(
                         children: [
-                          Row(
-                            children: [
-                              const Expanded(child: Text('Name')),
-                              Text(snapshot.data!.name)
-                            ],
+                          ListTile(
+                            leading: const Icon(Icons.tag),
+                            title: const Text('ID'),
+                            trailing: Text(snapshot.data!.id!),
                           ),
+                          ListTile(
+                            title: const Text('Name'),
+                            trailing: Text(snapshot.data!.name),
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.money),
+                            title: const Text('Investment Balance'),
+                            trailing: Text(snapshot.data!
+                                .totalInvestmentBalance()
+                                .toString()),
+                          ),
+                          BankingGroupMembers(bankingGroup: snapshot.data!),
                           BankingGroupTransactions(
                               bankingGroupId: snapshot.data!.id!),
                         ],

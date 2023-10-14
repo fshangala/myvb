@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
+import 'package:myvb/core/datatypes/banking_group_member.dart';
+import 'package:myvb/core/datatypes/user.dart';
 
 class BankingGroupForm extends StatefulWidget {
-  final String userId;
+  final User user;
   final void Function(BankingGroup bankingGroup)? onSaved;
-  const BankingGroupForm({super.key, required this.userId, this.onSaved});
+  const BankingGroupForm({super.key, required this.user, this.onSaved});
 
   @override
   State<StatefulWidget> createState() {
@@ -50,7 +52,7 @@ class _BankingGroupFormState extends State<BankingGroupForm> {
   }
 
   void _createBankingGroup() {
-    bankingGroup.owner = widget.userId;
+    bankingGroup.owner = widget.user.id!;
     bankingGroup.save().then((value) {
       if (value == null) {
         ScaffoldMessenger.of(context).showSnackBar(

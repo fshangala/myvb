@@ -27,15 +27,27 @@ class BankingGroup {
   static BankingGroup fromMap(Map<String, dynamic> data) {
     List<BankingGroupMember> groupMembers = [];
     if (data['members'].length > 0) {
-      groupMembers = data['members']
-          .map((Map<String, dynamic> e) => BankingGroupMember.fromMap(e))
-          .toList();
+      List<dynamic> a = data['members'];
+      groupMembers = a.map((e) {
+        Map<String, dynamic> b = e;
+        return BankingGroupMember.fromMap(b);
+      }).toList();
     }
     return BankingGroup(
         id: data['id'],
         owner: data['owner'],
         name: data['name'],
         members: groupMembers);
+  }
+
+  double totalInvestmentBalance() {
+    double balance = 0.0;
+    for (var member in members) {
+      if (member.approved) {
+        balance += member.investmentBalance;
+      }
+    }
+    return balance;
   }
 
   static Future<List<BankingGroup>> getAll() async {
@@ -74,6 +86,26 @@ class BankingGroup {
       }
     }
     return bankingGroups;
+  }
+
+  static dynamic getMembers(
+      {required String bankingGroupId, bool? approved}) async {
+    var bankingGroup = await getById(bankingGroupId);
+    if (bankingGroup == null) {
+      return null;
+    } else {
+      var members = <BankingGroupMember>[];
+      for (var element in bankingGroup.members) {
+        if (approved == null) {
+          members.add(element);
+        } else {
+          if (element.approved == approved) {
+            members.add(element);
+          }
+        }
+      }
+      return members;
+    }
   }
 
   Future<BankingGroup?> save() async {

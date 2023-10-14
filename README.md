@@ -3,12 +3,11 @@
 A village banking app
 
 ## Features
-- List user banking groups
-- Join banking group
-- Invite users to join banking group
 - Create banking group
-- Invest in banking group
-- Notifications
+- Join banking group
+- List user banking groups
+Invest in banking group
+Notifications
 
 ### To Do
 - view banking group to member or else ask to join
@@ -17,3 +16,5 @@ A village banking app
 - get pending members
 - make investment transaction
 - approve investment transaction
+- user investment page
+- join group is overloading
