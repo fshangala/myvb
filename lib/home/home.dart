@@ -5,6 +5,7 @@ import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
 import 'package:myvb/core/widgets/banking_groups_by_user.dart';
+import 'package:myvb/core/widgets/banking_groups_joined.dart';
 import 'package:myvb/users/login.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -62,7 +63,13 @@ class _HomeState extends State<HomeScreen> {
                   builder: ((context, snapshot) {
                     if (snapshot.hasData) {
                       if (snapshot.data != null) {
-                        return BankingGroupsByUser(userId: snapshot.data!.id!);
+                        return Column(
+                          children: [
+                            BankingGroupsByUser(userId: snapshot.data!.id!),
+                            BankingGroupsJoined(
+                                username: snapshot.data!.username)
+                          ],
+                        );
                       } else {
                         return const Center(
                           child: Text('Nothing to show'),

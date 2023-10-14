@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/datatypes/view_banking_group_screen_arguments.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
+import 'package:myvb/core/widgets/banking_group_transactions.dart';
 
 class ViewBankingGroupScreen extends StatefulWidget {
   static const routeName = '/banking_group/view';
@@ -42,7 +43,9 @@ class _ViewBankingGroupState extends State<ViewBankingGroupScreen> {
                               const Expanded(child: Text('Name')),
                               Text(snapshot.data!.name)
                             ],
-                          )
+                          ),
+                          BankingGroupTransactions(
+                              bankingGroupId: snapshot.data!.id!),
                         ],
                       );
                     }

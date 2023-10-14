@@ -38,6 +38,12 @@ class BankingGroup {
         members: groupMembers);
   }
 
+  static Future<List<BankingGroup>> getAll() async {
+    var results = await Database.getDatabase().getAll(collection);
+    var bankingGroups = results.map((e) => BankingGroup.fromMap(e)).toList();
+    return bankingGroups;
+  }
+
   static Future<BankingGroup?> getById(String id) async {
     var bankingGroup = await Database.getDatabase().getById(collection, id);
     if (bankingGroup == null) {
@@ -53,6 +59,20 @@ class BankingGroup {
         .getItemsWhereEqual(collection, 'owner', userId);
     bankingGroups =
         bankingGroupsData.map((e) => BankingGroup.fromMap(e)).toList();
+    return bankingGroups;
+  }
+
+  static Future<List<BankingGroup>> getUserJoinedBankingGroups(
+      String username) async {
+    var bankingGroups = await getAll();
+    var joinedGroups = <BankingGroup>[];
+    for (var element in bankingGroups) {
+      for (var member in element.members) {
+        if (member.username == username) {
+          joinedGroups.add(element);
+        }
+      }
+    }
     return bankingGroups;
   }
 
