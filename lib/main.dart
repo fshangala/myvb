@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/create_banking_group.dart';
 import 'package:myvb/banking_groups/join_banking_group.dart';
+import 'package:myvb/banking_groups/screen_request_loan.dart';
 import 'package:myvb/banking_groups/view_banking_group.dart';
+import 'package:myvb/banking_groups/view_banking_group_member.dart';
 import 'package:myvb/home/home.dart';
 import 'package:myvb/users/login.dart';
 import 'package:myvb/users/profile.dart';
@@ -26,6 +28,9 @@ class MyApp extends StatelessWidget {
         ViewBankingGroupScreen.routeName: (context) =>
             const ViewBankingGroupScreen(),
         ProfileScreen.routeName: (context) => const ProfileScreen(),
+        ViewBankingGroupMember.routeName: (context) =>
+            const ViewBankingGroupMember(),
+        ScreenRequestLoan.routeName: (context) => const ScreenRequestLoan()
       },
       initialRoute: '/',
     );

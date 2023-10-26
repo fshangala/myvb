@@ -1,0 +1,13 @@
+digraph G {
+  subgraph cluster_class {
+    label="Class";
+    fromMap;
+  }
+  subgraph cluster_model {
+    label="Model";
+    where;
+    get;
+
+    get -> fromMap;
+  }
+}

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
+import 'package:myvb/core/datatypes/banking_group_transaction.dart';
 import 'package:myvb/core/datatypes/user.dart';
+import 'package:myvb/core/functions/display_regular_snackbar.dart';
+import 'package:myvb/core/functions/resolve_future.dart';
 
 class BankingGroupInvestForm extends StatefulWidget {
   final User user;
@@ -46,7 +49,16 @@ class _BankingGroupInvestFormState extends State<BankingGroupInvestForm> {
         ));
   }
 
-  dynamic _invest() {
-    //widget.bankingGroup.
+  void _invest() {
+    var transaction = BankingGroupTransaction(
+        amount: double.parse(investmentAmount.text),
+        bankingGroupId: widget.bankingGroup.id!,
+        userId: widget.user.id!,
+        username: widget.user.username,
+        approved: true);
+    resolveFuture(context, transaction.save(), (value) {
+      displayRegularSnackBar(context, "Success");
+      investmentAmount.text = '';
+    });
   }
 }

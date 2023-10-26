@@ -1,0 +1,57 @@
+digraph myvb {
+
+  subgraph cluster_user {
+    label="User";
+    user [shape="square",color="blue"];
+    guest [shape="square",color="blue"];
+  }
+  subgraph cluster_authentication {
+    label="Auth";
+
+    registration -> user [color="green"];
+    login -> user [color="green"];
+    logout -> guest [color="green"];
+  }
+
+  subgraph cluster_transaction {
+    label="Transaction";
+    transaction_approved [shape="square",color="blue"];
+    transaction_denied [shape="square",color="blue"];
+
+    create_transaction -> process_transaction; 
+    process_transaction -> transaction_approved, transaction_denied;
+  }
+
+  subgraph cluster_banking_group {
+    label="Banking group";
+    banking_group_owner [shape="square",color="blue"];
+    banking_group_member [shape="square",color="blue"];
+    banking_group_borrower [shape="square",color="blue"];
+    banking_group_member_pending [shape="square",color="blue"];
+    investment_balance [shape="square",color="blue"];
+    loan [shape="square",color="blue"];
+    
+    create_banking_group -> banking_group_created [color="green"];
+    banking_group_created -> banking_group_owner [color="green"];
+    banking_group_created -> banking_group_member [color="green"];
+
+    join_banking_group -> banking_group_member_pending [color="red"];
+    approve_member -> banking_group_member [color="red"];
+
+    invest_banking_group -> create_transaction [color="red"];
+
+    request_loan -> process_loan [color="red"];
+    process_loan -> loan_approved -> create_transaction, banking_group_borrower, loan;
+    process_loan -> loan_denied;
+  }
+
+  //guest -> registration [color="green"];
+  //guest -> login [color="green"];
+
+  //user -> create_banking_group [color="green"];
+  //user -> join_banking_group [color="green"];
+
+  //banking_group_member -> invest_banking_group;
+  //banking_group_member -> request_loan;
+
+}

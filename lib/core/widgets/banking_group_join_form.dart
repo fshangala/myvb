@@ -68,7 +68,6 @@ class _BankingGroupJoinForm extends State<BankingGroupJoinForm> {
   Widget _renderBankingGroup(BankingGroup group) {
     return ListTile(
       title: Text(group.name),
-      subtitle: Text('Members: ${group.members.length}'),
       trailing: TextButton(
         child: const Text('Join'),
         onPressed: () {
@@ -82,13 +81,11 @@ class _BankingGroupJoinForm extends State<BankingGroupJoinForm> {
                   ),
                 );
               }));
-          group
-              .joinGroup(group.id!, widget.userId, widget.username)
-              .then((value) {
+          group.joinGroup(widget.userId, widget.username).then((value) {
             Navigator.pop(context);
             if (value != null) {
               ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('${value.name} Joined!')));
+                  SnackBar(content: Text('${value.username} Joined!')));
               goTo(
                   context: context,
                   routeName: ViewBankingGroupScreen.routeName,

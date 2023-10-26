@@ -1,53 +1,165 @@
 import 'package:myvb/core/database.dart';
+import 'package:myvb/core/datatypes/banking_group_loan.dart';
 import 'package:myvb/core/datatypes/banking_group_member.dart';
+import 'package:myvb/core/datatypes/banking_group_transaction.dart';
+import 'package:myvb/core/datatypes/model.dart';
 
-class BankingGroup {
+class VBGroupModelArguments {
   String? id;
   String owner;
   String name;
-  List<BankingGroupMember> members;
+  int investmentInterest;
 
-  static String collection = 'banking_groups';
-
-  BankingGroup(
+  VBGroupModelArguments(
       {this.id,
       required this.owner,
       required this.name,
-      this.members = const []});
+      required this.investmentInterest});
+}
 
+class VBGroup extends Model<VBGroup, VBGroupModelArguments> {
+  String? id;
+  late String owner;
+  late String name;
+  late int investmentInterest;
+
+  @override
+  String collection = 'bankingGroups';
+
+  @override
+  VBGroup create(VBGroupModelArguments arguments) {
+    var vBGroup = VBGroup();
+    vBGroup.id = arguments.id;
+    vBGroup.owner = arguments.owner;
+    vBGroup.name = arguments.name;
+    vBGroup.investmentInterest = arguments.investmentInterest;
+    return vBGroup;
+  }
+
+  @override
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'owner': owner,
       'name': name,
-      'members': members.map((e) => e.toMap()).toList()
+      'investmentInterest': investmentInterest
     };
   }
 
-  static BankingGroup fromMap(Map<String, dynamic> data) {
-    List<BankingGroupMember> groupMembers = [];
-    if (data['members'].length > 0) {
-      List<dynamic> a = data['members'];
-      groupMembers = a.map((e) {
-        Map<String, dynamic> b = e;
-        return BankingGroupMember.fromMap(b);
-      }).toList();
+  @override
+  VBGroup? fromMap(Map<String, dynamic>? data) {
+    if (data == null) {
+      return null;
+    } else {
+      return create(VBGroupModelArguments(
+          id: data['id'],
+          owner: data['owner'],
+          name: data['name'],
+          investmentInterest: data['investmentInterest']));
     }
-    return BankingGroup(
-        id: data['id'],
-        owner: data['owner'],
-        name: data['name'],
-        members: groupMembers);
   }
 
-  double totalInvestmentBalance() {
-    double balance = 0.0;
-    for (var member in members) {
-      if (member.approved) {
-        balance += member.investmentBalance;
+  Future<double> totalIvenstmentBalance() async {
+    var balance = 0.0;
+
+    //transactions
+    var transactions = await VBGroupTransaction().getObjects(
+        QueryBuilder().where('bankingGroupId', id).where('approved', true));
+    for (var element in transactions) {
+      balance += element.amount;
+    }
+
+    //loans
+    var loans = await BankingGroupLoan().getObjects(
+        QueryBuilder().where('bankingGroupId', id!).where('approved', true));
+    for (var element in loans) {
+      balance -= element.amount;
+    }
+
+    return balance;
+  }
+
+  Future<VBGroupMember?> groupMember(String userId) async {
+    var member = await VBGroupMember().getObject(
+        QueryBuilder().where('bankingGroupId', id).where('userId', userId));
+    return member;
+  }
+
+  Future<List<VBGroupMember>> groupMembers(bool? approved) async {
+    List<VBGroupMember> members = [];
+    if (approved == null) {
+      members = await VBGroupMember()
+          .getObjects(QueryBuilder().where('bankingGroupId', id));
+    } else {
+      members = await VBGroupMember().getObjects(QueryBuilder()
+          .where('bankingGroupId', id)
+          .where('approved', approved));
+    }
+    return members;
+  }
+
+  Future<VBGroupMember?> joinGroup(String userId, String username) async {
+    var bankingGroupMember = await VBGroupMember().getObject(
+        QueryBuilder().where('userId', userId).where('bankingGroupId', id));
+    if (bankingGroupMember == null) {
+      bankingGroupMember = VBGroupMember().create(VBGroupMemberModelArguments(
+          bankingGroupId: id!, userId: userId, username: username));
+      var saved = await bankingGroupMember.save();
+      if (saved == null) {
+        return null;
+      } else {
+        return saved;
       }
+    } else {
+      return null;
+    }
+  }
+}
+
+///Create banking group objects
+class BankingGroup {
+  String? id;
+  String owner;
+  String name;
+
+  static String collection = 'banking_groups';
+
+  BankingGroup({this.id, required this.owner, required this.name});
+
+  Future<double> totalInvestmentBalance() async {
+    double balance = 0.0;
+    var transactions = await BankingGroupTransaction.getObjects(
+        QueryBuilder().where('bankingGroupId', id).where('approved', true));
+    for (var element in transactions) {
+      balance += element.amount;
     }
     return balance;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {'id': id, 'owner': owner, 'name': name};
+  }
+
+  static BankingGroup fromMap(Map<String, dynamic> data) {
+    return BankingGroup(
+        id: data['id'], owner: data['owner'], name: data['name']);
+  }
+
+  static Future<BankingGroup?> getObject(QueryBuilder queryBuilder) async {
+    var result =
+        await Database.getDatabase().getItem(collection, queryBuilder.query);
+    if (result == null) {
+      return null;
+    } else {
+      return fromMap(result);
+    }
+  }
+
+  static Future<List<BankingGroup>> getObjects(
+      QueryBuilder queryBuilder) async {
+    var result =
+        await Database.getDatabase().getItems(collection, queryBuilder.query);
+    return result.map((e) => fromMap(e)).toList();
   }
 
   static Future<List<BankingGroup>> getAll() async {
@@ -76,36 +188,8 @@ class BankingGroup {
 
   static Future<List<BankingGroup>> getUserJoinedBankingGroups(
       String username) async {
-    var bankingGroups = await getAll();
     var joinedGroups = <BankingGroup>[];
-    for (var element in bankingGroups) {
-      for (var member in element.members) {
-        if (member.username == username) {
-          joinedGroups.add(element);
-        }
-      }
-    }
-    return bankingGroups;
-  }
-
-  static dynamic getMembers(
-      {required String bankingGroupId, bool? approved}) async {
-    var bankingGroup = await getById(bankingGroupId);
-    if (bankingGroup == null) {
-      return null;
-    } else {
-      var members = <BankingGroupMember>[];
-      for (var element in bankingGroup.members) {
-        if (approved == null) {
-          members.add(element);
-        } else {
-          if (element.approved == approved) {
-            members.add(element);
-          }
-        }
-      }
-      return members;
-    }
+    return joinedGroups;
   }
 
   Future<BankingGroup?> save() async {
@@ -118,22 +202,36 @@ class BankingGroup {
     }
   }
 
-  Future<BankingGroup?> joinGroup(
-      String bankingGroupId, String userId, String username) async {
-    var bankingGroup = await getById(bankingGroupId);
-    if (bankingGroup != null) {
-      bool alreadyJoined = false;
-      for (var element in bankingGroup.members) {
-        if (element.username == username) {
-          alreadyJoined = true;
-        }
-      }
-      if (alreadyJoined) {
+  Future<BankingGroupMember?> groupMember(String userId) async {
+    var member = await BankingGroupMember.getObject(
+        QueryBuilder().where('bankingGroupId', id).where('userId', userId));
+    return member;
+  }
+
+  Future<List<BankingGroupMember>> groupMembers(bool? approved) async {
+    List<BankingGroupMember> members = [];
+    if (approved == null) {
+      members = await BankingGroupMember.getObjects(
+          QueryBuilder().where('bankingGroupId', id));
+    } else {
+      members = await BankingGroupMember.getObjects(QueryBuilder()
+          .where('bankingGroupId', id)
+          .where('approved', approved));
+    }
+    return members;
+  }
+
+  Future<BankingGroupMember?> joinGroup(String userId, String username) async {
+    var bankingGroupMember = await BankingGroupMember.getObject(
+        QueryBuilder().where('userId', userId).where('bankingGroupId', id));
+    if (bankingGroupMember == null) {
+      bankingGroupMember = BankingGroupMember(
+          bankingGroupId: id!, userId: userId, username: username);
+      var saved = await bankingGroupMember.save();
+      if (saved == null) {
         return null;
       } else {
-        bankingGroup.members
-            .add(BankingGroupMember(userId: userId, username: username));
-        return await bankingGroup.save();
+        return saved;
       }
     } else {
       return null;

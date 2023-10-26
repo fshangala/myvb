@@ -3,18 +3,15 @@
 A village banking app
 
 ## Features
+- Register
+- Login, Logout
 - Create banking group
 - Join banking group
 - List user banking groups
-Invest in banking group
-Notifications
+- Invest in banking group
 
 ### To Do
-- view banking group to member or else ask to join
-- approve a join request
-- get approved members
-- get pending members
-- make investment transaction
-- approve investment transaction
-- user investment page
-- join group is overloading
+- research on calendar
+- investment cycle
+- get loan
+- group member loans

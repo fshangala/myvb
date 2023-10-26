@@ -41,6 +41,47 @@ abstract class Database {
     return databases[0];
   }
 
+  Future<Map<String, dynamic>?> getItem(
+      String collection, Map<String, dynamic> query) async {
+    Map<String, dynamic>? item;
+    var items = await getAll(collection);
+    for (var element in items) {
+      var matched = true;
+      query.forEach((key, value) {
+        if (element[key] != value) {
+          matched = false;
+        }
+      });
+      if (matched) {
+        item = element;
+        break;
+      }
+    }
+    return item;
+  }
+
+  Future<List<Map<String, dynamic>>> getItems(
+      String collection, Map<String, dynamic> query) async {
+    List<Map<String, dynamic>> items = [];
+    var allItems = await getAll(collection);
+    if (query.isEmpty) {
+      items = allItems;
+    } else {
+      for (var element in allItems) {
+        var matched = true;
+        query.forEach((key, value) {
+          if (element[key] != value) {
+            matched = false;
+          }
+        });
+        if (matched) {
+          items.add(element);
+        }
+      }
+    }
+    return items;
+  }
+
   Future<List<Map<String, dynamic>>> getAll(String collection) async {
     var instance = await SharedPreferences.getInstance();
     List<Map<String, dynamic>> results = [];

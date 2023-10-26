@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 class NullFutureRenderer<T> extends StatelessWidget {
   final Future<T?> future;
   final Widget Function(T object) futureRenderer;
+  final Widget Function()? nullRenderer;
   const NullFutureRenderer(
-      {super.key, required this.future, required this.futureRenderer});
+      {super.key,
+      required this.future,
+      required this.futureRenderer,
+      this.nullRenderer});
 
   @override
   Widget build(BuildContext context) {
