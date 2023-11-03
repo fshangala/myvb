@@ -7,7 +7,7 @@ import 'package:myvb/core/functions/resolve_future.dart';
 
 class BankingGroupInvestForm extends StatefulWidget {
   final User user;
-  final BankingGroup bankingGroup;
+  final VBGroup bankingGroup;
   const BankingGroupInvestForm(
       {super.key, required this.user, required this.bankingGroup});
 
@@ -50,12 +50,13 @@ class _BankingGroupInvestFormState extends State<BankingGroupInvestForm> {
   }
 
   void _invest() {
-    var transaction = BankingGroupTransaction(
-        amount: double.parse(investmentAmount.text),
-        bankingGroupId: widget.bankingGroup.id!,
-        userId: widget.user.id!,
-        username: widget.user.username,
-        approved: true);
+    var transaction = VBGroupTransaction().create(
+        VBGroupTransactionModelArguments(
+            bankingGroupId: widget.bankingGroup.id!,
+            userId: widget.user.id!,
+            username: widget.user.username,
+            amount: double.parse(investmentAmount.text),
+            approved: true));
     resolveFuture(context, transaction.save(), (value) {
       displayRegularSnackBar(context, "Success");
       investmentAmount.text = '';

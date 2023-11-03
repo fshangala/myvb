@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/view_banking_group.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
+import 'package:myvb/core/datatypes/model.dart';
 import 'package:myvb/core/datatypes/view_banking_group_screen_arguments.dart';
 import 'package:myvb/core/functions/go_to.dart';
 
@@ -18,7 +19,7 @@ class BankingGroupJoinForm extends StatefulWidget {
 
 class _BankingGroupJoinForm extends State<BankingGroupJoinForm> {
   final _formKey = GlobalKey<FormState>();
-  Future<BankingGroup?> bankingGroup = Future.value(null);
+  Future<VBGroup?> bankingGroup = Future.value(null);
   var searchController = TextEditingController(text: '');
 
   @override
@@ -30,18 +31,24 @@ class _BankingGroupJoinForm extends State<BankingGroupJoinForm> {
             child: Form(
               key: _formKey,
               child: Column(children: [
-                TextFormField(
-                  decoration: const InputDecoration(label: Text('Search')),
-                  controller: searchController,
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: TextFormField(
+                    decoration: const InputDecoration(label: Text('Search')),
+                    controller: searchController,
+                  ),
                 ),
-                ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        bankingGroup =
-                            BankingGroup.getById(searchController.text);
-                      });
-                    },
-                    child: const Text('Search'))
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          bankingGroup = VBGroup().getObject(QueryBuilder()
+                              .where('id', searchController.text));
+                        });
+                      },
+                      child: const Text('Search')),
+                )
               ]),
             )),
         FutureBuilder(
@@ -65,7 +72,7 @@ class _BankingGroupJoinForm extends State<BankingGroupJoinForm> {
     );
   }
 
-  Widget _renderBankingGroup(BankingGroup group) {
+  Widget _renderBankingGroup(VBGroup group) {
     return ListTile(
       title: Text(group.name),
       trailing: TextButton(

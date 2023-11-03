@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/create_banking_group.dart';
+import 'package:myvb/banking_groups/invest_banking_group.dart';
 import 'package:myvb/banking_groups/join_banking_group.dart';
+import 'package:myvb/banking_groups/screen_repay_loan.dart';
 import 'package:myvb/banking_groups/screen_request_loan.dart';
 import 'package:myvb/banking_groups/view_banking_group.dart';
 import 'package:myvb/banking_groups/view_banking_group_member.dart';
@@ -28,9 +30,11 @@ class MyApp extends StatelessWidget {
         ViewBankingGroupScreen.routeName: (context) =>
             const ViewBankingGroupScreen(),
         ProfileScreen.routeName: (context) => const ProfileScreen(),
-        ViewBankingGroupMember.routeName: (context) =>
-            const ViewBankingGroupMember(),
-        ScreenRequestLoan.routeName: (context) => const ScreenRequestLoan()
+        ViewBankingGroupMemberScreen.routeName: (context) =>
+            const ViewBankingGroupMemberScreen(),
+        InvestBankingGroup.routeName: (context) => const InvestBankingGroup(),
+        ScreenRequestLoan.routeName: (context) => const ScreenRequestLoan(),
+        RepayLoanScreen.routeName: (context) => const RepayLoanScreen()
       },
       initialRoute: '/',
     );

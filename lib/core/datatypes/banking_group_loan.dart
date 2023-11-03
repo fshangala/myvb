@@ -26,6 +26,7 @@ class BankingGroupLoan
   late String userId;
   late String username;
   late double amount;
+  late DateTime timestamp;
   late bool approved;
 
   @override
@@ -39,6 +40,7 @@ class BankingGroupLoan
     bankingGroupLoan.userId = arguments.userId;
     bankingGroupLoan.username = arguments.username;
     bankingGroupLoan.amount = arguments.amount;
+    bankingGroupLoan.timestamp = arguments.timestamp;
     bankingGroupLoan.approved = arguments.approved;
     return bankingGroupLoan;
   }
@@ -51,6 +53,7 @@ class BankingGroupLoan
       'userId': userId,
       'username': username,
       'amount': amount,
+      'timestamp': timestamp,
       'approved': approved
     };
   }
@@ -66,7 +69,7 @@ class BankingGroupLoan
           userId: data['userId'],
           username: data['username'],
           amount: data['amount'],
-          timestamp: data['timestamp'],
+          timestamp: DateTime.parse(data['timestamp']),
           approved: data['approved']));
     }
   }

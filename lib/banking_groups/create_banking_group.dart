@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/view_banking_group.dart';
-import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/datatypes/view_banking_group_screen_arguments.dart';
+import 'package:myvb/core/extensions/auth_state.dart';
 import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
 import 'package:myvb/core/widgets/banking_group_form.dart';
@@ -17,20 +17,7 @@ class CreateBankingGroup extends StatefulWidget {
   }
 }
 
-class _CreateBankingGroupState extends State<CreateBankingGroup> {
-  late Future<User?> user;
-
-  @override
-  initState() {
-    super.initState();
-    user = User.loggedInUser();
-    user.then((value) {
-      if (value == null) {
-        goTo(context: context, routeName: LoginScreen.routeName);
-      }
-    });
-  }
-
+class _CreateBankingGroupState extends AuthState<CreateBankingGroup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

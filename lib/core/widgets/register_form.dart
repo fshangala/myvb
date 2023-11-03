@@ -3,9 +3,8 @@ import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/users/login.dart';
 
 class RegisterForm extends StatefulWidget {
-  final String? userId;
   final void Function(User user)? setUser;
-  const RegisterForm({super.key, this.userId, this.setUser});
+  const RegisterForm({super.key, this.setUser});
 
   @override
   State<StatefulWidget> createState() {
@@ -15,19 +14,10 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
-  User newUser = User(username: '', firstName: '', lastName: '');
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.userId != null) {
-      User.getByid(widget.userId!).then((value) {
-        if (value != null) {
-          newUser = value;
-        }
-      });
-    }
-  }
+  var usernameController = TextEditingController(text: '');
+  var firstNameController = TextEditingController(text: '');
+  var lastNameController = TextEditingController(text: '');
+  var passwordController = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +29,8 @@ class _RegisterFormState extends State<RegisterForm> {
               padding: const EdgeInsets.all(8),
               child: TextFormField(
                 decoration: const InputDecoration(label: Text('Username')),
-                initialValue: newUser.username,
-                onChanged: (value) {
-                  newUser.username = value;
-                },
+                controller: usernameController,
+                keyboardType: TextInputType.name,
                 validator: (value) {
                   if (value == '') {
                     return 'Username cannot be empty!';
@@ -55,10 +43,8 @@ class _RegisterFormState extends State<RegisterForm> {
               padding: const EdgeInsets.all(8),
               child: TextFormField(
                 decoration: const InputDecoration(label: Text('First name')),
-                initialValue: newUser.firstName,
-                onChanged: (value) {
-                  newUser.firstName = value;
-                },
+                controller: firstNameController,
+                keyboardType: TextInputType.name,
                 validator: (value) {
                   if (value == '') {
                     return 'First name cannot be empty!';
@@ -71,10 +57,8 @@ class _RegisterFormState extends State<RegisterForm> {
               padding: const EdgeInsets.all(8),
               child: TextFormField(
                 decoration: const InputDecoration(label: Text('Last name')),
-                initialValue: newUser.lastName,
-                onChanged: (value) {
-                  newUser.lastName = value;
-                },
+                controller: lastNameController,
+                keyboardType: TextInputType.name,
                 validator: (value) {
                   if (value == '') {
                     return 'Last name cannot be empty!';
@@ -87,9 +71,7 @@ class _RegisterFormState extends State<RegisterForm> {
               padding: const EdgeInsets.all(8),
               child: TextFormField(
                 decoration: const InputDecoration(label: Text('Password')),
-                onChanged: (value) {
-                  newUser.password = value;
-                },
+                controller: passwordController,
               ),
             ),
             Container(
@@ -114,6 +96,11 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   void _register() {
+    var newUser = User().create(UserModelArguments(
+        username: usernameController.text,
+        firstName: firstNameController.text,
+        lastName: lastNameController.text,
+        password: passwordController.text));
     newUser.save().then((value) {
       if (value != null) {
         newUser = value;

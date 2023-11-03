@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:myvb/core/database.dart';
 import 'package:myvb/core/functions/go_to.dart';
+import 'package:myvb/home/home.dart';
 import 'package:myvb/users/profile.dart';
 
 AppBar appBar(BuildContext context, String title) {
@@ -14,7 +16,13 @@ AppBar appBar(BuildContext context, String title) {
               permanent: false);
         },
         icon: const Icon(Icons.person),
-      )
+      ),
+      IconButton(
+          onPressed: () {
+            Database.getDatabase().clearDatabase();
+            goTo(context: context, routeName: HomeScreen.routeName);
+          },
+          icon: const Icon(Icons.delete))
     ],
   );
 }

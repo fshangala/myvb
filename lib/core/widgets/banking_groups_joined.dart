@@ -5,8 +5,8 @@ import 'package:myvb/core/datatypes/view_banking_group_screen_arguments.dart';
 import 'package:myvb/core/functions/go_to.dart';
 
 class BankingGroupsJoined extends StatefulWidget {
-  final String username;
-  const BankingGroupsJoined({super.key, required this.username});
+  final String userId;
+  const BankingGroupsJoined({super.key, required this.userId});
 
   @override
   State<StatefulWidget> createState() {
@@ -15,12 +15,12 @@ class BankingGroupsJoined extends StatefulWidget {
 }
 
 class _BankingGroupJoinedState extends State<BankingGroupsJoined> {
-  late Future<List<BankingGroup>> bankingGroups;
+  late Future<List<VBGroup>> bankingGroups;
 
   @override
   void initState() {
     super.initState();
-    bankingGroups = BankingGroup.getUserJoinedBankingGroups(widget.username);
+    getBankingGroups();
   }
 
   @override
@@ -40,8 +40,7 @@ class _BankingGroupJoinedState extends State<BankingGroupsJoined> {
                   trailing: const Text('RELOAD'),
                   onTap: () {
                     setState(() {
-                      bankingGroups = BankingGroup.getUserJoinedBankingGroups(
-                          widget.username);
+                      getBankingGroups();
                     });
                   },
                 );
@@ -53,7 +52,7 @@ class _BankingGroupJoinedState extends State<BankingGroupsJoined> {
     );
   }
 
-  Widget _renderBankingGroups(List<BankingGroup> groups) {
+  Widget _renderBankingGroups(List<VBGroup> groups) {
     var tiles = groups
         .map((e) => ListTile(
               title: Text(e.name),
@@ -71,12 +70,15 @@ class _BankingGroupJoinedState extends State<BankingGroupsJoined> {
       title: const Text('RELOAD'),
       onTap: () {
         setState(() {
-          bankingGroups =
-              BankingGroup.getUserJoinedBankingGroups(widget.username);
+          getBankingGroups();
         });
       },
     ));
 
     return Column(children: tiles);
+  }
+
+  void getBankingGroups() {
+    bankingGroups = VBGroup().joinedGroups(widget.userId);
   }
 }

@@ -18,7 +18,7 @@ digraph myvb {
     transaction_approved [shape="square",color="blue"];
     transaction_denied [shape="square",color="blue"];
 
-    create_transaction -> process_transaction; 
+    create_transaction -> process_transaction;
     process_transaction -> transaction_approved, transaction_denied;
   }
 
@@ -43,6 +43,7 @@ digraph myvb {
     request_loan -> process_loan [color="red"];
     process_loan -> loan_approved -> create_transaction, banking_group_borrower, loan;
     process_loan -> loan_denied;
+    loan_balance -> loan;
   }
 
   //guest -> registration [color="green"];

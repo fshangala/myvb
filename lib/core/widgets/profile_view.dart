@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myvb/core/datatypes/model.dart';
 import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/functions/display_regular_snackbar.dart';
 import 'package:myvb/core/functions/go_to.dart';
@@ -22,7 +23,7 @@ class _UserProfile extends State<UserProfile> {
   @override
   void initState() {
     super.initState();
-    profile = User.getByid(widget.userId);
+    profile = User().getObject(QueryBuilder().where('id', widget.userId));
   }
 
   @override

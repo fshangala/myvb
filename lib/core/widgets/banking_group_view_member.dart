@@ -4,10 +4,10 @@ import 'package:myvb/banking_groups/screen_request_loan.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/datatypes/banking_group_invest_arguments.dart';
 import 'package:myvb/core/datatypes/banking_group_member.dart';
-import 'package:myvb/core/datatypes/model.dart';
 import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/functions/resolve_future.dart';
+import 'package:myvb/core/widgets/banking_group_member_loans.dart';
 import 'package:myvb/core/widgets/banking_group_member_transactions.dart';
 import 'package:myvb/core/widgets/not_null_future_renderer.dart';
 import 'package:myvb/core/widgets/null_future_renderer.dart';
@@ -57,28 +57,35 @@ class _BankingGroupViewMember extends State<BankingGroupViewMember> {
                     children: [
                       Row(
                         children: [
-                          ElevatedButton(
-                              onPressed: () {
-                                goTo(
-                                    context: context,
-                                    routeName: InvestBankingGroup.routeName,
-                                    arguments:
-                                        ArgumentsBankingGroupInvestScreen(
-                                            widget.bankingGroup.id!),
-                                    permanent: false);
-                              },
-                              child: const Text('Invest')),
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  goTo(
+                                      context: context,
+                                      routeName: InvestBankingGroup.routeName,
+                                      arguments:
+                                          ArgumentsBankingGroupInvestScreen(
+                                              widget.bankingGroup.id!),
+                                      permanent: false);
+                                },
+                                child: const Text('Invest')),
+                          ),
                           ElevatedButton(
                               onPressed: () {
                                 goTo(
                                     context: context,
                                     routeName: ScreenRequestLoan.routeName,
+                                    arguments: ArgumentsScreenRequestLoan(
+                                        bankingGroupId: widget.bankingGroup.id!,
+                                        bankingGroupMemberId: groupMember.id!),
                                     permanent: false);
                               },
                               child: const Text('Request loan')),
                         ],
                       ),
-                      VBGroupMemberTransactions(member: groupMember)
+                      VBGroupMemberTransactions(member: groupMember),
+                      VBGroupMemberLoans(groupMember: groupMember)
                     ],
                   );
                 }
@@ -123,8 +130,6 @@ class _BankingGroupViewMember extends State<BankingGroupViewMember> {
   }
 
   void getGroupMember() {
-    member = VBGroupMember().getObject(QueryBuilder()
-        .where('bankingGroupId', widget.bankingGroup.id!)
-        .where('userId', widget.userId));
+    member = widget.bankingGroup.groupMember(widget.userId);
   }
 }

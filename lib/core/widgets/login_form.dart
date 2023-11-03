@@ -29,6 +29,7 @@ class _LoginFormState extends State<LoginForm> {
               padding: const EdgeInsets.all(8),
               child: TextFormField(
                 decoration: const InputDecoration(label: Text('Username')),
+                keyboardType: TextInputType.name,
                 onChanged: (value) {
                   username = value;
                 },
@@ -73,7 +74,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _login() {
-    User.login(username, password).then((value) {
+    User().login(username, password).then((value) {
       if (value == null) {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Invalid username or password')));

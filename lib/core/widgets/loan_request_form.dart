@@ -56,11 +56,15 @@ class _LoanRequestForm extends State<LoanRequestForm> {
         displayRegularSnackBar(
             context, 'Load amount cannot be more than $groupInvestmentBalance');
       } else {
+        var loanAmount = double.parse(amount.text) +
+            (double.parse(amount.text) *
+                widget.bankingGroup.investmentInterest *
+                0.01);
         var loan = BankingGroupLoan().create(BankingGroupLoanModelArguments(
             bankingGroupId: widget.bankingGroupMember.bankingGroupId,
             userId: widget.bankingGroupMember.userId,
             username: widget.bankingGroupMember.username,
-            amount: double.parse(amount.text),
+            amount: loanAmount,
             timestamp: DateTime.now(),
             approved: true));
         resolveFuture(context, loan.save(), (value) {

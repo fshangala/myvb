@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/create_banking_group.dart';
 import 'package:myvb/banking_groups/join_banking_group.dart';
-import 'package:myvb/core/datatypes/user.dart';
+import 'package:myvb/core/extensions/auth_state.dart';
 import 'package:myvb/core/functions/go_to.dart';
-import 'package:myvb/core/widgets/app_bar.dart';
+import 'package:myvb/core/widgets/app_scaffold.dart';
 import 'package:myvb/core/widgets/banking_groups_by_user.dart';
 import 'package:myvb/core/widgets/banking_groups_joined.dart';
-import 'package:myvb/users/login.dart';
+import 'package:myvb/core/widgets/null_future_renderer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,71 +18,37 @@ class HomeScreen extends StatefulWidget {
   }
 }
 
-class _HomeState extends State<HomeScreen> {
-  late Future<User?> user;
-
-  @override
-  void initState() {
-    super.initState();
-    user = User.loggedInUser();
-    user.then((value) {
-      if (value == null) {
-        goTo(context: context, routeName: LoginScreen.routeName);
-      }
-    });
-  }
-
+class _HomeState extends AuthState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar(context, 'Home'),
-      body: Container(
-          padding: const EdgeInsets.all(16),
-          child: ListView(
-            children: [
-              Row(
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context, CreateBankingGroup.routeName);
-                      },
-                      child: const Text('Create')),
-                  TextButton(
-                      onPressed: () {
-                        goTo(
-                            context: context,
-                            routeName: JoinBankingGroup.routeName,
-                            permanent: false);
-                      },
-                      child: const Text('Join')),
-                ],
-              ),
-              FutureBuilder(
-                  future: user,
-                  builder: ((context, snapshot) {
-                    if (snapshot.hasData) {
-                      if (snapshot.data != null) {
-                        return Column(
-                          children: [
-                            BankingGroupsByUser(userId: snapshot.data!.id!),
-                            BankingGroupsJoined(
-                                username: snapshot.data!.username)
-                          ],
-                        );
-                      } else {
-                        return const Center(
-                          child: Text('Nothing to show'),
-                        );
-                      }
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  }))
-            ],
-          )),
-    );
+    return AppScaffold(title: 'Home', children: [
+      Row(
+        children: [
+          TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, CreateBankingGroup.routeName);
+              },
+              child: const Text('Create')),
+          TextButton(
+              onPressed: () {
+                goTo(
+                    context: context,
+                    routeName: JoinBankingGroup.routeName,
+                    permanent: false);
+              },
+              child: const Text('Join')),
+        ],
+      ),
+      NullFutureRenderer(
+          future: user,
+          futureRenderer: (userObject) {
+            return Column(
+              children: [
+                BankingGroupsByUser(userId: userObject.id!),
+                BankingGroupsJoined(userId: userObject.id!)
+              ],
+            );
+          })
+    ]);
   }
 }

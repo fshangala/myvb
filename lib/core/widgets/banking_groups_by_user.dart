@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/view_banking_group.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
+import 'package:myvb/core/datatypes/model.dart';
 import 'package:myvb/core/datatypes/view_banking_group_screen_arguments.dart';
 import 'package:myvb/core/functions/go_to.dart';
+import 'package:myvb/core/widgets/not_null_future_renderer.dart';
 
 class BankingGroupsByUser extends StatefulWidget {
   final String userId;
@@ -15,12 +17,12 @@ class BankingGroupsByUser extends StatefulWidget {
 }
 
 class _BankingGroupByUserState extends State<BankingGroupsByUser> {
-  late Future<List<BankingGroup>> bankingGroups;
+  late Future<List<VBGroup>> bankingGroups;
 
   @override
   void initState() {
     super.initState();
-    bankingGroups = BankingGroup.getUserBankingGroups(widget.userId);
+    getBankingGroups();
   }
 
   @override
@@ -28,32 +30,16 @@ class _BankingGroupByUserState extends State<BankingGroupsByUser> {
     return Column(
       children: [
         const Text('My Banking Groups'),
-        FutureBuilder(
+        NotNullFutureRenderer(
             future: bankingGroups,
-            builder: ((context, snapshot) {
-              if (snapshot.hasData) {
-                return _renderBankingGroups(snapshot.data!);
-              } else if (snapshot.hasError) {
-                return ListTile(
-                  title: const Text('Error'),
-                  subtitle: Text('${snapshot.error}'),
-                  trailing: const Text('RELOAD'),
-                  onTap: () {
-                    setState(() {
-                      bankingGroups =
-                          BankingGroup.getUserBankingGroups(widget.userId);
-                    });
-                  },
-                );
-              } else {
-                return const Center(child: CircularProgressIndicator());
-              }
-            })),
+            futureRenderer: (objects) {
+              return _renderBankingGroups(objects);
+            }),
       ],
     );
   }
 
-  Widget _renderBankingGroups(List<BankingGroup> groups) {
+  Widget _renderBankingGroups(List<VBGroup> groups) {
     var tiles = groups
         .map((e) => ListTile(
               title: Text(e.name),
@@ -71,11 +57,16 @@ class _BankingGroupByUserState extends State<BankingGroupsByUser> {
       title: const Text('RELOAD'),
       onTap: () {
         setState(() {
-          bankingGroups = BankingGroup.getUserBankingGroups(widget.userId);
+          getBankingGroups();
         });
       },
     ));
 
     return Column(children: tiles);
+  }
+
+  void getBankingGroups() {
+    bankingGroups =
+        VBGroup().getObjects(QueryBuilder().where('owner', widget.userId));
   }
 }

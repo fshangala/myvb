@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myvb/core/datatypes/user.dart';
-import 'package:myvb/core/functions/go_to.dart';
+import 'package:myvb/core/extensions/auth_state.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
 import 'package:myvb/core/widgets/banking_group_join_form.dart';
-import 'package:myvb/users/login.dart';
 
 class JoinBankingGroup extends StatefulWidget {
   const JoinBankingGroup({super.key});
@@ -16,20 +14,7 @@ class JoinBankingGroup extends StatefulWidget {
   }
 }
 
-class _JoinBankingGroupState extends State<JoinBankingGroup> {
-  late Future<User?> user;
-
-  @override
-  initState() {
-    super.initState();
-    user = User.loggedInUser();
-    user.then((value) {
-      if (value == null) {
-        goTo(context: context, routeName: LoginScreen.routeName);
-      }
-    });
-  }
-
+class _JoinBankingGroupState extends AuthState<JoinBankingGroup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

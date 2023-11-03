@@ -6,37 +6,6 @@ List<Database> databases = [
 ];
 
 abstract class Database {
-  Database() {
-    seed();
-  }
-
-  Map<String, List<Map<String, dynamic>>>? seeder() {
-    return {
-      'users': [
-        {
-          'id': 1,
-          'username': 'admin',
-          'firstName': 'Super',
-          'lastName': 'Admin',
-          'password': 'admin'
-        },
-      ],
-    };
-  }
-
-  void seed() async {
-    if (seeder() != null) {
-      seeder()!.forEach((key, value) async {
-        var data = await getAll(key);
-        if (data.isEmpty) {
-          for (var element in value) {
-            await setItem(key, element);
-          }
-        }
-      });
-    }
-  }
-
   static Database getDatabase() {
     return databases[0];
   }
@@ -96,45 +65,6 @@ abstract class Database {
     return results;
   }
 
-  Future<Map<String, dynamic>?> getById(String collection, dynamic id) async {
-    Map<String, dynamic>? data;
-    var results = await getAll(collection);
-    if (results.isNotEmpty) {
-      for (var result in results) {
-        if (result['id'] == id) {
-          data = result;
-          break;
-        }
-      }
-    }
-    return data;
-  }
-
-  Future<Map<String, dynamic>?> getItemWhereEqual(
-      String collection, String key, dynamic value) async {
-    Map<String, dynamic>? item;
-    var items = await getAll(collection);
-    for (var element in items) {
-      if (element[key] == value) {
-        item = element;
-        break;
-      }
-    }
-    return item;
-  }
-
-  Future<List<Map<String, dynamic>>> getItemsWhereEqual(
-      String collection, String key, dynamic value) async {
-    List<Map<String, dynamic>> items = [];
-    var allItems = await getAll(collection);
-    for (var element in allItems) {
-      if (element[key] == value) {
-        items.add(element);
-      }
-    }
-    return items;
-  }
-
   Future<Map<String, dynamic>> setItem(
       String collection, Map<String, dynamic> data) async {
     var items = await getAll(collection);
@@ -165,6 +95,11 @@ abstract class Database {
       instance.setString(collection, jsonEncode(newthings));
       return changedItem;
     }
+  }
+
+  Future<bool> clearDatabase() async {
+    var instance = await SharedPreferences.getInstance();
+    return await instance.clear();
   }
 }
 

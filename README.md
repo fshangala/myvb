@@ -9,9 +9,13 @@ A village banking app
 - Join banking group
 - List user banking groups
 - Invest in banking group
+- Request loan
 
 ### To Do
 - research on calendar
 - investment cycle
-- get loan
-- group member loans
+- joined banking groups not loading
+- cannot view banking group member account
+* get loan
+* group member loans
+* loan penalty

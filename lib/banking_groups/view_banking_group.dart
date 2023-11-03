@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:myvb/banking_groups/view_banking_group_member.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/datatypes/banking_group_member.dart';
-import 'package:myvb/core/datatypes/user.dart';
+import 'package:myvb/core/datatypes/model.dart';
 import 'package:myvb/core/datatypes/view_banking_group_screen_arguments.dart';
+import 'package:myvb/core/datatypes/view_group_member_arguments.dart';
+import 'package:myvb/core/extensions/auth_state.dart';
 import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/functions/resolve_future.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
@@ -10,7 +13,6 @@ import 'package:myvb/core/widgets/banking_group_members.dart';
 import 'package:myvb/core/widgets/banking_group_transactions.dart';
 import 'package:myvb/core/widgets/not_null_future_renderer.dart';
 import 'package:myvb/core/widgets/null_future_renderer.dart';
-import 'package:myvb/users/login.dart';
 
 class ViewBankingGroupScreen extends StatefulWidget {
   static const routeName = '/banking_group/view';
@@ -22,27 +24,15 @@ class ViewBankingGroupScreen extends StatefulWidget {
   }
 }
 
-class _ViewBankingGroupState extends State<ViewBankingGroupScreen> {
-  late Future<User?> user;
-  Future<BankingGroup?> bankingGroup = Future.value(null);
-  Future<BankingGroupMember?> bankingGroupMember = Future.value(null);
-
-  @override
-  initState() {
-    super.initState();
-    user = User.loggedInUser();
-    user.then((value) {
-      if (value == null) {
-        goTo(context: context, routeName: LoginScreen.routeName);
-      }
-    });
-  }
+class _ViewBankingGroupState extends AuthState<ViewBankingGroupScreen> {
+  Future<VBGroup?> bankingGroup = Future.value(null);
+  Future<VBGroupMember?> bankingGroupMember = Future.value(null);
 
   @override
   Widget build(BuildContext context) {
     var args =
         ModalRoute.of(context)!.settings.arguments as ArgumentsViewBankingGroup;
-    bankingGroup = BankingGroup.getById(args.id);
+    bankingGroup = VBGroup().getObject(QueryBuilder().where('id', args.id));
 
     return Scaffold(
       appBar: appBar(context, 'View Banking Group'),
@@ -74,12 +64,39 @@ class _ViewBankingGroupState extends State<ViewBankingGroupScreen> {
                                 ),
                                 NotNullFutureRenderer(
                                     future: bankingGroupObject
-                                        .totalInvestmentBalance(),
+                                        .totalIvenstmentBalance(),
                                     futureRenderer: (totalAmount) {
                                       return ListTile(
                                         leading: const Icon(Icons.money),
                                         title: const Text('Investment Balance'),
                                         trailing: Text(totalAmount.toString()),
+                                      );
+                                    }),
+                                const Divider(),
+                                NotNullFutureRenderer(
+                                    future: bankingGroupMemberObject
+                                        .investmentBalance(),
+                                    futureRenderer: (myBalance) {
+                                      return ListTile(
+                                        leading: const Icon(Icons.person),
+                                        title: Text(
+                                            bankingGroupMemberObject.username),
+                                        subtitle: const Text(
+                                            'Manage your investments'),
+                                        trailing: Text(myBalance.toString()),
+                                        onTap: () {
+                                          goTo(
+                                              context: context,
+                                              routeName:
+                                                  ViewBankingGroupMemberScreen
+                                                      .routeName,
+                                              arguments:
+                                                  ArgumentsViewGroupMember(
+                                                      bankingGroupObject.id!,
+                                                      bankingGroupMemberObject
+                                                          .id!),
+                                              permanent: false);
+                                        },
                                       );
                                     }),
                                 BankingGroupMembers(

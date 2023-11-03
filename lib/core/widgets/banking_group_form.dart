@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/datatypes/user.dart';
+import 'package:myvb/core/functions/resolve_future.dart';
 
 class BankingGroupForm extends StatefulWidget {
   final User user;
-  final void Function(BankingGroup bankingGroup)? onSaved;
+  final void Function(VBGroup bankingGroup)? onSaved;
   const BankingGroupForm({super.key, required this.user, this.onSaved});
 
   @override
@@ -15,7 +16,8 @@ class BankingGroupForm extends StatefulWidget {
 
 class _BankingGroupFormState extends State<BankingGroupForm> {
   final _formKey = GlobalKey<FormState>();
-  BankingGroup bankingGroup = BankingGroup(owner: '', name: '');
+  var groupName = TextEditingController(text: '');
+  var groupInvestmentInterest = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +28,26 @@ class _BankingGroupFormState extends State<BankingGroupForm> {
           padding: const EdgeInsets.all(8),
           child: TextFormField(
             decoration: const InputDecoration(label: Text('Name')),
-            onChanged: (value) {
-              bankingGroup.name = value;
-            },
+            controller: groupName,
+            keyboardType: TextInputType.name,
             validator: (value) {
               if (value == '') {
                 return 'Name cannot be empty!';
+              }
+              return null;
+            },
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8),
+          child: TextFormField(
+            decoration:
+                const InputDecoration(label: Text('Investment Interest')),
+            controller: groupInvestmentInterest,
+            keyboardType: TextInputType.number,
+            validator: (value) {
+              if (value == '') {
+                return 'Investment Interest cannot be empty!';
               }
               return null;
             },
@@ -51,7 +67,11 @@ class _BankingGroupFormState extends State<BankingGroupForm> {
   }
 
   void _createBankingGroup() {
-    bankingGroup.owner = widget.user.id!;
+    var bankingGroup = VBGroup().create(VBGroupModelArguments(
+        owner: widget.user.id!,
+        name: groupName.text,
+        investmentInterest: int.parse(groupInvestmentInterest.text)));
+
     bankingGroup.save().then((value) {
       if (value == null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -59,9 +79,13 @@ class _BankingGroupFormState extends State<BankingGroupForm> {
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('${value.name} created!')));
-        if (widget.onSaved != null) {
-          widget.onSaved!(value);
-        }
+        resolveFuture(
+            context, value.joinGroup(widget.user.id!, widget.user.username),
+            (member) {
+          if (widget.onSaved != null) {
+            widget.onSaved!(value);
+          }
+        });
       }
     }).onError((error, stackTrace) {
       ScaffoldMessenger.of(context)

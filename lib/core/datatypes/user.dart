@@ -1,22 +1,57 @@
-import 'package:myvb/core/database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:myvb/core/datatypes/model.dart';
 
-class User {
-  static const String collection = 'users';
-
+class UserModelArguments {
   String? id;
   String username;
   String firstName;
   String lastName;
   String password;
 
-  User(
+  UserModelArguments(
       {this.id,
       required this.username,
       required this.firstName,
       required this.lastName,
-      this.password = ''});
+      required this.password});
+}
 
+class User extends Model<User, UserModelArguments> {
+  String? id;
+  late String username;
+  late String firstName;
+  late String lastName;
+  late String password;
+
+  @override
+  String collection = 'bankingGroupTransactions';
+
+  @override
+  User create(UserModelArguments arguments) {
+    var user = User();
+    user.id = arguments.id;
+    user.username = arguments.username;
+    user.firstName = arguments.firstName;
+    user.lastName = arguments.lastName;
+    user.password = arguments.password;
+    return user;
+  }
+
+  @override
+  User? fromMap(Map<String, dynamic>? data) {
+    if (data == null) {
+      return null;
+    } else {
+      return create(UserModelArguments(
+          id: data['id'],
+          username: data['username'],
+          firstName: data['firstName'],
+          lastName: data['lastName'],
+          password: data['password']));
+    }
+  }
+
+  @override
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -27,62 +62,20 @@ class User {
     };
   }
 
-  static User fromMap(Map<String, dynamic> data) {
-    return User(
-        id: data['id'],
-        username: data['username'],
-        firstName: data['firstName'],
-        lastName: data['lastName'],
-        password: data['password']);
-  }
-
-  static Future<User?> getByid(String id) async {
-    var userData = await Database.getDatabase().getById(collection, id);
-    if (userData == null) {
-      return null;
-    } else {
-      return fromMap(userData);
-    }
-  }
-
-  static Future<User?> getUserWhere(String name, String value) async {
-    var userData = await Database.getDatabase()
-        .getItemWhereEqual('users', 'username', value);
-    if (userData == null) {
-      return null;
-    } else {
-      return User.fromMap(userData);
-    }
-  }
-
-  Future<User?> save() async {
-    var userWithUsername = await User.getUserWhere('username', username);
-    if (id == null && userWithUsername != null) {
-      return null;
-    } else {
-      var savedUser =
-          await Database.getDatabase().createOrUpdateItem('users', toMap());
-      if (savedUser != null) {
-        return User.fromMap(savedUser);
-      } else {
-        return null;
-      }
-    }
-  }
-
-  static Future<User?> loggedInUser() async {
+  Future<User?> loggedInUser() async {
     var instance = await SharedPreferences.getInstance();
     var userId = instance.getString('loggedInUser');
     if (userId == null) {
       return null;
     } else {
-      return User.getByid(userId);
+      return User().getObject(QueryBuilder().where('id', userId));
     }
   }
 
-  static Future<User?> login(String username, String password) async {
+  Future<User?> login(String username, String password) async {
     User? luser;
-    var user = await User.getUserWhere('username', username);
+    var user =
+        await User().getObject(QueryBuilder().where('username', username));
     if (user != null && user.password == password) {
       luser = user;
       var instance = await SharedPreferences.getInstance();

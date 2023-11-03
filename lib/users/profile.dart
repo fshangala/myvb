@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/profile_screen_arguments.dart';
 import 'package:myvb/core/datatypes/user.dart';
-import 'package:myvb/core/functions/go_to.dart';
+import 'package:myvb/core/extensions/auth_state.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
 import 'package:myvb/core/widgets/profile_view.dart';
-import 'package:myvb/users/login.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const routeName = '/profile';
@@ -16,20 +15,7 @@ class ProfileScreen extends StatefulWidget {
   }
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
-  late Future<User?> user;
-
-  @override
-  initState() {
-    super.initState();
-    user = User.loggedInUser();
-    user.then((value) {
-      if (value == null) {
-        goTo(context: context, routeName: LoginScreen.routeName);
-      }
-    });
-  }
-
+class _ProfileScreenState extends AuthState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     var args =

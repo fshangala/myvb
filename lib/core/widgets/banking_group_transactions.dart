@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/banking_group_transaction.dart';
+import 'package:myvb/core/datatypes/model.dart';
 
 class BankingGroupTransactions extends StatefulWidget {
   final String bankingGroupId;
@@ -12,12 +13,12 @@ class BankingGroupTransactions extends StatefulWidget {
 }
 
 class _BankingGroupTransactions extends State<BankingGroupTransactions> {
-  late Future<List<BankingGroupTransaction>> transactions;
+  late Future<List<VBGroupTransaction>> transactions;
   @override
   void initState() {
     super.initState();
-    transactions =
-        BankingGroupTransaction.getByBankingGroup(widget.bankingGroupId);
+    transactions = VBGroupTransaction().getObjects(
+        QueryBuilder().where('bankingGroupId', widget.bankingGroupId));
   }
 
   @override
@@ -52,8 +53,8 @@ class _BankingGroupTransactions extends State<BankingGroupTransactions> {
           title: const Text('RELOAD'),
           trailing: const Icon(Icons.repeat),
           onTap: () {
-            transactions = BankingGroupTransaction.getByBankingGroup(
-                widget.bankingGroupId);
+            transactions = VBGroupTransaction().getObjects(
+                QueryBuilder().where('bankingGroupId', widget.bankingGroupId));
           },
         )
       ],
@@ -61,7 +62,7 @@ class _BankingGroupTransactions extends State<BankingGroupTransactions> {
   }
 
   Column _renderTransactions(
-      List<BankingGroupTransaction> bankingGroupTransactions) {
+      List<VBGroupTransaction> bankingGroupTransactions) {
     var tiles = bankingGroupTransactions.map((e) {
       var approved = 'Pending';
       if (e.approved) {

@@ -16,16 +16,19 @@ class NullFutureRenderer<T> extends StatelessWidget {
       future: future,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          if (snapshot.data != null) {
-            return futureRenderer(snapshot.data as T);
-          } else {
-            return const Center(
-              child: Text('Nothing to show'),
-            );
-          }
+          return futureRenderer(snapshot.data as T);
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (nullRenderer != null) {
+              return nullRenderer!();
+            } else {
+              return const Center(
+                child: Text('Nothing to show'),
+              );
+            }
+          }
           return const Center(child: CircularProgressIndicator());
         }
       },

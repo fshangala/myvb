@@ -7,7 +7,7 @@ import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/widgets/not_null_future_renderer.dart';
 
 class BankingGroupMembers extends StatefulWidget {
-  final BankingGroup bankingGroup;
+  final VBGroup bankingGroup;
   const BankingGroupMembers({super.key, required this.bankingGroup});
 
   @override
@@ -17,7 +17,7 @@ class BankingGroupMembers extends StatefulWidget {
 }
 
 class _BankingGroupMembersState extends State<BankingGroupMembers> {
-  late Future<List<BankingGroupMember>> groupMembers;
+  late Future<List<VBGroupMember>> groupMembers;
   bool? approved;
 
   @override
@@ -91,7 +91,8 @@ class _BankingGroupMembersState extends State<BankingGroupMembers> {
                             onTap: () {
                               goTo(
                                   context: context,
-                                  routeName: ViewBankingGroupMember.routeName,
+                                  routeName:
+                                      ViewBankingGroupMemberScreen.routeName,
                                   arguments: ArgumentsViewGroupMember(
                                       e.bankingGroupId, e.userId),
                                   permanent: false);

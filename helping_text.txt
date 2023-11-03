@@ -7,4 +7,3 @@ can't withdraw before the cycle is done
 invest every month
 investment missed penalty
 proritize borrowers based on good record and balance
-
