@@ -53,7 +53,7 @@ class BankingGroupLoan
       'userId': userId,
       'username': username,
       'amount': amount,
-      'timestamp': timestamp,
+      'timestamp': timestamp.toString(),
       'approved': approved
     };
   }
