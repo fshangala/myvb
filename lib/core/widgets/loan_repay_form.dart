@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/datatypes/banking_group_loan.dart';
 import 'package:myvb/core/datatypes/banking_group_member.dart';
 import 'package:myvb/core/functions/display_regular_snackbar.dart';
@@ -7,7 +8,11 @@ import 'package:myvb/core/widgets/not_null_future_renderer.dart';
 
 class LoanRepayForm extends StatefulWidget {
   final VBGroupMember bankingGroupMember;
-  const LoanRepayForm({super.key, required this.bankingGroupMember});
+  final VBGroup bankingGroup;
+  const LoanRepayForm(
+      {super.key,
+      required this.bankingGroup,
+      required this.bankingGroupMember});
 
   @override
   State<StatefulWidget> createState() {
@@ -60,16 +65,23 @@ class _LoanRepayForm extends State<LoanRepayForm> {
 
   void _repayLoan() {
     var repayAmount = -1 * double.parse(amount.text);
-    var repayment = BankingGroupLoan().create(BankingGroupLoanModelArguments(
-        bankingGroupId: widget.bankingGroupMember.bankingGroupId,
-        userId: widget.bankingGroupMember.userId,
-        username: widget.bankingGroupMember.username,
-        amount: repayAmount,
-        timestamp: DateTime.now(),
-        approved: true));
-    resolveFuture(context, repayment.save(), (loan) {
-      displayRegularSnackBar(context, 'Amount Submitted');
-      Navigator.pop(context);
+    resolveFuture(context, widget.bankingGroupMember.getLatestLoan(),
+        (latestLoan) {
+      var repayment = BankingGroupLoan().create(BankingGroupLoanModelArguments(
+          referenceLoanId: latestLoan!.id!,
+          bankingGroupId: widget.bankingGroupMember.bankingGroupId,
+          userId: widget.bankingGroupMember.userId,
+          username: widget.bankingGroupMember.username,
+          amount: repayAmount,
+          loanInterest: widget.bankingGroup.investmentInterest,
+          period: widget.bankingGroup.loanPeriod,
+          issuedAt: latestLoan.issuedAt,
+          timestamp: DateTime.now(),
+          approved: true));
+      resolveFuture(context, repayment.save(), (loan) {
+        displayRegularSnackBar(context, 'Amount Submitted');
+        Navigator.pop(context);
+      });
     });
   }
 }

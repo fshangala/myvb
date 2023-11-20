@@ -18,6 +18,8 @@ class _BankingGroupFormState extends State<BankingGroupForm> {
   final _formKey = GlobalKey<FormState>();
   var groupName = TextEditingController(text: '');
   var groupInvestmentInterest = TextEditingController(text: '');
+  var groupLoanPeriod = TextEditingController(text: '');
+  var groupInvestmentCycle = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,34 @@ class _BankingGroupFormState extends State<BankingGroupForm> {
           ),
         ),
         Container(
+          padding: const EdgeInsets.all(8),
+          child: TextFormField(
+            decoration: const InputDecoration(label: Text('Loan Period')),
+            controller: groupLoanPeriod,
+            keyboardType: TextInputType.number,
+            validator: (value) {
+              if (value == '') {
+                return 'Loan Period cannot be empty!';
+              }
+              return null;
+            },
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(8),
+          child: TextFormField(
+            decoration: const InputDecoration(label: Text('Investment Cycle')),
+            controller: groupInvestmentCycle,
+            keyboardType: TextInputType.number,
+            validator: (value) {
+              if (value == '') {
+                return 'Investment Cycle cannot be empty!';
+              }
+              return null;
+            },
+          ),
+        ),
+        Container(
             padding: const EdgeInsets.all(8),
             child: ElevatedButton(
                 onPressed: () {
@@ -70,7 +100,9 @@ class _BankingGroupFormState extends State<BankingGroupForm> {
     var bankingGroup = VBGroup().create(VBGroupModelArguments(
         owner: widget.user.id!,
         name: groupName.text,
-        investmentInterest: int.parse(groupInvestmentInterest.text)));
+        investmentInterest: double.parse(groupInvestmentInterest.text),
+        loanPeriod: int.parse(groupLoanPeriod.text),
+        investmentCycle: int.parse(groupInvestmentCycle.text)));
 
     bankingGroup.save().then((value) {
       if (value == null) {

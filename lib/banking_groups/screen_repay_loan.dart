@@ -40,7 +40,9 @@ class _RepayLoanScreen extends AuthState<RepayLoanScreen> {
                       futureRenderer: (groupMember) {
                         return Column(
                           children: [
-                            LoanRepayForm(bankingGroupMember: groupMember)
+                            LoanRepayForm(
+                                bankingGroupMember: groupMember,
+                                bankingGroup: bankingGroup)
                           ],
                         );
                       });

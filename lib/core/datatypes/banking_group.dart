@@ -7,20 +7,26 @@ class VBGroupModelArguments {
   String? id;
   String owner;
   String name;
-  int investmentInterest;
+  double investmentInterest;
+  int loanPeriod;
+  int investmentCycle;
 
   VBGroupModelArguments(
       {this.id,
       required this.owner,
       required this.name,
-      required this.investmentInterest});
+      required this.investmentInterest,
+      required this.loanPeriod,
+      required this.investmentCycle});
 }
 
 class VBGroup extends Model<VBGroup, VBGroupModelArguments> {
   String? id;
   late String owner;
   late String name;
-  late int investmentInterest;
+  late double investmentInterest;
+  late int loanPeriod;
+  late int investmentCycle;
 
   @override
   String collection = 'banking_groups';
@@ -32,6 +38,8 @@ class VBGroup extends Model<VBGroup, VBGroupModelArguments> {
     vBGroup.owner = arguments.owner;
     vBGroup.name = arguments.name;
     vBGroup.investmentInterest = arguments.investmentInterest;
+    vBGroup.loanPeriod = arguments.loanPeriod;
+    vBGroup.investmentCycle = arguments.investmentCycle;
     return vBGroup;
   }
 
@@ -41,7 +49,9 @@ class VBGroup extends Model<VBGroup, VBGroupModelArguments> {
       'id': id,
       'owner': owner,
       'name': name,
-      'investmentInterest': investmentInterest
+      'investmentInterest': investmentInterest,
+      'loanPeriod': loanPeriod,
+      'investmentCycle': investmentCycle
     };
   }
 
@@ -54,7 +64,9 @@ class VBGroup extends Model<VBGroup, VBGroupModelArguments> {
           id: data['id'],
           owner: data['owner'],
           name: data['name'],
-          investmentInterest: data['investmentInterest']));
+          investmentInterest: data['investmentInterest'],
+          loanPeriod: data['loanPeriod'],
+          investmentCycle: data['investmentCycle']));
     }
   }
 

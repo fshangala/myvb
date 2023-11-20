@@ -65,6 +65,9 @@ class _LoanRequestForm extends State<LoanRequestForm> {
             userId: widget.bankingGroupMember.userId,
             username: widget.bankingGroupMember.username,
             amount: loanAmount,
+            loanInterest: widget.bankingGroup.investmentInterest,
+            period: widget.bankingGroup.loanPeriod,
+            issuedAt: DateTime.now(),
             timestamp: DateTime.now(),
             approved: true));
         resolveFuture(context, loan.save(), (value) {
