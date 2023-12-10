@@ -56,10 +56,10 @@ class _LoanRequestForm extends State<LoanRequestForm> {
         displayRegularSnackBar(
             context, 'Load amount cannot be more than $groupInvestmentBalance');
       } else {
-        var loanAmount = double.parse(amount.text) +
-            (double.parse(amount.text) *
-                widget.bankingGroup.investmentInterest *
-                0.01);
+        var loanAmount = double.parse(amount.text);
+        var loanInterestAmount = double.parse(amount.text) *
+            widget.bankingGroup.investmentInterest *
+            0.01;
         var loan = BankingGroupLoan().create(BankingGroupLoanModelArguments(
             bankingGroupId: widget.bankingGroupMember.bankingGroupId,
             userId: widget.bankingGroupMember.userId,
@@ -71,9 +71,24 @@ class _LoanRequestForm extends State<LoanRequestForm> {
             timestamp: DateTime.now(),
             approved: true));
         resolveFuture(context, loan.save(), (value) {
-          displayRegularSnackBar(context, 'Request successfully submitted!');
-          setState(() {
-            amount.text = '';
+          var loanInterest = BankingGroupLoan().create(
+              BankingGroupLoanModelArguments(
+                  referenceLoanId: loan.id,
+                  bankingGroupId: widget.bankingGroupMember.bankingGroupId,
+                  userId: widget.bankingGroupMember.userId,
+                  username: widget.bankingGroupMember.username,
+                  amount: loanInterestAmount,
+                  loanInterest: widget.bankingGroup.investmentInterest,
+                  period: widget.bankingGroup.loanPeriod,
+                  issuedAt: loan.issuedAt,
+                  timestamp: DateTime.now(),
+                  approved: true));
+          resolveFuture(context, loanInterest.save(), (value) {
+            displayRegularSnackBar(
+                context, 'Loan interest successfully added!');
+            setState(() {
+              amount.text = '';
+            });
           });
         });
       }
