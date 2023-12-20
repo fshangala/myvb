@@ -4,7 +4,7 @@ class VBGroupTransactionModelArguments {
   String? id;
   String bankingGroupId;
   String userId;
-  String username;
+  String email;
   double amount;
   bool approved;
 
@@ -12,7 +12,7 @@ class VBGroupTransactionModelArguments {
       {this.id,
       required this.bankingGroupId,
       required this.userId,
-      required this.username,
+      required this.email,
       required this.amount,
       this.approved = false});
 }
@@ -22,7 +22,7 @@ class VBGroupTransaction
   late String? id;
   late String bankingGroupId;
   late String userId;
-  late String username;
+  late String email;
   late double amount;
   late bool approved;
 
@@ -35,7 +35,7 @@ class VBGroupTransaction
     vBGroupTransaction.id = arguments.id;
     vBGroupTransaction.bankingGroupId = arguments.bankingGroupId;
     vBGroupTransaction.userId = arguments.userId;
-    vBGroupTransaction.username = arguments.username;
+    vBGroupTransaction.email = arguments.email;
     vBGroupTransaction.amount = arguments.amount;
     vBGroupTransaction.approved = arguments.approved;
     return vBGroupTransaction;
@@ -50,7 +50,7 @@ class VBGroupTransaction
           id: data['id'],
           bankingGroupId: data['bankingGroupId'],
           userId: data['userId'],
-          username: data['username'],
+          email: data['email'],
           amount: data['amount'],
           approved: data['approved']));
     }
@@ -62,7 +62,7 @@ class VBGroupTransaction
       'id': id,
       'bankingGroupId': bankingGroupId,
       'userId': userId,
-      'username': username,
+      'email': email,
       'amount': amount,
       'approved': approved
     };

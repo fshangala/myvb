@@ -41,90 +41,77 @@ class _ViewBankingGroupState extends AuthState<ViewBankingGroupScreen> {
         child: ListView(
           children: [
             NullFutureRenderer(
-                future: user,
-                futureRenderer: (userObject) {
-                  return NullFutureRenderer(
-                      future: bankingGroup,
-                      futureRenderer: (bankingGroupObject) {
-                        bankingGroupMember =
-                            bankingGroupObject.groupMember(userObject.id!);
-                        return NullFutureRenderer(
-                          future: bankingGroupMember,
-                          futureRenderer: (bankingGroupMemberObject) {
-                            return Column(
-                              children: [
-                                ListTile(
-                                  leading: const Icon(Icons.tag),
-                                  title: const Text('ID'),
-                                  trailing: Text(bankingGroupObject.id!),
-                                ),
-                                ListTile(
-                                  title: const Text('Name'),
-                                  trailing: Text(bankingGroupObject.name),
-                                ),
-                                NotNullFutureRenderer(
-                                    future: bankingGroupObject
-                                        .totalIvenstmentBalance(),
-                                    futureRenderer: (totalAmount) {
-                                      return ListTile(
-                                        leading: const Icon(Icons.money),
-                                        title: const Text('Investment Balance'),
-                                        trailing: Text(totalAmount.toString()),
-                                      );
-                                    }),
-                                const Divider(),
-                                NotNullFutureRenderer(
-                                    future: bankingGroupMemberObject
-                                        .investmentBalance(),
-                                    futureRenderer: (myBalance) {
-                                      return ListTile(
-                                        leading: const Icon(Icons.person),
-                                        title: Text(
-                                            bankingGroupMemberObject.username),
-                                        subtitle: const Text(
-                                            'Manage your investments'),
-                                        trailing: Text(myBalance.toString()),
-                                        onTap: () {
-                                          goTo(
-                                              context: context,
-                                              routeName:
-                                                  ViewBankingGroupMemberScreen
-                                                      .routeName,
-                                              arguments:
-                                                  ArgumentsViewGroupMember(
-                                                      bankingGroupObject.id!,
-                                                      bankingGroupMemberObject
-                                                          .id!),
-                                              permanent: false);
-                                        },
-                                      );
-                                    }),
-                                BankingGroupMembers(
-                                    bankingGroup: bankingGroupObject),
-                                BankingGroupTransactions(
-                                    bankingGroupId: bankingGroupObject.id!),
-                              ],
-                            );
+              future: bankingGroup,
+              futureRenderer: (bankingGroupObject) {
+                bankingGroupMember = bankingGroupObject.groupMember(user!.uid);
+                return NullFutureRenderer(
+                  future: bankingGroupMember,
+                  futureRenderer: (bankingGroupMemberObject) {
+                    return Column(
+                      children: [
+                        ListTile(
+                          leading: const Icon(Icons.tag),
+                          title: const Text('ID'),
+                          trailing: Text(bankingGroupObject.id!),
+                        ),
+                        ListTile(
+                          title: const Text('Name'),
+                          trailing: Text(bankingGroupObject.name),
+                        ),
+                        NotNullFutureRenderer(
+                            future: bankingGroupObject.totalIvenstmentBalance(),
+                            futureRenderer: (totalAmount) {
+                              return ListTile(
+                                leading: const Icon(Icons.money),
+                                title: const Text('Investment Balance'),
+                                trailing: Text(totalAmount.toString()),
+                              );
+                            }),
+                        const Divider(),
+                        NotNullFutureRenderer(
+                            future:
+                                bankingGroupMemberObject.investmentBalance(),
+                            futureRenderer: (myBalance) {
+                              return ListTile(
+                                leading: const Icon(Icons.person),
+                                title: Text(bankingGroupMemberObject.email),
+                                subtitle: const Text('Manage your investments'),
+                                trailing: Text(myBalance.toString()),
+                                onTap: () {
+                                  goTo(
+                                      context: context,
+                                      routeName: ViewBankingGroupMemberScreen
+                                          .routeName,
+                                      arguments: ArgumentsViewGroupMember(
+                                          bankingGroupObject.id!,
+                                          bankingGroupMemberObject.id!),
+                                      permanent: false);
+                                },
+                              );
+                            }),
+                        BankingGroupMembers(bankingGroup: bankingGroupObject),
+                        BankingGroupTransactions(
+                            bankingGroupId: bankingGroupObject.id!),
+                      ],
+                    );
+                  },
+                  nullRenderer: () {
+                    return Center(
+                      child: ElevatedButton(
+                          onPressed: () {
+                            var result = bankingGroupObject.joinGroup(user!);
+                            resolveFuture(context, result, (value) {
+                              setState(() {
+                                bankingGroupMember = Future.value(value);
+                              });
+                            });
                           },
-                          nullRenderer: () {
-                            return Center(
-                              child: ElevatedButton(
-                                  onPressed: () {
-                                    var result = bankingGroupObject.joinGroup(
-                                        userObject.id!, userObject.username);
-                                    resolveFuture(context, result, (value) {
-                                      setState(() {
-                                        bankingGroupMember =
-                                            Future.value(value);
-                                      });
-                                    });
-                                  },
-                                  child: const Text('Join Banking Group')),
-                            );
-                          },
-                        );
-                      });
-                }),
+                          child: const Text('Join Banking Group')),
+                    );
+                  },
+                );
+              },
+            ),
           ],
         ),
       ),

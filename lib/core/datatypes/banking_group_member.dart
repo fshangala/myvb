@@ -7,14 +7,14 @@ class VBGroupMemberModelArguments {
   String? id;
   String bankingGroupId;
   String userId;
-  String username;
+  String email;
   bool approved;
 
   VBGroupMemberModelArguments(
       {this.id,
       required this.bankingGroupId,
       required this.userId,
-      required this.username,
+      required this.email,
       this.approved = false});
 }
 
@@ -22,7 +22,7 @@ class VBGroupMember extends Model<VBGroupMember, VBGroupMemberModelArguments> {
   String? id;
   late String bankingGroupId;
   late String userId;
-  late String username;
+  late String email;
   late bool approved;
 
   @override
@@ -34,7 +34,7 @@ class VBGroupMember extends Model<VBGroupMember, VBGroupMemberModelArguments> {
     vBGroupMember.id = arguments.id;
     vBGroupMember.bankingGroupId = arguments.bankingGroupId;
     vBGroupMember.userId = arguments.userId;
-    vBGroupMember.username = arguments.username;
+    vBGroupMember.email = arguments.email;
     vBGroupMember.approved = arguments.approved;
     return vBGroupMember;
   }
@@ -48,7 +48,7 @@ class VBGroupMember extends Model<VBGroupMember, VBGroupMemberModelArguments> {
           id: data['id'],
           bankingGroupId: data['bankingGroupId'],
           userId: data['userId'],
-          username: data['username'],
+          email: data['email'],
           approved: data['approved']));
     }
   }
@@ -59,7 +59,7 @@ class VBGroupMember extends Model<VBGroupMember, VBGroupMemberModelArguments> {
       'id': id,
       'bankingGroupId': bankingGroupId,
       'userId': userId,
-      'username': username,
+      'email': email,
       'approved': approved
     };
   }
@@ -124,7 +124,7 @@ class VBGroupMember extends Model<VBGroupMember, VBGroupMemberModelArguments> {
                 referenceLoanId: latest.id,
                 bankingGroupId: bankingGroupId,
                 userId: userId,
-                username: username,
+                email: email,
                 amount: penalty,
                 loanInterest: bankingGroup!.investmentInterest,
                 period: bankingGroup.loanPeriod,
@@ -153,7 +153,7 @@ class VBGroupMember extends Model<VBGroupMember, VBGroupMemberModelArguments> {
             .create(VBGroupTransactionModelArguments(
                 bankingGroupId: bankingGroupId,
                 userId: userId,
-                username: username,
+                email: email,
                 amount: topay,
                 approved: true))
             .save();
@@ -162,7 +162,7 @@ class VBGroupMember extends Model<VBGroupMember, VBGroupMemberModelArguments> {
                 referenceLoanId: latest.id,
                 bankingGroupId: bankingGroupId,
                 userId: userId,
-                username: username,
+                email: email,
                 amount: topay,
                 loanInterest: latest.loanInterest,
                 period: latest.period,

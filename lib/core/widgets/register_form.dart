@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:myvb/core/datatypes/user.dart';
+import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/users/login.dart';
+import 'dart:developer' as developer;
 
 class RegisterForm extends StatefulWidget {
-  final void Function(User user)? setUser;
+  final void Function(dynamic user)? setUser;
   const RegisterForm({super.key, this.setUser});
 
   @override
@@ -14,7 +16,7 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
-  var usernameController = TextEditingController(text: '');
+  var emailController = TextEditingController(text: '');
   var firstNameController = TextEditingController(text: '');
   var lastNameController = TextEditingController(text: '');
   var passwordController = TextEditingController(text: '');
@@ -28,9 +30,9 @@ class _RegisterFormState extends State<RegisterForm> {
             Container(
               padding: const EdgeInsets.all(8),
               child: TextFormField(
-                decoration: const InputDecoration(label: Text('Username')),
-                controller: usernameController,
-                keyboardType: TextInputType.name,
+                decoration: const InputDecoration(label: Text('E-mail')),
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == '') {
                     return 'Username cannot be empty!';
@@ -96,7 +98,19 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   void _register() {
-    var newUser = User().create(UserModelArguments(
+    FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+      email: emailController.text,
+      password: passwordController.text,
+    )
+        .then((value) {
+      value.user?.updateDisplayName(
+          '${firstNameController.text} ${lastNameController.text}');
+      goTo(context: context, routeName: LoginScreen.routeName);
+    }).onError((error, stackTrace) {
+      developer.log(error.toString(), name: 'FirebaseAuth');
+    });
+    /*var newUser = User().create(UserModelArguments(
         username: usernameController.text,
         firstName: firstNameController.text,
         lastName: lastNameController.text,
@@ -115,6 +129,6 @@ class _RegisterFormState extends State<RegisterForm> {
     }).onError((error, stackTrace) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Could not create account! $error')));
-    });
+    });*/
   }
 }

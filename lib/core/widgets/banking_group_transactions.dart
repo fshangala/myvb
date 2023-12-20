@@ -69,7 +69,7 @@ class _BankingGroupTransactions extends State<BankingGroupTransactions> {
         approved = 'Approved';
       }
       return ListTile(
-        title: Text(e.username),
+        title: Text(e.email),
         subtitle: Text(approved),
         trailing: Text(e.amount.toString()),
       );

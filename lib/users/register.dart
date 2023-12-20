@@ -1,5 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
 import 'package:myvb/core/widgets/register_form.dart';
 import 'package:myvb/home/home.dart';

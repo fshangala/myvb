@@ -39,24 +39,23 @@ class _StateRequestLoan extends AuthState<ScreenRequestLoan> {
         .where('userId', args.bankingGroupMemberId));
     return AppScaffold(title: 'Request loan', children: [
       NullFutureRenderer(
-          future: user,
-          futureRenderer: (userObject) {
-            return NullFutureRenderer(
-                future: bankingGroup,
-                futureRenderer: (bankingGroupObject) {
-                  return NullFutureRenderer(
-                      future: bankingGroupMember,
-                      futureRenderer: (bankingGroupMemberObject) {
-                        return Column(
-                          children: [
-                            LoanRequestForm(
-                                bankingGroup: bankingGroupObject,
-                                bankingGroupMember: bankingGroupMemberObject)
-                          ],
-                        );
-                      });
-                });
-          })
+        future: bankingGroup,
+        futureRenderer: (bankingGroupObject) {
+          return NullFutureRenderer(
+            future: bankingGroupMember,
+            futureRenderer: (bankingGroupMemberObject) {
+              return Column(
+                children: [
+                  LoanRequestForm(
+                    bankingGroup: bankingGroupObject,
+                    bankingGroupMember: bankingGroupMemberObject,
+                  )
+                ],
+              );
+            },
+          );
+        },
+      ),
     ]);
   }
 }

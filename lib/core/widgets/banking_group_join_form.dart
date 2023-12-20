@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/view_banking_group.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
@@ -6,10 +7,8 @@ import 'package:myvb/core/datatypes/view_banking_group_screen_arguments.dart';
 import 'package:myvb/core/functions/go_to.dart';
 
 class BankingGroupJoinForm extends StatefulWidget {
-  final String userId;
-  final String username;
-  const BankingGroupJoinForm(
-      {super.key, required this.userId, required this.username});
+  final User user;
+  const BankingGroupJoinForm({super.key, required this.user});
 
   @override
   State<StatefulWidget> createState() {
@@ -88,11 +87,11 @@ class _BankingGroupJoinForm extends State<BankingGroupJoinForm> {
                   ),
                 );
               }));
-          group.joinGroup(widget.userId, widget.username).then((value) {
+          group.joinGroup(widget.user).then((value) {
             Navigator.pop(context);
             if (value != null) {
               ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('${value.username} Joined!')));
+                  SnackBar(content: Text('${value.email} Joined!')));
               goTo(
                   context: context,
                   routeName: ViewBankingGroupScreen.routeName,

@@ -104,3 +104,5 @@ abstract class Database {
 }
 
 class LocalDatabase extends Database {}
+
+class FirebaseDatabase extends Database {}

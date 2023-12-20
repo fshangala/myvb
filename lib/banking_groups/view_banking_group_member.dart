@@ -47,26 +47,24 @@ class _ViewBankingGroupMember extends AuthState<ViewBankingGroupMember> {
 
   @override
   Widget build(BuildContext context) {
-    return NullFutureRenderer(
-        future: user,
-        futureRenderer: (userObject) {
-          return Column(
-            children: [
-              NullFutureRenderer(
-                  future: bankingGroup,
-                  futureRenderer: (bankingGroupObject) {
-                    return Column(
-                      children: [
-                        BankingGroupViewMember(
-                            luser: userObject,
-                            bankingGroup: bankingGroupObject,
-                            userId: widget.userId)
-                      ],
-                    );
-                  })
-            ],
-          );
-        });
+    return Column(
+      children: [
+        NullFutureRenderer(
+          future: bankingGroup,
+          futureRenderer: (bankingGroupObject) {
+            return Column(
+              children: [
+                BankingGroupViewMember(
+                  luser: user!,
+                  bankingGroup: bankingGroupObject,
+                  userId: widget.userId,
+                )
+              ],
+            );
+          },
+        )
+      ],
+    );
   }
 
   void getBankingGroup() {

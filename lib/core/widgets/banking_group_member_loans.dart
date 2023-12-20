@@ -43,7 +43,7 @@ class _VBGroupMemberLoansState extends State<VBGroupMemberLoans> {
                   rows: loans
                       .map((e) => DataRow(cells: [
                             DataCell(Text(e.id!)),
-                            DataCell(Text(e.username)),
+                            DataCell(Text(e.email)),
                             DataCell(Text(e.amount.toString())),
                             DataCell(Text(e.timestamp.toString())),
                             DataCell(Text(e.approved.toString()))

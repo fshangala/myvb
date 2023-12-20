@@ -1,3 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/create_banking_group.dart';
 import 'package:myvb/banking_groups/invest_banking_group.dart';
@@ -11,7 +14,12 @@ import 'package:myvb/users/login.dart';
 import 'package:myvb/users/profile.dart';
 import 'package:myvb/users/register.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 

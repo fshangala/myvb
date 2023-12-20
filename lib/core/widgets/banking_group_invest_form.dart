@@ -1,7 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/datatypes/banking_group_transaction.dart';
-import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/functions/display_regular_snackbar.dart';
 import 'package:myvb/core/functions/resolve_future.dart';
 
@@ -53,8 +53,8 @@ class _BankingGroupInvestFormState extends State<BankingGroupInvestForm> {
     var transaction = VBGroupTransaction().create(
         VBGroupTransactionModelArguments(
             bankingGroupId: widget.bankingGroup.id!,
-            userId: widget.user.id!,
-            username: widget.user.username,
+            userId: widget.user.uid,
+            email: widget.user.email!,
             amount: double.parse(investmentAmount.text),
             approved: true));
     resolveFuture(context, transaction.save(), (value) {

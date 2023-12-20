@@ -1,5 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:myvb/core/datatypes/user.dart';
+import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
 import 'package:myvb/core/widgets/login_form.dart';
 import 'package:myvb/home/home.dart';
@@ -33,7 +34,6 @@ class _LoginState extends State<LoginScreen> {
   }
 
   void setUser(User luser) {
-    Navigator.pop(context);
-    Navigator.pushNamed(context, HomeScreen.routeName);
+    goTo(context: context, routeName: HomeScreen.routeName, permanent: true);
   }
 }

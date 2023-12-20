@@ -1,6 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/profile_screen_arguments.dart';
-import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/extensions/auth_state.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
 import 'package:myvb/core/widgets/profile_view.dart';
@@ -26,19 +26,7 @@ class _ProfileScreenState extends AuthState<ProfileScreen> {
         padding: const EdgeInsets.all(16),
         child: ListView(
           children: [
-            FutureBuilder(
-                future: user,
-                builder: ((context, snapshot) {
-                  if (snapshot.hasData) {
-                    return _userProfile(args: args, user: snapshot.data!);
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                }))
+            _userProfile(args: args, user: user!),
           ],
         ),
       ),
@@ -47,7 +35,7 @@ class _ProfileScreenState extends AuthState<ProfileScreen> {
 
   UserProfile _userProfile({ArgumentsProfileScreen? args, required User user}) {
     if (args == null) {
-      return UserProfile(userId: user.id!, user: user);
+      return UserProfile(userId: user.uid, user: user);
     } else {
       return UserProfile(userId: args.userId, user: user);
     }

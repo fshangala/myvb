@@ -5,7 +5,7 @@ class BankingGroupLoanModelArguments {
   String? referenceLoanId;
   String bankingGroupId;
   String userId;
-  String username;
+  String email;
   double amount;
   double loanInterest;
   int period;
@@ -18,7 +18,7 @@ class BankingGroupLoanModelArguments {
       this.referenceLoanId,
       required this.bankingGroupId,
       required this.userId,
-      required this.username,
+      required this.email,
       required this.amount,
       required this.loanInterest,
       required this.period,
@@ -33,7 +33,7 @@ class BankingGroupLoan
   String? referenceLoanId;
   late String bankingGroupId;
   late String userId;
-  late String username;
+  late String email;
   late double amount;
   late double loanInterest;
   late int period;
@@ -51,7 +51,7 @@ class BankingGroupLoan
     bankingGroupLoan.referenceLoanId = arguments.referenceLoanId;
     bankingGroupLoan.bankingGroupId = arguments.bankingGroupId;
     bankingGroupLoan.userId = arguments.userId;
-    bankingGroupLoan.username = arguments.username;
+    bankingGroupLoan.email = arguments.email;
     bankingGroupLoan.amount = arguments.amount;
     bankingGroupLoan.loanInterest = arguments.loanInterest;
     bankingGroupLoan.period = arguments.period;
@@ -68,7 +68,7 @@ class BankingGroupLoan
       'referenceLoanId': referenceLoanId,
       'bankingGroupId': bankingGroupId,
       'userId': userId,
-      'username': username,
+      'email': email,
       'amount': amount,
       'loanInterest': loanInterest,
       'period': period,
@@ -88,7 +88,7 @@ class BankingGroupLoan
           referenceLoanId: data['referenceLoanId'],
           bankingGroupId: data['bankingGroupId'],
           userId: data['userId'],
-          username: data['username'],
+          email: data['email'],
           amount: data['amount'],
           loanInterest: data['loanInterest'],
           period: data['period'],

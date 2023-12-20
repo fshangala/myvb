@@ -71,7 +71,7 @@ class _LoanRepayForm extends State<LoanRepayForm> {
           referenceLoanId: latestLoan!.id!,
           bankingGroupId: widget.bankingGroupMember.bankingGroupId,
           userId: widget.bankingGroupMember.userId,
-          username: widget.bankingGroupMember.username,
+          email: widget.bankingGroupMember.email,
           amount: repayAmount,
           loanInterest: widget.bankingGroup.investmentInterest,
           period: widget.bankingGroup.loanPeriod,

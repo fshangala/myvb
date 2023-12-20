@@ -87,7 +87,7 @@ class _BankingGroupMembersState extends State<BankingGroupMembers> {
                   children: members
                       .map((e) => ListTile(
                             leading: const Icon(Icons.person),
-                            title: Text(e.username),
+                            title: Text(e.email),
                             onTap: () {
                               goTo(
                                   context: context,

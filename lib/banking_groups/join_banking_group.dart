@@ -23,29 +23,11 @@ class _JoinBankingGroupState extends AuthState<JoinBankingGroup> {
           padding: const EdgeInsets.all(16),
           child: ListView(
             children: [
-              FutureBuilder(
-                  future: user,
-                  builder: ((context, snapshot) {
-                    if (snapshot.hasData) {
-                      if (snapshot.data == null) {
-                        return const Text('Please login');
-                      } else {
-                        return Column(
-                          children: [
-                            BankingGroupJoinForm(
-                                userId: snapshot.data!.id!,
-                                username: snapshot.data!.username)
-                          ],
-                        );
-                      }
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                  }))
+              Column(
+                children: [
+                  BankingGroupJoinForm(user: user!),
+                ],
+              ),
             ],
           ),
         ));

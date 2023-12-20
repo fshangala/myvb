@@ -63,7 +63,7 @@ class _LoanRequestForm extends State<LoanRequestForm> {
         var loan = BankingGroupLoan().create(BankingGroupLoanModelArguments(
             bankingGroupId: widget.bankingGroupMember.bankingGroupId,
             userId: widget.bankingGroupMember.userId,
-            username: widget.bankingGroupMember.username,
+            email: widget.bankingGroupMember.email,
             amount: loanAmount,
             loanInterest: widget.bankingGroup.investmentInterest,
             period: widget.bankingGroup.loanPeriod,
@@ -76,7 +76,7 @@ class _LoanRequestForm extends State<LoanRequestForm> {
                   referenceLoanId: loan.id,
                   bankingGroupId: widget.bankingGroupMember.bankingGroupId,
                   userId: widget.bankingGroupMember.userId,
-                  username: widget.bankingGroupMember.username,
+                  email: widget.bankingGroupMember.email,
                   amount: loanInterestAmount,
                   loanInterest: widget.bankingGroup.investmentInterest,
                   period: widget.bankingGroup.loanPeriod,

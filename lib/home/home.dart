@@ -6,7 +6,6 @@ import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/widgets/app_scaffold.dart';
 import 'package:myvb/core/widgets/banking_groups_by_user.dart';
 import 'package:myvb/core/widgets/banking_groups_joined.dart';
-import 'package:myvb/core/widgets/null_future_renderer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -39,16 +38,12 @@ class _HomeState extends AuthState<HomeScreen> {
               child: const Text('Join')),
         ],
       ),
-      NullFutureRenderer(
-          future: user,
-          futureRenderer: (userObject) {
-            return Column(
-              children: [
-                BankingGroupsByUser(userId: userObject.id!),
-                BankingGroupsJoined(userId: userObject.id!)
-              ],
-            );
-          })
+      Column(
+        children: [
+          BankingGroupsByUser(userId: user!.uid),
+          BankingGroupsJoined(userId: user!.uid),
+        ],
+      )
     ]);
   }
 }

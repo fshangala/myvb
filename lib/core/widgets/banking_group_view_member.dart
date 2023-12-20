@@ -1,10 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/invest_banking_group.dart';
 import 'package:myvb/banking_groups/screen_request_loan.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/datatypes/banking_group_invest_arguments.dart';
 import 'package:myvb/core/datatypes/banking_group_member.dart';
-import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/functions/resolve_future.dart';
 import 'package:myvb/core/widgets/banking_group_member_loans.dart';
@@ -52,7 +52,7 @@ class _BankingGroupViewMember extends State<BankingGroupViewMember> {
               //approved member
               if (groupMember.approved) {
                 //member is viewing their own
-                if (widget.luser.id == widget.userId) {
+                if (widget.luser.uid == widget.userId) {
                   userWidget = Column(
                     children: [
                       Row(
@@ -90,7 +90,7 @@ class _BankingGroupViewMember extends State<BankingGroupViewMember> {
                   );
                 }
               } else {
-                if (widget.luser.id == widget.bankingGroup.owner) {
+                if (widget.luser.uid == widget.bankingGroup.owner) {
                   userWidget = Column(
                     children: [
                       ElevatedButton(
@@ -112,7 +112,7 @@ class _BankingGroupViewMember extends State<BankingGroupViewMember> {
                 children: [
                   ListTile(
                     leading: const Icon(Icons.person),
-                    title: Text(groupMember.username),
+                    title: Text(groupMember.email),
                     subtitle: NotNullFutureRenderer(
                       future: groupMember.investmentBalance(),
                       futureRenderer: (balance) {

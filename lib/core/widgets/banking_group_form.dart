@@ -1,6 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
-import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/functions/resolve_future.dart';
 
 class BankingGroupForm extends StatefulWidget {
@@ -98,7 +98,7 @@ class _BankingGroupFormState extends State<BankingGroupForm> {
 
   void _createBankingGroup() {
     var bankingGroup = VBGroup().create(VBGroupModelArguments(
-        owner: widget.user.id!,
+        owner: widget.user.uid,
         name: groupName.text,
         investmentInterest: double.parse(groupInvestmentInterest.text),
         loanPeriod: int.parse(groupLoanPeriod.text),
@@ -111,9 +111,7 @@ class _BankingGroupFormState extends State<BankingGroupForm> {
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('${value.name} created!')));
-        resolveFuture(
-            context, value.joinGroup(widget.user.id!, widget.user.username),
-            (member) {
+        resolveFuture(context, value.joinGroup(widget.user), (member) {
           if (widget.onSaved != null) {
             widget.onSaved!(value);
           }

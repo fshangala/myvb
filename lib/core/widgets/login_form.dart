@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/user.dart';
+import 'package:myvb/core/functions/display_regular_snackbar.dart';
 import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/users/register.dart';
 
@@ -16,8 +18,8 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  String username = '';
-  String password = '';
+  var emailController = TextEditingController(text: '');
+  var passwordController = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +30,9 @@ class _LoginFormState extends State<LoginForm> {
           Container(
               padding: const EdgeInsets.all(8),
               child: TextFormField(
-                decoration: const InputDecoration(label: Text('Username')),
-                keyboardType: TextInputType.name,
-                onChanged: (value) {
-                  username = value;
-                },
+                decoration: const InputDecoration(label: Text('E-mail')),
+                keyboardType: TextInputType.emailAddress,
+                controller: emailController,
                 validator: (value) {
                   if (value == '') {
                     return 'Please enter some value';
@@ -42,13 +42,13 @@ class _LoginFormState extends State<LoginForm> {
                 },
               )),
           Container(
-              padding: const EdgeInsets.all(8),
-              child: TextFormField(
-                  obscureText: true,
-                  decoration: const InputDecoration(label: Text('Password')),
-                  onChanged: (value) {
-                    password = value;
-                  })),
+            padding: const EdgeInsets.all(8),
+            child: TextFormField(
+              obscureText: true,
+              decoration: const InputDecoration(label: Text('Password')),
+              controller: passwordController,
+            ),
+          ),
           Container(
               padding: const EdgeInsets.all(8),
               child: ElevatedButton(
@@ -74,17 +74,15 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _login() {
-    User().login(username, password).then((value) {
+    AppUser()
+        .login(emailController.text, passwordController.text)
+        .then((value) {
       if (value == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Invalid username or password')));
+        displayRegularSnackBar(context, 'Login failed');
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Welcome ${value.username}')));
-        if (widget.setUser != null) {
-          widget.setUser!(value);
-        }
+        displayRegularSnackBar(context, 'Welcome ${value.displayName}');
       }
+      widget.setUser!(value!);
     });
   }
 }

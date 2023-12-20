@@ -29,25 +29,22 @@ class _RepayLoanScreen extends AuthState<RepayLoanScreen> {
         ModalRoute.of(context)!.settings.arguments as RepayLoanScreenArguments;
     return AppScaffold(title: 'Repay Loan', children: [
       NullFutureRenderer(
-          future: user,
-          futureRenderer: (userObject) {
+          future: VBGroup()
+              .getObject(QueryBuilder().where('id', args.bankingGroupId)),
+          futureRenderer: (bankingGroup) {
             return NullFutureRenderer(
-                future: VBGroup()
-                    .getObject(QueryBuilder().where('id', args.bankingGroupId)),
-                futureRenderer: (bankingGroup) {
-                  return NullFutureRenderer(
-                      future: bankingGroup.groupMember(userObject.id!),
-                      futureRenderer: (groupMember) {
-                        return Column(
-                          children: [
-                            LoanRepayForm(
-                                bankingGroupMember: groupMember,
-                                bankingGroup: bankingGroup)
-                          ],
-                        );
-                      });
+                future: bankingGroup.groupMember(user!.uid),
+                futureRenderer: (groupMember) {
+                  return Column(
+                    children: [
+                      LoanRepayForm(
+                        bankingGroupMember: groupMember,
+                        bankingGroup: bankingGroup,
+                      )
+                    ],
+                  );
                 });
-          })
+          }),
     ]);
   }
 }
