@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 List<Database> databases = [
+  FirebaseDatabase(),
   LocalDatabase(),
 ];
 
@@ -105,4 +107,62 @@ abstract class Database {
 
 class LocalDatabase extends Database {}
 
-class FirebaseDatabase extends Database {}
+class FirebaseDatabase extends Database {
+  FirebaseFirestore db = FirebaseFirestore.instance;
+
+  @override
+  Future<Map<String, dynamic>> setItem(
+      String collection, Map<String, dynamic> data) async {
+    var doc = await db.collection(collection).add(data);
+    var response = await doc.get();
+    return response.data()!;
+  }
+
+  @override
+  Future<List<Map<String, dynamic>>> getItems(
+      String collection, Map<String, dynamic> query) async {
+    if (query.isEmpty) {
+      var items = await db.collection(collection).get();
+      return items.docs.map((e) => e.data()).toList();
+    } else {
+      Query<Map<String, dynamic>> firequery = db.collection(collection);
+      query.forEach((key, value) {
+        firequery = firequery.where(key, isEqualTo: value);
+      });
+      var items = await firequery.get();
+      return items.docs.map((e) => e.data()).toList();
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>?> getItem(
+      String collection, Map<String, dynamic> query) async {
+    if (query.containsKey('id')) {
+      var item = await db.collection(collection).doc(query['id']).get();
+      return item.data();
+    }
+
+    if (query.isEmpty) {
+      return null;
+    } else {
+      Query<Map<String, dynamic>> firequery = db.collection(collection);
+      query.forEach((key, value) {
+        firequery = firequery.where(key, isEqualTo: value);
+      });
+      var items = await firequery.get();
+      return items.docs[0].data();
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>?> createOrUpdateItem(
+      String collection, Map<String, dynamic> data) async {
+    if (data.containsKey('id')) {
+      var doc = db.collection(collection).doc(data['id']);
+      await doc.update(data);
+      return await getItem(collection, data);
+    } else {
+      return setItem(collection, data);
+    }
+  }
+}

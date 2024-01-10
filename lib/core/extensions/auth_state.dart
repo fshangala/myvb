@@ -5,7 +5,7 @@ import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/users/login.dart';
 
 abstract class AuthState<T extends StatefulWidget> extends State<T> {
-  late User? user;
+  User? user;
 
   void afterInit() {}
 
