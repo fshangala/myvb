@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/create_banking_group.dart';
 import 'package:myvb/banking_groups/join_banking_group.dart';
@@ -43,6 +45,7 @@ class _HomeState extends AuthState<HomeScreen> {
   }
 
   Widget bankingGroupsByUser() {
+    log(user.toString(),name: 'InApp');
     if(user != null) {
       return Column(
         children: [

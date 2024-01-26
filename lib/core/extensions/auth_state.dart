@@ -14,12 +14,14 @@ abstract class AuthState<T extends StatefulWidget> extends State<T> {
   @override
   initState() {
     super.initState();
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      log(user.toString(),name: 'AuthState');
-      if (user == null) {
+    FirebaseAuth.instance.authStateChanges().listen((User? luser) {
+      log(luser.toString(),name: 'AuthState');
+      if (luser == null) {
         goTo(context: context, routeName: LoginScreen.routeName);
       }
-      user = user;
+      setState(() {
+        user = luser;
+      });
     });
     afterInit();
   }
