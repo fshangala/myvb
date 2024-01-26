@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myvb/core/functions/go_to.dart';
+import 'package:myvb/core/functions/resolve_future.dart';
+import 'package:myvb/home/home.dart';
 import 'package:myvb/users/login.dart';
 import 'dart:developer' as developer;
 
@@ -98,37 +100,12 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   void _register() {
-    FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
+    resolveFuture(context, FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: emailController.text,
       password: passwordController.text,
-    )
-        .then((value) {
-      value.user?.updateDisplayName(
-          '${firstNameController.text} ${lastNameController.text}');
-      goTo(context: context, routeName: LoginScreen.routeName);
-    }).onError((error, stackTrace) {
-      developer.log(error.toString(), name: 'FirebaseAuth');
+    ), (value) {
+      value.user?.updateDisplayName('${firstNameController.text} ${lastNameController.text}');
+      goTo(context: context, routeName: HomeScreen.routeName, permanent: true);
     });
-    /*var newUser = User().create(UserModelArguments(
-        username: usernameController.text,
-        firstName: firstNameController.text,
-        lastName: lastNameController.text,
-        password: passwordController.text));
-    newUser.save().then((value) {
-      if (value != null) {
-        newUser = value;
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Account ${value.username} created!')));
-        Navigator.pop(context);
-        Navigator.pushNamed(context, LoginScreen.routeName);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Could not create account!')));
-      }
-    }).onError((error, stackTrace) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not create account! $error')));
-    });*/
   }
 }

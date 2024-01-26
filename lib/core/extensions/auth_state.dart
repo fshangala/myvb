@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myvb/core/functions/display_regular_snackbar.dart';
@@ -12,13 +14,12 @@ abstract class AuthState<T extends StatefulWidget> extends State<T> {
   @override
   initState() {
     super.initState();
-    user = FirebaseAuth.instance.currentUser;
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      user = user;
+      log(user.toString(),name: 'AuthState');
       if (user == null) {
-        displayRegularSnackBar(context, 'User is currently signed out!');
         goTo(context: context, routeName: LoginScreen.routeName);
       }
+      user = user;
     });
     afterInit();
   }

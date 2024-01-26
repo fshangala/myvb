@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/functions/display_regular_snackbar.dart';
 import 'package:myvb/core/functions/go_to.dart';
+import 'package:myvb/core/functions/resolve_future.dart';
 import 'package:myvb/users/register.dart';
 
 class LoginForm extends StatefulWidget {
@@ -74,9 +75,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _login() {
-    AppUser()
-        .login(emailController.text, passwordController.text)
-        .then((value) {
+    resolveFuture(context, AppUser().login(emailController.text, passwordController.text), (value) {
       if (value == null) {
         displayRegularSnackBar(context, 'Login failed');
       } else {
