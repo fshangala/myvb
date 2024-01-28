@@ -114,8 +114,11 @@ class FirebaseDatabase extends Database {
   @override
   Future<Map<String, dynamic>> setItem(
       String collection, Map<String, dynamic> data) async {
-    var doc = await db.collection(collection).add(data);
+    var doc = db.collection(collection).doc();
+    data.update('id', (value) => doc.id);
+    await doc.set(data);
     var response = await doc.get();
+    log(response.data()!.toString(),name: 'new doc');
     return response.data()!;
   }
 
@@ -151,7 +154,11 @@ class FirebaseDatabase extends Database {
         firequery = firequery.where(key, isEqualTo: value);
       });
       var items = await firequery.get();
-      return items.docs[0].data();
+      if(items.size > 0){
+        return items.docs[0].data();
+      } else {
+        return null;
+      }
     }
   }
 

@@ -5,6 +5,7 @@ import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/datatypes/model.dart';
 import 'package:myvb/core/datatypes/view_banking_group_screen_arguments.dart';
 import 'package:myvb/core/functions/go_to.dart';
+import 'package:myvb/core/functions/resolve_future.dart';
 
 class BankingGroupJoinForm extends StatefulWidget {
   final User user;
@@ -77,18 +78,7 @@ class _BankingGroupJoinForm extends State<BankingGroupJoinForm> {
       trailing: TextButton(
         child: const Text('Join'),
         onPressed: () {
-          showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: ((context) {
-                return const Dialog(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              }));
-          group.joinGroup(widget.user).then((value) {
-            Navigator.pop(context);
+          resolveFuture(context, group.joinGroup(widget.user), (value) {
             if (value != null) {
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('${value.email} Joined!')));
@@ -100,10 +90,6 @@ class _BankingGroupJoinForm extends State<BankingGroupJoinForm> {
               ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Could not join group!')));
             }
-          }).onError((error, stackTrace) {
-            Navigator.pop(context);
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text('Error: $error')));
           });
         },
       ),
