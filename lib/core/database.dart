@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -157,7 +158,7 @@ class FirebaseDatabase extends Database {
   @override
   Future<Map<String, dynamic>?> createOrUpdateItem(
       String collection, Map<String, dynamic> data) async {
-    if (data.containsKey('id')) {
+    if (data['id'] != null) {
       var doc = db.collection(collection).doc(data['id']);
       await doc.update(data);
       return await getItem(collection, data);

@@ -15,7 +15,6 @@ abstract class AuthState<T extends StatefulWidget> extends State<T> {
   initState() {
     super.initState();
     FirebaseAuth.instance.authStateChanges().listen((User? luser) {
-      log(luser.toString(),name: 'AuthState');
       if (luser == null) {
         goTo(context: context, routeName: LoginScreen.routeName);
       }
@@ -24,5 +23,13 @@ abstract class AuthState<T extends StatefulWidget> extends State<T> {
       });
     });
     afterInit();
+  }
+
+  Widget userWidget(Widget Function(User luser) renderer) {
+    if(user == null) {
+      return const Text('Please login!');
+    } else {
+      return renderer(user!);
+    }
   }
 }

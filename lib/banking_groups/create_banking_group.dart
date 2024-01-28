@@ -27,16 +27,18 @@ class _CreateBankingGroupState extends AuthState<CreateBankingGroup> {
           children: [
             Column(
               children: [
-                BankingGroupForm(
-                  user: user!,
-                  onSaved: (bankingGroup) {
-                    goTo(
-                        context: context,
-                        routeName: ViewBankingGroupScreen.routeName,
-                        arguments:
-                            ArgumentsViewBankingGroup(id: bankingGroup.id!));
-                  },
-                ),
+                userWidget((luser) {
+                  return BankingGroupForm(
+                    user: luser,
+                    onSaved: (bankingGroup) {
+                      goTo(
+                          context: context,
+                          routeName: ViewBankingGroupScreen.routeName,
+                          arguments:
+                          ArgumentsViewBankingGroup(id: bankingGroup.id!));
+                    },
+                  );
+                }),
               ],
             ),
           ],

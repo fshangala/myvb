@@ -16,13 +16,7 @@ AppBar appBar(BuildContext context, String title) {
               permanent: false);
         },
         icon: const Icon(Icons.person),
-      ),
-      IconButton(
-          onPressed: () {
-            Database.getDatabase().clearDatabase();
-            goTo(context: context, routeName: HomeScreen.routeName);
-          },
-          icon: const Icon(Icons.delete))
+      )
     ],
   );
 }

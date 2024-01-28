@@ -104,7 +104,7 @@ class _BankingGroupFormState extends State<BankingGroupForm> {
         loanPeriod: int.parse(groupLoanPeriod.text),
         investmentCycle: int.parse(groupInvestmentCycle.text)));
 
-    bankingGroup.save().then((value) {
+    resolveFuture(context, bankingGroup.save(), (value) {
       if (value == null) {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Failed to create banking group!')));
@@ -117,9 +117,6 @@ class _BankingGroupFormState extends State<BankingGroupForm> {
           }
         });
       }
-    }).onError((error, stackTrace) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Failed: $error')));
     });
   }
 }

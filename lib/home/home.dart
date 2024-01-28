@@ -40,21 +40,14 @@ class _HomeState extends AuthState<HomeScreen> {
               child: const Text('Join')),
         ],
       ),
-      bankingGroupsByUser()
+      userWidget((luser) {
+        return Column(
+          children: [
+            BankingGroupsByUser(userId: luser.uid),
+            BankingGroupsJoined(userId: luser.uid),
+          ],
+        );
+      }),
     ]);
-  }
-
-  Widget bankingGroupsByUser() {
-    log(user.toString(),name: 'InApp');
-    if(user != null) {
-      return Column(
-        children: [
-          BankingGroupsByUser(userId: user!.uid),
-          BankingGroupsJoined(userId: user!.uid),
-        ],
-      );
-    } else {
-      return const Text('Please login!');
-    }
   }
 }
