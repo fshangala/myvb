@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/datatypes/banking_group_loan.dart';
@@ -54,7 +56,7 @@ class _LoanRequestForm extends State<LoanRequestForm> {
         (groupInvestmentBalance) {
       if (double.parse(amount.text) > groupInvestmentBalance) {
         displayRegularSnackBar(
-            context, 'Load amount cannot be more than $groupInvestmentBalance');
+            context, 'Loan amount cannot be more than $groupInvestmentBalance');
       } else {
         var loanAmount = double.parse(amount.text);
         var loanInterestAmount = double.parse(amount.text) *
@@ -71,19 +73,20 @@ class _LoanRequestForm extends State<LoanRequestForm> {
             timestamp: DateTime.now(),
             approved: true));
         resolveFuture(context, loan.save(), (value) {
+          log(loan.id.toString(),name: "Loan");
           var loanInterest = BankingGroupLoan().create(
               BankingGroupLoanModelArguments(
-                  referenceLoanId: loan.id,
+                  referenceLoanId: value?.id,
                   bankingGroupId: widget.bankingGroupMember.bankingGroupId,
                   userId: widget.bankingGroupMember.userId,
                   email: widget.bankingGroupMember.email,
                   amount: loanInterestAmount,
                   loanInterest: widget.bankingGroup.investmentInterest,
                   period: widget.bankingGroup.loanPeriod,
-                  issuedAt: loan.issuedAt,
+                  issuedAt: value!.issuedAt,
                   timestamp: DateTime.now(),
                   approved: true));
-          resolveFuture(context, loanInterest.save(), (value) {
+          resolveFuture(context, loanInterest.save(), (value2) {
             displayRegularSnackBar(
                 context, 'Loan interest successfully added!');
             setState(() {

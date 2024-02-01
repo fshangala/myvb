@@ -85,7 +85,7 @@ class _BankingGroupJoinForm extends State<BankingGroupJoinForm> {
               goTo(
                   context: context,
                   routeName: ViewBankingGroupScreen.routeName,
-                  arguments: ArgumentsViewBankingGroup(id: value.id!));
+                  arguments: ArgumentsViewBankingGroup(id: value.bankingGroupId));
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Could not join group!')));

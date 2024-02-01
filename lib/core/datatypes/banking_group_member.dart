@@ -72,7 +72,7 @@ class VBGroupMember extends Model<VBGroupMember, VBGroupMemberModelArguments> {
   Future<double> investmentBalance() async {
     double balance = 0.0;
     var transactions = await VBGroupTransaction().getObjects(QueryBuilder()
-        .where('bankingGroupId', id)
+        .where('bankingGroupId', bankingGroupId)
         .where('userId', userId)
         .where('approved', true));
     for (var element in transactions) {

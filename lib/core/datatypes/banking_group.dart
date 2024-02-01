@@ -82,11 +82,11 @@ class VBGroup extends Model<VBGroup, VBGroupModelArguments> {
     }
 
     //loans
-    var loans = await BankingGroupLoan().getObjects(
+    /*var loans = await BankingGroupLoan().getObjects(
         QueryBuilder().where('bankingGroupId', id!).where('approved', true));
     for (var element in loans) {
       balance -= element.amount;
-    }
+    }*/
 
     return balance;
   }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/datatypes/banking_group_member.dart';
@@ -34,13 +36,11 @@ class _StateRequestLoan extends AuthState<ScreenRequestLoan> {
         as ArgumentsScreenRequestLoan;
     bankingGroup =
         VBGroup().getObject(QueryBuilder().where('id', args.bankingGroupId));
-    bankingGroupMember = VBGroupMember().getObject(QueryBuilder()
-        .where('bankingGroupId', args.bankingGroupId)
-        .where('userId', args.bankingGroupMemberId));
     return AppScaffold(title: 'Request loan', children: [
       NullFutureRenderer(
         future: bankingGroup,
         futureRenderer: (bankingGroupObject) {
+          bankingGroupMember = bankingGroupObject.groupMember(args.bankingGroupMemberId);
           return NullFutureRenderer(
             future: bankingGroupMember,
             futureRenderer: (bankingGroupMemberObject) {

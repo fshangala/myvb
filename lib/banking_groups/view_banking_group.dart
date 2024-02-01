@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/view_banking_group_member.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
@@ -8,6 +8,7 @@ import 'package:myvb/core/datatypes/model.dart';
 import 'package:myvb/core/datatypes/view_banking_group_screen_arguments.dart';
 import 'package:myvb/core/datatypes/view_group_member_arguments.dart';
 import 'package:myvb/core/extensions/auth_state.dart';
+import 'package:myvb/core/functions/display_regular_snackbar.dart';
 import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/functions/resolve_future.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
@@ -49,13 +50,51 @@ class _ViewBankingGroupState extends AuthState<ViewBankingGroupScreen> {
                 leading: const Icon(Icons.tag),
                 title: const Text('ID'),
                 trailing: Text(bankingGroupObject.id!),
+                onTap: () {
+                  Clipboard.setData(ClipboardData(text: bankingGroupObject.id!)).then((value) {
+                    displayRegularSnackBar(context, 'ID copied to clipboard!');
+                  });
+                },
               ),
               ListTile(
                 title: const Text('Name'),
                 trailing: Text(bankingGroupObject.name),
               ),
+              NotNullFutureRenderer(
+                  future: bankingGroupObject.totalIvenstmentBalance(),
+                  futureRenderer: (totalAmount) {
+                    return ListTile(
+                      leading: const Icon(Icons.money),
+                      title: const Text('Investment Balance'),
+                      trailing: Text(totalAmount.toString()),
+                    );
+                  }),
+              const Divider(),
+              BankingGroupMembers(bankingGroup: bankingGroupObject),
+              BankingGroupTransactions(
+                  bankingGroupId: bankingGroupObject.id!),
               NullFutureRenderer(future: bankingGroupMember, futureRenderer: (bankingGroupMemberObject){
-                return Text(bankingGroupMemberObject.email);
+                return NotNullFutureRenderer(
+                    future:
+                    bankingGroupMemberObject.investmentBalance(),
+                    futureRenderer: (myBalance) {
+                      return ListTile(
+                        leading: const Icon(Icons.person),
+                        title: Text(bankingGroupMemberObject.email),
+                        subtitle: const Text('Manage your investments'),
+                        trailing: Text(myBalance.toString()),
+                        onTap: () {
+                          goTo(
+                              context: context,
+                              routeName: ViewBankingGroupMemberScreen
+                                  .routeName,
+                              arguments: ArgumentsViewGroupMember(
+                                  bankingGroupObject.id!,
+                                  bankingGroupMemberObject.id!),
+                              permanent: false);
+                        },
+                      );
+                    });
               })
             ],
           );

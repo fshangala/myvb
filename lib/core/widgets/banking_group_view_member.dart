@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:myvb/banking_groups/invest_banking_group.dart';
 import 'package:myvb/banking_groups/screen_request_loan.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/datatypes/banking_group_invest_arguments.dart';
 import 'package:myvb/core/datatypes/banking_group_member.dart';
+import 'package:myvb/core/functions/display_regular_snackbar.dart';
 import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/functions/resolve_future.dart';
 import 'package:myvb/core/widgets/banking_group_member_loans.dart';
@@ -41,8 +43,14 @@ class _BankingGroupViewMember extends State<BankingGroupViewMember> {
     return Column(
       children: [
         ListTile(
-          leading: Text(widget.bankingGroup.id!),
-          title: Text(widget.bankingGroup.name),
+          title: const Text('Banking Group'),
+          subtitle: Text(widget.bankingGroup.id!),
+          trailing: Text(widget.bankingGroup.name),
+          onTap: () {
+            Clipboard.setData(ClipboardData(text: widget.bankingGroup.id!)).then((value) {
+              displayRegularSnackBar(context, 'ID copied to clipboard!');
+            });
+          },
         ),
         NullFutureRenderer(
             future: member,
@@ -78,7 +86,7 @@ class _BankingGroupViewMember extends State<BankingGroupViewMember> {
                                     routeName: ScreenRequestLoan.routeName,
                                     arguments: ArgumentsScreenRequestLoan(
                                         bankingGroupId: widget.bankingGroup.id!,
-                                        bankingGroupMemberId: groupMember.id!),
+                                        bankingGroupMemberId: groupMember.userId),
                                     permanent: false);
                               },
                               child: const Text('Request loan')),

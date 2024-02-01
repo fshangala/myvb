@@ -64,7 +64,7 @@ class BankingGroupLoan
   @override
   Map<String, dynamic> toMap() {
     return {
-      'di': id,
+      'id': id,
       'referenceLoanId': referenceLoanId,
       'bankingGroupId': bankingGroupId,
       'userId': userId,
