@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/profile_screen_arguments.dart';
 import 'package:myvb/core/extensions/auth_state.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
+import 'package:myvb/core/widgets/app_scaffold.dart';
 import 'package:myvb/core/widgets/profile_view.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -20,17 +21,9 @@ class _ProfileScreenState extends AuthState<ProfileScreen> {
   Widget build(BuildContext context) {
     var args =
         ModalRoute.of(context)!.settings.arguments as ArgumentsProfileScreen?;
-    return Scaffold(
-      appBar: appBar(context, 'Profile'),
-      body: Container(
-        padding: const EdgeInsets.all(16),
-        child: ListView(
-          children: [
-            _userProfile(args: args, user: user!),
-          ],
-        ),
-      ),
-    );
+    return AppScaffold(title: 'Profile', children: [
+      userWidget((luser) => _userProfile(user: luser))
+    ]);
   }
 
   UserProfile _userProfile({ArgumentsProfileScreen? args, required User user}) {
