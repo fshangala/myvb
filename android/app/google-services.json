@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "392028823949",
-    "project_id": "myvb-cb1b4",
-    "storage_bucket": "myvb-cb1b4.appspot.com"
+    "project_number": "154441437281",
+    "project_id": "myvb-b853c",
+    "storage_bucket": "myvb-b853c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:392028823949:android:cfa3c37e6ce17c82a4ddc4",
+        "mobilesdk_app_id": "1:154441437281:android:7015ce18514625da761a20",
         "android_client_info": {
           "package_name": "com.fshangala.apps.myvb"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD8JszxpRpLbhLU1wwF2bRZVFVziC03Irs"
+          "current_key": "AIzaSyAR8_bUtFJVc6TjkXNIdeG7uCFlG0w_JxU"
         }
       ],
       "services": {

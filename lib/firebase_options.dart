@@ -25,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -47,29 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCmtMwbb44zeaHzKwzXYiDhUsF9AkIB1ek',
-    appId: '1:392028823949:web:37a9a6117622ebf4a4ddc4',
-    messagingSenderId: '392028823949',
-    projectId: 'myvb-cb1b4',
-    authDomain: 'myvb-cb1b4.firebaseapp.com',
-    storageBucket: 'myvb-cb1b4.appspot.com',
-    measurementId: 'G-192JTZZYYK',
+    apiKey: 'AIzaSyCbJMEW2sk1iZ-Z6GJ2P4gnfn0pvRp-BC0',
+    appId: '1:154441437281:web:a1f1ade74db0e24c761a20',
+    messagingSenderId: '154441437281',
+    projectId: 'myvb-b853c',
+    authDomain: 'myvb-b853c.firebaseapp.com',
+    storageBucket: 'myvb-b853c.appspot.com',
+    measurementId: 'G-ELSGB57VDD',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD8JszxpRpLbhLU1wwF2bRZVFVziC03Irs',
-    appId: '1:392028823949:android:cfa3c37e6ce17c82a4ddc4',
-    messagingSenderId: '392028823949',
-    projectId: 'myvb-cb1b4',
-    storageBucket: 'myvb-cb1b4.appspot.com',
+    apiKey: 'AIzaSyAR8_bUtFJVc6TjkXNIdeG7uCFlG0w_JxU',
+    appId: '1:154441437281:android:7015ce18514625da761a20',
+    messagingSenderId: '154441437281',
+    projectId: 'myvb-b853c',
+    storageBucket: 'myvb-b853c.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBayGyB4bRYS7AFKBRFYAZCMOp0mS7RdLY',
-    appId: '1:392028823949:ios:b742c947612b1eeea4ddc4',
-    messagingSenderId: '392028823949',
-    projectId: 'myvb-cb1b4',
-    storageBucket: 'myvb-cb1b4.appspot.com',
+    apiKey: 'AIzaSyAAULIbGxE0MfTLwEEUYwj90GfPJUIRetc',
+    appId: '1:154441437281:ios:60cacb459754f8cb761a20',
+    messagingSenderId: '154441437281',
+    projectId: 'myvb-b853c',
+    storageBucket: 'myvb-b853c.appspot.com',
     iosBundleId: 'com.fshangala.apps.myvb',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyAAULIbGxE0MfTLwEEUYwj90GfPJUIRetc',
+    appId: '1:154441437281:ios:311df8648f1ce32a761a20',
+    messagingSenderId: '154441437281',
+    projectId: 'myvb-b853c',
+    storageBucket: 'myvb-b853c.appspot.com',
+    iosBundleId: 'com.fshangala.apps.myvb.RunnerTests',
   );
 }
