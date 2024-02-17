@@ -21,9 +21,12 @@ class _ProfileScreenState extends AuthState<ProfileScreen> {
   Widget build(BuildContext context) {
     var args =
         ModalRoute.of(context)!.settings.arguments as ArgumentsProfileScreen?;
-    return AppScaffold(title: 'Profile', children: [
-      userWidget((luser) => _userProfile(user: luser))
-    ]);
+    return AppScaffold(
+        title: 'Profile',
+        onRefresh: () {
+          setState(() {});
+        },
+        children: [userWidget((luser) => _userProfile(user: luser))]);
   }
 
   UserProfile _userProfile({ArgumentsProfileScreen? args, required User user}) {

@@ -27,7 +27,7 @@ class _RepayLoanScreen extends AuthState<RepayLoanScreen> {
   Widget build(BuildContext context) {
     var args =
         ModalRoute.of(context)!.settings.arguments as RepayLoanScreenArguments;
-    return AppScaffold(title: 'Repay Loan', children: [
+    return AppScaffold(title: 'Repay Loan', onRefresh: () {}, children: [
       NullFutureRenderer(
           future: VBGroup()
               .getObject(QueryBuilder().where('id', args.bankingGroupId)),

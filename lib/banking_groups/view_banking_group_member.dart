@@ -15,7 +15,7 @@ class ViewBankingGroupMemberScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var args =
         ModalRoute.of(context)!.settings.arguments as ArgumentsViewGroupMember;
-    return AppScaffold(title: 'Group Member', children: [
+    return AppScaffold(title: 'Group Member', onRefresh: () {}, children: [
       ViewBankingGroupMember(
         bankingGroupId: args.bankingGroupId,
         userId: args.userId,

@@ -12,6 +12,15 @@ AppBar appBar(BuildContext context, String title) {
         onPressed: () {
           goTo(
               context: context,
+              routeName: HomeScreen.routeName,
+              permanent: true);
+        },
+        icon: const Icon(Icons.home),
+      ),
+      IconButton(
+        onPressed: () {
+          goTo(
+              context: context,
               routeName: ProfileScreen.routeName,
               permanent: false);
         },

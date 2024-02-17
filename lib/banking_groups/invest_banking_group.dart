@@ -24,7 +24,7 @@ class _InvestBankingGroupState extends AuthState<InvestBankingGroup> {
   Widget build(BuildContext context) {
     var args = ModalRoute.of(context)!.settings.arguments
         as ArgumentsBankingGroupInvestScreen;
-    return AppScaffold(title: 'Invest', children: [
+    return AppScaffold(title: 'Invest', onRefresh: () {}, children: [
       Column(
         children: [_renderInvestForm(args.bankingGroupId)],
       ),

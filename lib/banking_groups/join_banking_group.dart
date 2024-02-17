@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/core/extensions/auth_state.dart';
-import 'package:myvb/core/widgets/app_bar.dart';
 import 'package:myvb/core/widgets/app_scaffold.dart';
 import 'package:myvb/core/widgets/banking_group_join_form.dart';
 
@@ -18,12 +17,15 @@ class JoinBankingGroup extends StatefulWidget {
 class _JoinBankingGroupState extends AuthState<JoinBankingGroup> {
   @override
   Widget build(BuildContext context) {
-    return AppScaffold(title: 'Join Banking Group', children: [
-      Column(
+    return AppScaffold(
+        title: 'Join Banking Group',
+        onRefresh: () {},
         children: [
-          userWidget((luser) => BankingGroupJoinForm(user: luser)),
-        ],
-      ),
-    ]);
+          Column(
+            children: [
+              userWidget((luser) => BankingGroupJoinForm(user: luser)),
+            ],
+          ),
+        ]);
   }
 }

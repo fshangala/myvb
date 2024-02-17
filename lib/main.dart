@@ -34,15 +34,14 @@ class MyApp extends StatelessWidget {
         LoginScreen.routeName: (context) => const LoginScreen(),
         RegisterScreen.routeName: (context) => const RegisterScreen(),
         CreateBankingGroup.routeName: (context) => const CreateBankingGroup(),
-        JoinBankingGroup.routeName: (context) => const JoinBankingGroup(),
+        //JoinBankingGroup.routeName: (context) => const JoinBankingGroup(),
         ViewBankingGroupScreen.routeName: (context) =>
             const ViewBankingGroupScreen(),
-        ProfileScreen.routeName: (context) => const ProfileScreen(),
-        ViewBankingGroupMemberScreen.routeName: (context) =>
-            const ViewBankingGroupMemberScreen(),
-        InvestBankingGroup.routeName: (context) => const InvestBankingGroup(),
-        ScreenRequestLoan.routeName: (context) => const ScreenRequestLoan(),
-        RepayLoanScreen.routeName: (context) => const RepayLoanScreen()
+        //ProfileScreen.routeName: (context) => const ProfileScreen(),
+        //ViewBankingGroupMemberScreen.routeName: (context) => const ViewBankingGroupMemberScreen(),
+        //InvestBankingGroup.routeName: (context) => const InvestBankingGroup(),
+        //ScreenRequestLoan.routeName: (context) => const ScreenRequestLoan(),
+        //RepayLoanScreen.routeName: (context) => const RepayLoanScreen()
       },
       initialRoute: '/',
     );

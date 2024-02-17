@@ -41,65 +41,76 @@ class _ViewBankingGroupState extends AuthState<ViewBankingGroupScreen> {
         ModalRoute.of(context)!.settings.arguments as ArgumentsViewBankingGroup;
     bankingGroup = vbgroupAPI.getObject(QueryBuilder().where('id', args.id));
 
-    return AppScaffold(title: 'View Banking Group', children: [
-      userWidget((luser) => NullFutureRenderer(future: bankingGroup, futureRenderer: (bankingGroupObject){
-          bankingGroupMember = bankingGroupObject.groupMember(luser.uid);
-          return Column(
-            children: [
-              ListTile(
-                leading: const Icon(Icons.tag),
-                title: const Text('ID'),
-                trailing: Text(bankingGroupObject.id!),
-                onTap: () {
-                  Clipboard.setData(ClipboardData(text: bankingGroupObject.id!)).then((value) {
-                    displayRegularSnackBar(context, 'ID copied to clipboard!');
-                  });
-                },
-              ),
-              ListTile(
-                title: const Text('Name'),
-                trailing: Text(bankingGroupObject.name),
-              ),
-              NotNullFutureRenderer(
-                  future: bankingGroupObject.totalIvenstmentBalance(),
-                  futureRenderer: (totalAmount) {
-                    return ListTile(
-                      leading: const Icon(Icons.money),
-                      title: const Text('Investment Balance'),
-                      trailing: Text(totalAmount.toString()),
-                    );
-                  }),
-              const Divider(),
-              BankingGroupMembers(bankingGroup: bankingGroupObject),
-              BankingGroupTransactions(
-                  bankingGroupId: bankingGroupObject.id!),
-              NullFutureRenderer(future: bankingGroupMember, futureRenderer: (bankingGroupMemberObject){
-                return NotNullFutureRenderer(
-                    future:
-                    bankingGroupMemberObject.investmentBalance(),
-                    futureRenderer: (myBalance) {
-                      return ListTile(
-                        leading: const Icon(Icons.person),
-                        title: Text(bankingGroupMemberObject.email),
-                        subtitle: const Text('Manage your investments'),
-                        trailing: Text(myBalance.toString()),
-                        onTap: () {
-                          goTo(
-                              context: context,
-                              routeName: ViewBankingGroupMemberScreen
-                                  .routeName,
-                              arguments: ArgumentsViewGroupMember(
-                                  bankingGroupObject.id!,
-                                  bankingGroupMemberObject.id!),
-                              permanent: false);
-                        },
-                      );
-                    });
-              })
-            ],
-          );
-      })),
-    ]);
+    return AppScaffold(
+        title: 'View Banking Group',
+        onRefresh: () {},
+        children: [
+          userWidget((luser) => NullFutureRenderer(
+              future: bankingGroup,
+              futureRenderer: (bankingGroupObject) {
+                bankingGroupMember = bankingGroupObject.groupMember(luser.uid);
+                return Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.tag),
+                      title: const Text('ID'),
+                      trailing: Text(bankingGroupObject.id!),
+                      onTap: () {
+                        Clipboard.setData(
+                                ClipboardData(text: bankingGroupObject.id!))
+                            .then((value) {
+                          displayRegularSnackBar(
+                              context, 'ID copied to clipboard!');
+                        });
+                      },
+                    ),
+                    ListTile(
+                      title: const Text('Name'),
+                      trailing: Text(bankingGroupObject.name),
+                    ),
+                    NotNullFutureRenderer(
+                        future: bankingGroupObject.totalIvenstmentBalance(),
+                        futureRenderer: (totalAmount) {
+                          return ListTile(
+                            leading: const Icon(Icons.money),
+                            title: const Text('Investment Balance'),
+                            trailing: Text(totalAmount.toString()),
+                          );
+                        }),
+                    const Divider(),
+                    BankingGroupMembers(bankingGroup: bankingGroupObject),
+                    BankingGroupTransactions(
+                        bankingGroupId: bankingGroupObject.id!),
+                    NullFutureRenderer(
+                        future: bankingGroupMember,
+                        futureRenderer: (bankingGroupMemberObject) {
+                          return NotNullFutureRenderer(
+                              future:
+                                  bankingGroupMemberObject.investmentBalance(),
+                              futureRenderer: (myBalance) {
+                                return ListTile(
+                                  leading: const Icon(Icons.person),
+                                  title: Text(bankingGroupMemberObject.email),
+                                  subtitle:
+                                      const Text('Manage your investments'),
+                                  trailing: Text(myBalance.toString()),
+                                  onTap: () {
+                                    goTo(
+                                        context: context,
+                                        routeName: ViewBankingGroupMemberScreen
+                                            .routeName,
+                                        arguments: ArgumentsViewGroupMember(
+                                            bankingGroupObject.id!,
+                                            bankingGroupMemberObject.id!),
+                                        permanent: false);
+                                  },
+                                );
+                              });
+                        })
+                  ],
+                );
+              })),
+        ]);
 
     /*return Scaffold(
       appBar: appBar(context, 'View Banking Group'),
