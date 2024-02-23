@@ -43,8 +43,9 @@ class _BankingGroupFormState extends State<BankingGroupForm> {
         Container(
           padding: const EdgeInsets.all(8),
           child: TextFormField(
-            decoration:
-                const InputDecoration(label: Text('Investment Interest')),
+            decoration: const InputDecoration(
+                label: Text('Investment Interest'),
+                helperText: 'Percentage interest, e.g 10'),
             controller: groupInvestmentInterest,
             keyboardType: TextInputType.number,
             validator: (value) {
@@ -58,7 +59,9 @@ class _BankingGroupFormState extends State<BankingGroupForm> {
         Container(
           padding: const EdgeInsets.all(8),
           child: TextFormField(
-            decoration: const InputDecoration(label: Text('Loan Period')),
+            decoration: const InputDecoration(
+                label: Text('Loan Period'),
+                helperText: 'Loan period in days e.g 30'),
             controller: groupLoanPeriod,
             keyboardType: TextInputType.number,
             validator: (value) {
@@ -72,7 +75,9 @@ class _BankingGroupFormState extends State<BankingGroupForm> {
         Container(
           padding: const EdgeInsets.all(8),
           child: TextFormField(
-            decoration: const InputDecoration(label: Text('Investment Cycle')),
+            decoration: const InputDecoration(
+                label: Text('Investment Cycle'),
+                helperText: 'Investment cycle in days e.g 90'),
             controller: groupInvestmentCycle,
             keyboardType: TextInputType.number,
             validator: (value) {
@@ -111,12 +116,12 @@ class _BankingGroupFormState extends State<BankingGroupForm> {
       } else {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('${value.name} created!')));
-        resolveFuture(context, value.joinGroup(widget.user), (member) {
+        resolveFuture(context, value.addMember(widget.user.email!), (member) {
           if (widget.onSaved != null) {
             widget.onSaved!(value);
           }
-        });
+        }, message: 'Joining ${value.name}');
       }
-    });
+    }, message: 'Creating ${bankingGroup.name}');
   }
 }

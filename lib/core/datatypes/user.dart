@@ -4,59 +4,85 @@ import 'package:myvb/core/datatypes/model.dart';
 
 class UserModelArguments {
   String? id;
+  String uid;
   String email;
   String firstName;
   String lastName;
-  String password;
 
   UserModelArguments(
       {this.id,
+      required this.uid,
       required this.email,
       required this.firstName,
-      required this.lastName,
-      required this.password});
+      required this.lastName});
 }
 
 class AppUser extends Model<AppUser, UserModelArguments> {
-  User? user;
+  String? id;
+  late String uid;
+  late String email;
+  late String firstName;
+  late String lastName;
 
   @override
   String collection = 'users';
 
   @override
   AppUser create(UserModelArguments arguments) {
-    return AppUser();
-  }
-
-  @override
-  AppUser? fromMap(Map<String, dynamic>? data) {
-    return null;
+    var user = AppUser();
+    user.id = arguments.id;
+    user.uid = arguments.uid;
+    user.email = arguments.email;
+    user.firstName = arguments.firstName;
+    user.lastName = arguments.lastName;
+    return user;
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return <String, dynamic>{};
+    return {
+      'id': id,
+      'uid': uid,
+      'email': email,
+      'firstName': firstName,
+      'lastName': lastName,
+    };
   }
 
-  Future<AppUser?> loggedInUser() async {
-    var instance = await SharedPreferences.getInstance();
-    var userId = instance.getString('loggedInUser');
-    if (userId == null) {
+  @override
+  AppUser? fromMap(Map<String, dynamic>? data) {
+    if (data == null) {
       return null;
     } else {
-      return AppUser().getObject(QueryBuilder().where('id', userId));
+      return create(UserModelArguments(
+          uid: data['uid'],
+          email: data['email'],
+          firstName: data['firstName'],
+          lastName: data['lastName']));
     }
+  }
+
+  Future<User?> registerUser(
+      {required String email,
+      required String firstName,
+      required String lastName,
+      required String password}) async {
+    var userCredentials = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+    await userCredentials.user?.updateDisplayName('$firstName $lastName');
+    var appUser = create(UserModelArguments(
+        uid: userCredentials.user!.uid,
+        email: email,
+        firstName: firstName,
+        lastName: lastName));
+    await appUser.save();
+    return userCredentials.user!;
   }
 
   Future<User?> login(String email, String password) async {
     final credential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
-    user = credential.user;
-
-    //var instance = await SharedPreferences.getInstance();
-    //instance.setString('loggedInUser', user!.uid);
-
-    return user;
+    return credential.user;
   }
 
   Future<void> logout() async {

@@ -3,6 +3,7 @@ import 'package:myvb/core/datatypes/banking_group_loan.dart';
 import 'package:myvb/core/datatypes/banking_group_member.dart';
 import 'package:myvb/core/datatypes/banking_group_transaction.dart';
 import 'package:myvb/core/datatypes/model.dart';
+import 'package:myvb/core/datatypes/user.dart';
 
 class VBGroupModelArguments {
   String? id;
@@ -115,7 +116,10 @@ class VBGroup extends Model<VBGroup, VBGroupModelArguments> {
         QueryBuilder().where('userId', user.uid).where('bankingGroupId', id));
     if (bankingGroupMember == null) {
       bankingGroupMember = VBGroupMember().create(VBGroupMemberModelArguments(
-          bankingGroupId: id!, userId: user.uid, email: user.email!));
+        bankingGroupId: id!,
+        userId: user.uid,
+        email: user.email!,
+      ));
       var saved = await bankingGroupMember.save();
       if (saved == null) {
         return null;
@@ -124,6 +128,32 @@ class VBGroup extends Model<VBGroup, VBGroupModelArguments> {
       }
     } else {
       return null;
+    }
+  }
+
+  Future<VBGroupMember?> addMember(String email) async {
+    var user = await AppUser().getObject(QueryBuilder().where('email', email));
+    if (user == null) {
+      return null;
+    } else {
+      var bankingGroupMember = await VBGroupMember().getObject(
+          QueryBuilder().where('userId', user.uid).where('bankingGroupId', id));
+      if (bankingGroupMember == null) {
+        bankingGroupMember = VBGroupMember().create(VBGroupMemberModelArguments(
+          bankingGroupId: id!,
+          userId: user.uid,
+          email: user.email,
+          approved: true,
+        ));
+        var saved = await bankingGroupMember.save();
+        if (saved == null) {
+          return null;
+        } else {
+          return saved;
+        }
+      } else {
+        return null;
+      }
     }
   }
 

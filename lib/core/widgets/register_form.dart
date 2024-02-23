@@ -1,10 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/functions/resolve_future.dart';
 import 'package:myvb/home/home.dart';
 import 'package:myvb/users/login.dart';
-import 'dart:developer' as developer;
 
 class RegisterForm extends StatefulWidget {
   final void Function(dynamic user)? setUser;
@@ -17,6 +16,7 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
+  var appUser = AppUser();
   final _formKey = GlobalKey<FormState>();
   var emailController = TextEditingController(text: '');
   var firstNameController = TextEditingController(text: '');
@@ -100,11 +100,13 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   void _register() {
-    resolveFuture(context, FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: emailController.text,
-      password: passwordController.text,
-    ), (value) {
-      value.user?.updateDisplayName('${firstNameController.text} ${lastNameController.text}');
+    resolveFuture(
+        context,
+        appUser.registerUser(
+            email: emailController.text,
+            firstName: firstNameController.text,
+            lastName: lastNameController.text,
+            password: passwordController.text), (value) {
       goTo(context: context, routeName: HomeScreen.routeName, permanent: true);
     });
   }

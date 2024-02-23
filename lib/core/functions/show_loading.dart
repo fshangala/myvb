@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:myvb/core/widgets/loading_dialog.dart';
 
-void showLoading(BuildContext context) {
+void showLoading(BuildContext context, {String message = "Loading"}) {
   showDialog(
       barrierDismissible: false,
       context: context,
       builder: ((context) {
-        return const Dialog(
-          child: Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
+        return LoadingDialog(messageText: message);
       }));
 }
