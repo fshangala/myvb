@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/datatypes/banking_group_loan.dart';
@@ -59,9 +57,8 @@ class _LoanRequestForm extends State<LoanRequestForm> {
             context, 'Loan amount cannot be more than $groupInvestmentBalance');
       } else {
         var loanAmount = double.parse(amount.text);
-        var loanInterestAmount = double.parse(amount.text) *
-            widget.bankingGroup.investmentInterest *
-            0.01;
+        var loanInterestAmount =
+            loanAmount * widget.bankingGroup.investmentInterest * 0.01;
         var loan = BankingGroupLoan().create(BankingGroupLoanModelArguments(
             bankingGroupId: widget.bankingGroupMember.bankingGroupId,
             userId: widget.bankingGroupMember.userId,
@@ -73,7 +70,6 @@ class _LoanRequestForm extends State<LoanRequestForm> {
             timestamp: DateTime.now(),
             approved: true));
         resolveFuture(context, loan.save(), (value) {
-          log(loan.id.toString(),name: "Loan");
           var loanInterest = BankingGroupLoan().create(
               BankingGroupLoanModelArguments(
                   referenceLoanId: value?.id,
@@ -92,9 +88,9 @@ class _LoanRequestForm extends State<LoanRequestForm> {
             setState(() {
               amount.text = '';
             });
-          });
-        });
+          }, message: 'Adding loan interest');
+        }, message: 'Requesting loan');
       }
-    });
+    }, message: 'Collecting total investments');
   }
 }

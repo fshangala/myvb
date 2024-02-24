@@ -98,6 +98,16 @@ class VBGroup extends Model<VBGroup, VBGroupModelArguments> {
     return member;
   }
 
+  Future<List<BankingGroupLoan>> getGroupMemberLoans(String userId) async {
+    var member = await groupMember(userId);
+    return member == null ? [] : await member.getLoans();
+  }
+
+  Future<double?> getGroupMemberLoanBalance(String userId) async {
+    var member = await groupMember(userId);
+    return member == null ? null : await member.loanBalance();
+  }
+
   Future<List<VBGroupMember>> groupMembers(bool? approved) async {
     List<VBGroupMember> members = [];
     if (approved == null) {
@@ -169,5 +179,18 @@ class VBGroup extends Model<VBGroup, VBGroupModelArguments> {
       }
     }
     return groups;
+  }
+
+  Future<List<VBGroupTransaction>> transactions({bool? approved}) async {
+    var transactions = <VBGroupTransaction>[];
+    if (approved == null) {
+      transactions = await VBGroupTransaction()
+          .getObjects(QueryBuilder().where('bankingGroupId', id));
+    } else {
+      transactions = await VBGroupTransaction().getObjects(QueryBuilder()
+          .where('bankingGroupId', id)
+          .where('approved', approved));
+    }
+    return transactions;
   }
 }

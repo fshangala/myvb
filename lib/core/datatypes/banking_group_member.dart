@@ -81,6 +81,17 @@ class VBGroupMember extends Model<VBGroupMember, VBGroupMemberModelArguments> {
     return balance;
   }
 
+  requestLoan() async {
+    //
+  }
+
+  Future<List<BankingGroupLoan>> getLoans() async {
+    var loans = await BankingGroupLoan().getObjects(QueryBuilder()
+        .where('bankingGroupId', bankingGroupId)
+        .where('userId', userId));
+    return loans;
+  }
+
   Future<BankingGroupLoan?> getLatestLoan() async {
     BankingGroupLoan? latest;
     var loans = await BankingGroupLoan().getObjects(QueryBuilder()

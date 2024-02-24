@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/view_banking_group.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';

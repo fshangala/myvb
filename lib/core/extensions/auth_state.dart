@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:myvb/core/functions/display_regular_snackbar.dart';
 import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/users/login.dart';
 
@@ -26,7 +23,7 @@ abstract class AuthState<T extends StatefulWidget> extends State<T> {
   }
 
   Widget userWidget(Widget Function(User luser) renderer) {
-    if(user == null) {
+    if (user == null) {
       return const Text('Please login!');
     } else {
       return renderer(user!);

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:myvb/core/database.dart';
 import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/home/home.dart';
 import 'package:myvb/users/profile.dart';
