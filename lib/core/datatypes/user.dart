@@ -79,9 +79,13 @@ class AppUser extends Model<AppUser, UserModelArguments> {
   }
 
   Future<User?> login(String email, String password) async {
-    final credential = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
-    return credential.user;
+    try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      return credential.user;
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<void> logout() async {

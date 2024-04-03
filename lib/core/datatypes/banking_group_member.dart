@@ -81,8 +81,24 @@ class VBGroupMember extends Model<VBGroupMember, VBGroupMemberModelArguments> {
     return balance;
   }
 
-  requestLoan() async {
-    //
+  Future<BankingGroupLoan?> requestLoan({
+    required double amount,
+    required int investmentInterest,
+    required int loanPeriod,
+  }) async {
+    var loan = BankingGroupLoan().create(
+      BankingGroupLoanModelArguments(
+        bankingGroupId: bankingGroupId,
+        userId: userId,
+        email: email,
+        amount: amount,
+        loanInterest: investmentInterest,
+        period: loanPeriod,
+        issuedAt: DateTime.now(),
+        timestamp: DateTime.now(),
+      ),
+    );
+    return await loan.save();
   }
 
   Future<List<BankingGroupLoan>> getLoans() async {

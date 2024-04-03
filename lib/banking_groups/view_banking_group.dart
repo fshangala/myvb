@@ -66,17 +66,22 @@ class _ViewBankingGroupState2 extends AuthState<ViewBankingGroupScreen> {
                     )
                   ],
                   bottom: const TabBar(
+                    isScrollable: true,
                     tabs: [
                       Tab(
+                        icon: Icon(Icons.summarize),
                         text: 'Overview',
                       ),
                       Tab(
+                        icon: Icon(Icons.group),
                         text: 'Members',
                       ),
                       Tab(
+                        icon: Icon(Icons.monetization_on),
                         text: 'Transactions',
                       ),
                       Tab(
+                        icon: Icon(Icons.money),
                         text: 'Loans',
                       ),
                     ],

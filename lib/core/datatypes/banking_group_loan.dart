@@ -7,7 +7,7 @@ class BankingGroupLoanModelArguments {
   String userId;
   String email;
   double amount;
-  double loanInterest;
+  int loanInterest;
   int period;
   DateTime issuedAt;
   DateTime timestamp;
@@ -35,7 +35,7 @@ class BankingGroupLoan
   late String userId;
   late String email;
   late double amount;
-  late double loanInterest;
+  late int loanInterest;
   late int period;
   late DateTime issuedAt;
   late DateTime timestamp;
@@ -89,7 +89,7 @@ class BankingGroupLoan
           bankingGroupId: data['bankingGroupId'],
           userId: data['userId'],
           email: data['email'],
-          amount: data['amount'],
+          amount: double.parse(data['amount'].toString()),
           loanInterest: data['loanInterest'],
           period: data['period'],
           issuedAt: DateTime.parse(data['issuedAt']),

@@ -15,9 +15,13 @@ abstract class AuthState<T extends StatefulWidget> extends State<T> {
       if (luser == null) {
         goTo(context: context, routeName: LoginScreen.routeName);
       }
-      setState(() {
+      if (mounted) {
+        setState(() {
+          user = luser;
+        });
+      } else {
         user = luser;
-      });
+      }
     });
     afterInit();
   }

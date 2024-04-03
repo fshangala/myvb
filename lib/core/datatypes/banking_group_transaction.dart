@@ -51,7 +51,7 @@ class VBGroupTransaction
           bankingGroupId: data['bankingGroupId'],
           userId: data['userId'],
           email: data['email'],
-          amount: data['amount'],
+          amount: double.parse(data['amount'].toString()),
           approved: data['approved']));
     }
   }

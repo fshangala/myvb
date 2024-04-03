@@ -59,17 +59,13 @@ class _LoanRequestForm extends State<LoanRequestForm> {
         var loanAmount = double.parse(amount.text);
         var loanInterestAmount =
             loanAmount * widget.bankingGroup.investmentInterest * 0.01;
-        var loan = BankingGroupLoan().create(BankingGroupLoanModelArguments(
-            bankingGroupId: widget.bankingGroupMember.bankingGroupId,
-            userId: widget.bankingGroupMember.userId,
-            email: widget.bankingGroupMember.email,
-            amount: loanAmount,
-            loanInterest: widget.bankingGroup.investmentInterest,
-            period: widget.bankingGroup.loanPeriod,
-            issuedAt: DateTime.now(),
-            timestamp: DateTime.now(),
-            approved: true));
-        resolveFuture(context, loan.save(), (value) {
+        resolveFuture(
+            context,
+            widget.bankingGroupMember.requestLoan(
+              amount: double.parse(amount.text),
+              investmentInterest: widget.bankingGroup.investmentInterest,
+              loanPeriod: widget.bankingGroup.loanPeriod,
+            ), (value) {
           var loanInterest = BankingGroupLoan().create(
               BankingGroupLoanModelArguments(
                   referenceLoanId: value?.id,

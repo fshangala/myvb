@@ -105,7 +105,7 @@ class _BankingGroupFormState extends State<BankingGroupForm> {
     var bankingGroup = VBGroup().create(VBGroupModelArguments(
         owner: widget.user.uid,
         name: groupName.text,
-        investmentInterest: double.parse(groupInvestmentInterest.text),
+        investmentInterest: int.parse(groupInvestmentInterest.text),
         loanPeriod: int.parse(groupLoanPeriod.text),
         investmentCycle: int.parse(groupInvestmentCycle.text)));
 

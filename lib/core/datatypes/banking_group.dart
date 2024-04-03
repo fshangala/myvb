@@ -9,7 +9,7 @@ class VBGroupModelArguments {
   String? id;
   String owner;
   String name;
-  double investmentInterest;
+  int investmentInterest;
   int loanPeriod;
   int investmentCycle;
 
@@ -26,7 +26,7 @@ class VBGroup extends Model<VBGroup, VBGroupModelArguments> {
   String? id;
   late String owner;
   late String name;
-  late double investmentInterest;
+  late int investmentInterest;
   late int loanPeriod;
   late int investmentCycle;
 

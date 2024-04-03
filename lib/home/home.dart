@@ -40,6 +40,13 @@ class _HomeState2 extends AuthState<HomeScreen> {
   }
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return userWidget((luser) {
       userBankingGroupsFuture = userBankingGroups(luser.uid);
@@ -88,15 +95,21 @@ class BankingGroups extends StatelessWidget {
     }
     return Column(
       children: bankingGroups
-          .map((e) => ListTile(
-                onTap: () {
-                  goTo(
-                      context: context,
-                      routeName: ViewBankingGroupScreen.routeName,
-                      arguments: ArgumentsViewBankingGroup(id: e.id!));
-                },
-                leading: const Icon(Icons.group),
-                title: Text(e.name),
+          .map((e) => Container(
+                margin: const EdgeInsets.only(top: 8, left: 8, right: 8),
+                child: ListTile(
+                  onTap: () {
+                    goTo(
+                        context: context,
+                        routeName: ViewBankingGroupScreen.routeName,
+                        arguments: ArgumentsViewBankingGroup(id: e.id!));
+                  },
+                  leading: const Icon(Icons.group),
+                  title: Text(e.name),
+                  trailing: const Icon(Icons.arrow_forward),
+                  style: ListTileStyle.list,
+                  tileColor: Theme.of(context).colorScheme.background,
+                ),
               ))
           .toList(),
     );

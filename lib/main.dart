@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:myvb/pages/transaction_tokens.dart';
 import 'package:myvb/users/profile.dart';
 import 'firebase_options.dart';
 
@@ -26,7 +27,7 @@ class MyThemes {
   );
 
   static final lightTheme = ThemeData(
-    scaffoldBackgroundColor: const Color.fromARGB(255, 15, 239, 243),
+    scaffoldBackgroundColor: Color.fromARGB(255, 0, 85, 255),
     primaryColor: primaryColor,
     colorScheme: const ColorScheme.light(primary: primary),
     dividerColor: Colors.black,
@@ -47,7 +48,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: MyThemes.lightTheme,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: const ColorScheme.light(
+          primary: Colors.blue,
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+        ),
+        tabBarTheme: TabBarTheme(
+          labelColor: Colors.white,
+        ),
+      ),
       darkTheme: MyThemes.darkTheme,
       title: 'MyVB',
       routes: {
@@ -63,7 +76,9 @@ class MyApp extends StatelessWidget {
             const ViewBankingGroupMemberScreen(),
         InvestBankingGroup.routeName: (context) => const InvestBankingGroup(),
         ScreenRequestLoan.routeName: (context) => const ScreenRequestLoan(),
-        RepayLoanScreen.routeName: (context) => const RepayLoanScreen()
+        RepayLoanScreen.routeName: (context) => const RepayLoanScreen(),
+        TransactionTokensPage.routeName: (context) =>
+            const TransactionTokensPage(),
       },
       initialRoute: '/',
     );

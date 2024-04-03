@@ -1,6 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myvb/core/extensions/auth_state.dart';
+import 'package:myvb/core/functions/go_to.dart';
+import 'package:myvb/core/functions/resolve_future.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
+import 'package:myvb/home/home.dart';
+import 'package:myvb/pages/transaction_tokens.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const routeName = '/profile';
@@ -21,21 +26,62 @@ class _ProfileScreenState2 extends AuthState<ProfileScreen> {
           body: RefreshIndicator(
             child: ListView(
               children: [
-                const Center(
-                  child: Stack(
-                    children: [
-                      CircleAvatar(
-                        minRadius: 50.0,
-                        child: Icon(
-                          Icons.person,
-                          size: 50.0,
+                Card(
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          minRadius: 50.0,
+                          child: Image.asset(
+                            "assets/My.png",
+                            width: 70.0,
+                          ),
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(luser.displayName!),
+                                Text(luser.email!),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                Center(
-                  child: Text(luser.email!),
+                Container(
+                  margin: const EdgeInsets.all(8),
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Account",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 8, bottom: 8),
+                        child: ListTile(
+                          title: const Text("My Payments"),
+                          trailing: const Icon(Icons.arrow_forward),
+                          onTap: () {
+                            goTo(
+                              context: context,
+                              routeName: TransactionTokensPage.routeName,
+                              permanent: false,
+                            );
+                          },
+                          tileColor: Theme.of(context).colorScheme.background,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 Center(
                   heightFactor: 2.0,
@@ -45,7 +91,15 @@ class _ProfileScreenState2 extends AuthState<ProfileScreen> {
                       style: TextStyle(color: Colors.red),
                     ),
                     onPressed: () {
-                      //TODO: Logout a user
+                      resolveFuture(
+                        context,
+                        FirebaseAuth.instance.signOut(),
+                        (value) {
+                          goTo(
+                              context: context,
+                              routeName: HomeScreen.routeName);
+                        },
+                      );
                     },
                   ),
                 ),
