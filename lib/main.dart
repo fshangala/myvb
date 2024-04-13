@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:myvb/pages/transaction_token.dart';
 import 'package:myvb/pages/transaction_tokens.dart';
 import 'package:myvb/users/profile.dart';
 import 'firebase_options.dart';
@@ -27,7 +28,7 @@ class MyThemes {
   );
 
   static final lightTheme = ThemeData(
-    scaffoldBackgroundColor: Color.fromARGB(255, 0, 85, 255),
+    scaffoldBackgroundColor: const Color.fromARGB(255, 0, 85, 255),
     primaryColor: primaryColor,
     colorScheme: const ColorScheme.light(primary: primary),
     dividerColor: Colors.black,
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.blue,
           foregroundColor: Colors.white,
         ),
-        tabBarTheme: TabBarTheme(
+        tabBarTheme: const TabBarTheme(
           labelColor: Colors.white,
         ),
       ),
@@ -79,6 +80,8 @@ class MyApp extends StatelessWidget {
         RepayLoanScreen.routeName: (context) => const RepayLoanScreen(),
         TransactionTokensPage.routeName: (context) =>
             const TransactionTokensPage(),
+        TransactionTokenPage.routeName: (context) =>
+            const TransactionTokenPage(),
       },
       initialRoute: '/',
     );

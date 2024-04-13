@@ -3,12 +3,14 @@ import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/datatypes/model.dart';
 import 'package:myvb/core/datatypes/transaction_token.dart';
 import 'package:myvb/core/extensions/auth_state.dart';
+import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/widgets/app_scaffold.dart';
 import 'package:myvb/core/widgets/not_null_future_renderer.dart';
 import 'package:myvb/core/widgets/null_future_renderer.dart';
+import 'package:myvb/pages/transaction_token.dart';
 
 class TransactionTokensPage extends StatefulWidget {
-  static const routeName = "/transaction-token-page";
+  static const routeName = "/transaction-tokens-page";
   const TransactionTokensPage({super.key});
 
   @override
@@ -50,7 +52,15 @@ class _TransactionTokensPage extends AuthState<TransactionTokensPage> {
                           ),
                           trailing: const Icon(Icons.arrow_forward),
                           tileColor: Theme.of(context).colorScheme.background,
-                          onTap: () {},
+                          onTap: () {
+                            goTo(
+                              context: context,
+                              routeName: TransactionTokenPage.routeName,
+                              permanent: false,
+                              arguments:
+                                  TransactionTokenPageArguments(tokenId: e.id!),
+                            );
+                          },
                         ))
                     .toList(),
               );

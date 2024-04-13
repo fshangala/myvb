@@ -92,6 +92,39 @@ class _ViewBankingGroupState2 extends AuthState<ViewBankingGroupScreen> {
                     RefreshIndicator(
                         child: ListView(
                           children: [
+                            NullFutureRenderer(
+                              future: bankingGroup.groupMember(luser.uid),
+                              futureRenderer: (bankingGroupMember) {
+                                return Row(
+                                  children: [
+                                    Card(
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            NotNullFutureRenderer(
+                                              future: bankingGroupMember
+                                                  .investmentBalance(),
+                                              futureRenderer:
+                                                  (investmentBalance) {
+                                                return Text(
+                                                  "K ${investmentBalance.toString()}",
+                                                  style: const TextStyle(
+                                                      fontSize: 24.0),
+                                                );
+                                              },
+                                            ),
+                                            const Text(
+                                              "My Investments",
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
                             Card(
                               child: Column(
                                 children: [

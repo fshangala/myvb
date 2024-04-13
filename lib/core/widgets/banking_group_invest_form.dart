@@ -46,8 +46,8 @@ class _BankingGroupInvestFormState extends State<BankingGroupInvestForm> {
                         items: getMobilePaymentOptions()
                             .map(
                               (e) => DropdownMenuItem<String>(
-                                child: Text(e),
                                 value: e,
+                                child: Text(e),
                               ),
                             )
                             .toList(),
@@ -167,7 +167,7 @@ class _BankingGroupInvestFormState extends State<BankingGroupInvestForm> {
   }
 
   List<String> getMobilePaymentOptions() {
-    requestMobilePaymentOptions().then((value) => print(value.statusCode));
+    //requestMobilePaymentOptions().then((value) => print(value.statusCode));
     return ['AirtelZM', 'MTNZM'];
   }
 
@@ -191,6 +191,7 @@ class _BankingGroupInvestFormState extends State<BankingGroupInvestForm> {
             approved: true,
           ),
         );
+        await transaction.save();
         transactionToken!.paid = true;
         transactionToken = await transactionToken!.save();
       } else {
