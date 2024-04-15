@@ -5,6 +5,7 @@ class TransactionTokenModelArguments {
   String bankingGroupId;
   String userId;
   String email;
+  String type;
   String token;
   double amount;
   DateTime issuedAt;
@@ -16,6 +17,7 @@ class TransactionTokenModelArguments {
     required this.bankingGroupId,
     required this.userId,
     required this.email,
+    required this.type,
     required this.token,
     required this.amount,
     required this.issuedAt,
@@ -30,6 +32,7 @@ class TransactionToken
   late String bankingGroupId;
   late String userId;
   late String email;
+  late String type;
   late String token;
   late double amount;
   late DateTime issuedAt;
@@ -46,6 +49,7 @@ class TransactionToken
     token.bankingGroupId = arguments.bankingGroupId;
     token.userId = arguments.userId;
     token.email = arguments.email;
+    token.type = arguments.type;
     token.token = arguments.token;
     token.amount = arguments.amount;
     token.issuedAt = arguments.issuedAt;
@@ -65,6 +69,7 @@ class TransactionToken
           bankingGroupId: data["bankingGroupId"],
           userId: data["userId"],
           email: data["email"],
+          type: data["type"],
           token: data["token"],
           amount: data["amount"],
           issuedAt: DateTime.parse(data['issuedAt']),
@@ -82,6 +87,7 @@ class TransactionToken
       "bankingGroupId": bankingGroupId,
       "userId": userId,
       "email": email,
+      "type": type,
       "token": token,
       "amount": amount,
       "issuedAt": issuedAt.toString(),

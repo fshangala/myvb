@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myvb/core/datatypes/banking_group_loan.dart';
+import 'package:myvb/core/datatypes/banking_group_member.dart';
 import 'package:myvb/core/datatypes/banking_group_transaction.dart';
 import 'package:myvb/core/datatypes/model.dart';
 import 'package:myvb/core/datatypes/transaction_token.dart';
@@ -49,6 +51,7 @@ class _TransactionTokenPage extends AuthState<TransactionTokenPage> {
                   children: [
                     ListTile(
                       title: Text(transactionToken.amount.toString()),
+                      subtitle: Text(transactionToken.type),
                       trailing: transactionToken.paid
                           ? const Text("PAID")
                           : const Text("Not PAID"),
@@ -171,6 +174,7 @@ class _TransactionTokenPage extends AuthState<TransactionTokenPage> {
     required String userId,
     required double amount,
     required String email,
+    required String type,
     required String phoneNumber,
     required String mobileNumberOperator,
   }) async {
@@ -180,6 +184,7 @@ class _TransactionTokenPage extends AuthState<TransactionTokenPage> {
       userId: userId,
       amount: amount,
       email: email,
+      type: type,
     );
     if (token == null) {
       return null;
@@ -224,19 +229,42 @@ class _TransactionTokenPage extends AuthState<TransactionTokenPage> {
       return null;
     } else {
       if (verification.findAllElements("Result").single.innerText == "000") {
-        var transaction = VBGroupTransaction().create(
-          VBGroupTransactionModelArguments(
-            bankingGroupId: transactionToken.bankingGroupId,
-            userId: transactionToken.userId,
-            email: transactionToken.email,
-            amount: double.parse(verification
-                .findAllElements("TransactionNetAmount")
-                .single
-                .innerText),
-            approved: true,
-          ),
-        );
-        await transaction.save();
+        if (transactionToken.type == "investment") {
+          var transaction = VBGroupTransaction().create(
+            VBGroupTransactionModelArguments(
+              bankingGroupId: transactionToken.bankingGroupId,
+              userId: transactionToken.userId,
+              email: transactionToken.email,
+              amount: double.parse(verification
+                  .findAllElements("TransactionNetAmount")
+                  .single
+                  .innerText),
+              approved: true,
+            ),
+          );
+          await transaction.save();
+        } else if (transactionToken.type == "loan") {
+          var repayAmount = -1 * transactionToken.amount;
+          var bankingGroupMember = await VBGroupMember().getObject(
+            QueryBuilder()
+                .where('bankingGroupId', transactionToken.bankingGroupId)
+                .where("userId", transactionToken.userId),
+          );
+          var latestLoan = await bankingGroupMember!.getLatestLoan();
+          var repayment = BankingGroupLoan().create(
+            BankingGroupLoanModelArguments(
+              bankingGroupId: transactionToken.bankingGroupId,
+              userId: transactionToken.userId,
+              email: transactionToken.email,
+              amount: repayAmount,
+              loanInterest: latestLoan!.loanInterest,
+              period: latestLoan.period,
+              issuedAt: latestLoan.issuedAt,
+              timestamp: DateTime.now(),
+            ),
+          );
+          await repayment.save();
+        }
         transactionToken.paid = true;
         await transactionToken.save();
       }

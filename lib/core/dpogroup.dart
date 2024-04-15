@@ -27,6 +27,7 @@ class Dpogroup {
     required String userId,
     required double amount,
     required String email,
+    required String type,
   }) async {
     var body = '''<?xml version="1.0" encoding="utf-8"?>
     <API3G>
@@ -66,6 +67,7 @@ class Dpogroup {
           bankingGroupId: bankingGroupId,
           userId: userId,
           email: email,
+          type: type,
           token:
               responseDocument.findAllElements("TransToken").single.innerText,
           amount: amount,
