@@ -199,7 +199,7 @@ class _BankingGroupInvestFormState extends State<BankingGroupInvestForm> {
         goTo(
           context: context,
           routeName: TransactionTokenPage.routeName,
-          permanent: false,
+          permanent: true,
           arguments: TransactionTokenPageArguments(tokenId: value.id!),
         );
       }

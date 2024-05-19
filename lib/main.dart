@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:myvb/pages/dashboard/admin_dashboard_page.dart';
 import 'package:myvb/pages/transaction_token.dart';
 import 'package:myvb/pages/transaction_tokens.dart';
 import 'package:myvb/users/profile.dart';
@@ -82,6 +83,7 @@ class MyApp extends StatelessWidget {
             const TransactionTokensPage(),
         TransactionTokenPage.routeName: (context) =>
             const TransactionTokenPage(),
+        AdminDashboardPage.routeName: (context) => const AdminDashboardPage(),
       },
       initialRoute: '/',
     );

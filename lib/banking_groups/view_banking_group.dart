@@ -299,27 +299,31 @@ class _ViewBankingGroupState2 extends AuthState<ViewBankingGroupScreen> {
                               futureRenderer: (bankingGroupTransactions) {
                                 return bankingGroupTransactions.isEmpty
                                     ? const Text('No transactions.')
-                                    : DataTable(
-                                        columns: const [
-                                          DataColumn(label: Text('User')),
-                                          DataColumn(label: Text('Amount')),
-                                          DataColumn(label: Text('Status')),
-                                        ],
-                                        rows: bankingGroupTransactions
-                                            .map(
-                                              (e) => DataRow(
-                                                cells: [
-                                                  DataCell(Text(e.email)),
-                                                  DataCell(
-                                                      Text('${e.amount} ZMW')),
-                                                  DataCell(Text(e.approved
-                                                      ? 'APPROVED'
-                                                      : 'PENDING')),
-                                                ],
-                                              ),
-                                            )
-                                            .toList(),
-                                      );
+                                    : Scrollbar(
+                                        child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: DataTable(
+                                          columns: const [
+                                            DataColumn(label: Text('User')),
+                                            DataColumn(label: Text('Amount')),
+                                            DataColumn(label: Text('Status')),
+                                          ],
+                                          rows: bankingGroupTransactions
+                                              .map(
+                                                (e) => DataRow(
+                                                  cells: [
+                                                    DataCell(Text(e.email)),
+                                                    DataCell(Text(
+                                                        '${e.amount} ZMW')),
+                                                    DataCell(Text(e.approved
+                                                        ? 'APPROVED'
+                                                        : 'PENDING')),
+                                                  ],
+                                                ),
+                                              )
+                                              .toList(),
+                                        ),
+                                      ));
                               },
                             ),
                           ),
@@ -365,31 +369,37 @@ class _ViewBankingGroupState2 extends AuthState<ViewBankingGroupScreen> {
                               futureRenderer: (bankingGroupMember) {
                                 return bankingGroupMember.isEmpty
                                     ? const Text('No loans.')
-                                    : DataTable(
-                                        columns: const [
-                                          DataColumn(label: Text('Amount')),
-                                          DataColumn(label: Text('Issued at')),
-                                          DataColumn(label: Text('Timestamp')),
-                                          DataColumn(label: Text('Status')),
-                                        ],
-                                        rows: bankingGroupMember
-                                            .map(
-                                              (e) => DataRow(
-                                                cells: [
-                                                  DataCell(
-                                                      Text('${e.amount} ZMW')),
-                                                  DataCell(Text(
-                                                      e.issuedAt.toString())),
-                                                  DataCell(Text(
-                                                      e.timestamp.toString())),
-                                                  DataCell(Text(e.approved
-                                                      ? 'APPROVED'
-                                                      : 'PENDING')),
-                                                ],
-                                              ),
-                                            )
-                                            .toList(),
-                                      );
+                                    : Scrollbar(
+                                        child: SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: DataTable(
+                                          columns: const [
+                                            DataColumn(label: Text('Amount')),
+                                            DataColumn(
+                                                label: Text('Issued at')),
+                                            DataColumn(
+                                                label: Text('Timestamp')),
+                                            DataColumn(label: Text('Status')),
+                                          ],
+                                          rows: bankingGroupMember
+                                              .map(
+                                                (e) => DataRow(
+                                                  cells: [
+                                                    DataCell(Text(
+                                                        '${e.amount} ZMW')),
+                                                    DataCell(Text(
+                                                        e.issuedAt.toString())),
+                                                    DataCell(Text(e.timestamp
+                                                        .toString())),
+                                                    DataCell(Text(e.approved
+                                                        ? 'APPROVED'
+                                                        : 'PENDING')),
+                                                  ],
+                                                ),
+                                              )
+                                              .toList(),
+                                        ),
+                                      ));
                               },
                             ),
                           ),

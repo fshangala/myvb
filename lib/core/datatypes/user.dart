@@ -7,13 +7,16 @@ class UserModelArguments {
   String email;
   String firstName;
   String lastName;
+  String role;
 
-  UserModelArguments(
-      {this.id,
-      required this.uid,
-      required this.email,
-      required this.firstName,
-      required this.lastName});
+  UserModelArguments({
+    this.id,
+    required this.uid,
+    required this.email,
+    required this.firstName,
+    required this.lastName,
+    this.role = "user",
+  });
 }
 
 class AppUser extends Model<AppUser, UserModelArguments> {
@@ -22,6 +25,7 @@ class AppUser extends Model<AppUser, UserModelArguments> {
   late String email;
   late String firstName;
   late String lastName;
+  late String role;
 
   @override
   String collection = 'users';
@@ -34,6 +38,7 @@ class AppUser extends Model<AppUser, UserModelArguments> {
     user.email = arguments.email;
     user.firstName = arguments.firstName;
     user.lastName = arguments.lastName;
+    user.role = arguments.role;
     return user;
   }
 
@@ -45,6 +50,7 @@ class AppUser extends Model<AppUser, UserModelArguments> {
       'email': email,
       'firstName': firstName,
       'lastName': lastName,
+      'role': role,
     };
   }
 
@@ -54,10 +60,12 @@ class AppUser extends Model<AppUser, UserModelArguments> {
       return null;
     } else {
       return create(UserModelArguments(
-          uid: data['uid'],
-          email: data['email'],
-          firstName: data['firstName'],
-          lastName: data['lastName']));
+        uid: data['uid'],
+        email: data['email'],
+        firstName: data['firstName'],
+        lastName: data['lastName'],
+        role: data['role'],
+      ));
     }
   }
 
