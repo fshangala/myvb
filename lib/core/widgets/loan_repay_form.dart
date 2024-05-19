@@ -144,7 +144,7 @@ class _LoanRepayForm extends State<LoanRepayForm> {
           goTo(
             context: context,
             routeName: TransactionTokenPage.routeName,
-            permanent: false,
+            permanent: true,
             arguments: TransactionTokenPageArguments(tokenId: value.token),
           );
         }

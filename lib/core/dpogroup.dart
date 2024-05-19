@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:myvb/core/datatypes/model.dart';
 import 'package:myvb/core/datatypes/transaction_token.dart';
 import 'package:xml/xml.dart';
 
 class Dpogroup {
+  bool test = true;
   String companyToken = "8D3DA73D-9D7F-4E09-96D4-3D44E7A83EA3";
   String redirectUrl = "";
   String backUrl = "";
@@ -29,6 +31,22 @@ class Dpogroup {
     required String email,
     required String type,
   }) async {
+    if (test) {
+      var transactionToken = TransactionToken().create(
+        TransactionTokenModelArguments(
+          bankingGroupId: bankingGroupId,
+          userId: userId,
+          email: email,
+          type: type,
+          token: UniqueKey().toString(),
+          amount: amount,
+          issuedAt: DateTime.now(),
+          timestamp: DateTime.now(),
+        ),
+      );
+      return await transactionToken.save();
+    }
+
     var body = '''<?xml version="1.0" encoding="utf-8"?>
     <API3G>
         <CompanyToken>$companyToken</CompanyToken>
@@ -84,6 +102,29 @@ class Dpogroup {
     required String phoneNumber,
     required String mobileNumberOperator,
   }) async {
+    if (test) {
+      var response = '''<?xml version="1.0" encoding="utf-8"?>
+<API3G>
+  <StatusCode>130</StatusCode>
+  <ResultExplanation>New invoice</ResultExplanation>
+  <instructions>Dear Customer,
+    <br>  Shortly you will receive an M-PESA prompt on your phone requesting you to enter your M-PESA PIN to complete your payment. Please ensure your phone is on and unlocked to enable you to complete the process. Thank you.
+    <br>
+    <br> You can also pay using Lipa na MPESA by using the following instructions:
+    <br> 1.Go to the M-PESA menu
+    <br> 2. Select Lipa na M-PESA
+    <br> 3. Select the Paybill option
+    <br> 4. Enter business number 927633
+    <br> 5. Enter your account number 2257FB0D1
+    <br> 6. Enter the amount 1
+    <br> 7. Enter PIN and press OK to send
+    <br> 8. You will receive a confirmation SMS with your payment reference number.
+  </instructions>
+  <RedirectOption>0</RedirectOption>
+</API3G>''';
+      return XmlDocument.parse(response);
+    }
+
     var headersList = {
       'Accept': 'application/xml',
       'Content-Type': 'application/xml'
@@ -111,6 +152,37 @@ class Dpogroup {
   Future<XmlDocument?> verifyTransactionToken({
     required String token,
   }) async {
+    var transactionToken = await TransactionToken()
+        .getObject(QueryBuilder().where("token", token));
+    if (test && transactionToken != null) {
+      transactionToken.paid = true;
+      await transactionToken.save();
+      var response = '''<?xml version="1.0" encoding="utf-8"?>
+<API3G>
+  <Result>000</Result>
+  <ResultExplanation>Transaction paid</ResultExplanation>
+  <CustomerName >John Doe</CustomerName >
+  <CustomerCredit>4432</CustomerCredit>
+  <TransactionApproval>938204312</TransactionApproval>
+  <TransactionCurrency>ZMW</TransactionCurrency>
+  <TransactionAmount>${transactionToken!.amount.toString()}</TransactionAmount>
+  <FraudAlert>000</FraudAlert>
+  <FraudExplnation>No Fraud detected</FraudExplnation>
+  <TransactionNetAmount>945</TransactionNetAmount>
+  <TransactionSettlementDate>${DateTime.now()}</TransactionSettlementDate>
+  <TransactionRollingReserveAmount>5</TransactionRollingReserveAmount>
+  <TransactionRollingReserveDate>${DateTime.now()}</TransactionRollingReserveDate>
+  <CustomerPhone>254123456789</CustomerPhone>
+  <CustomerCountry>ZM</CustomerCountry>
+  <CustomerAddress>Stranfe blvd.</CustomerAddress>
+  <CustomerCity>Nairobi</CustomerCity>
+  <CustomerZip>AH1</CustomerZip>
+  <MobilePaymentRequest>Sent</MobilePaymentRequest>
+  <AccRef>ABC123REF</AccRef>
+</API3G>''';
+      return XmlDocument.parse(response);
+    }
+
     var headersList = {
       'Accept': 'application/xml',
       'Content-Type': 'application/xml'
@@ -135,10 +207,8 @@ class Dpogroup {
     } else {
       var resResult = document.findAllElements("Result").single.innerText;
       if (resResult == "000") {
-        var transactionToken = await TransactionToken()
-            .getObject(QueryBuilder().where("token", token));
         transactionToken!.paid = true;
-        transactionToken.save();
+        await transactionToken.save();
       }
       return document;
     }
