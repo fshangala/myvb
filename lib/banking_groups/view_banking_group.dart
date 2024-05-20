@@ -4,7 +4,6 @@ import 'package:myvb/banking_groups/screen_repay_loan.dart';
 import 'package:myvb/banking_groups/screen_request_loan.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/datatypes/banking_group_invest_arguments.dart';
-import 'package:myvb/core/datatypes/banking_group_loan.dart';
 import 'package:myvb/core/datatypes/model.dart';
 import 'package:myvb/core/datatypes/view_banking_group_screen_arguments.dart';
 import 'package:myvb/core/extensions/auth_state.dart';

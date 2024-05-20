@@ -3,12 +3,12 @@ import 'package:http/http.dart' as http;
 class AirtelSDK {
   final _clientId = "399fb168-3306-4896-a912-eedd69e91c32";
   final _clientSecrete = "****************************";
-  final _merchantId = "J5V0BBBW";
+  //final _merchantId = "J5V0BBBW";
 
   //final baseUrl = "https://openapi.airtel.africa";
   final baseUrl = "https://openapiuat.airtel.africa";
 
-  String? _accessToken;
+  //String? _accessToken;
 
   authorization() async {
     var req = http.Request("POST", Uri.parse("$baseUrl/auth/oauth2/token"));

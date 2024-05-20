@@ -4,11 +4,13 @@ class NullFutureRenderer<T> extends StatelessWidget {
   final Future<T?> future;
   final Widget Function(T object) futureRenderer;
   final Widget Function()? nullRenderer;
+  final String messageText;
   const NullFutureRenderer(
       {super.key,
       required this.future,
       required this.futureRenderer,
-      this.nullRenderer});
+      this.nullRenderer,
+      this.messageText = "Loading"});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,34 @@ class NullFutureRenderer<T> extends StatelessWidget {
               );
             }
           }
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+              child: Container(
+            margin: const EdgeInsets.all(15),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.black87,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  const SizedBox(width: 5),
+                  const CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    messageText,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ));
         }
       },
     );

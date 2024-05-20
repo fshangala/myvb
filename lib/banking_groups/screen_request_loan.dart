@@ -45,10 +45,20 @@ class _StateRequestLoan extends AuthState<ScreenRequestLoan> {
             futureRenderer: (bankingGroupMemberObject) {
               return Column(
                 children: [
-                  LoanRequestForm(
-                    bankingGroup: bankingGroupObject,
-                    bankingGroupMember: bankingGroupMemberObject,
-                  )
+                  NullFutureRenderer(
+                    future: bankingGroupMemberObject.getLatestLoan(),
+                    futureRenderer: (memberLoan) {
+                      return Text(
+                          "You have a loan of ${memberLoan.amount.toString()} ZMW, please clear this loan to apply for another.");
+                    },
+                    nullRenderer: () {
+                      return LoanRequestForm(
+                        bankingGroup: bankingGroupObject,
+                        bankingGroupMember: bankingGroupMemberObject,
+                      );
+                    },
+                    messageText: "Checking eligibility...",
+                  ),
                 ],
               );
             },
