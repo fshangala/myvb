@@ -75,8 +75,9 @@ class _LoanRepayForm extends State<LoanRepayForm> {
                           }
                           return null;
                         },
-                        decoration:
-                            const InputDecoration(label: Text('Amount')),
+                        decoration: InputDecoration(
+                            label: const Text('Amount'),
+                            hintText: "Maximum: $loanBalance"),
                         controller: amount,
                       ));
                 }),
@@ -145,7 +146,7 @@ class _LoanRepayForm extends State<LoanRepayForm> {
             context: context,
             routeName: TransactionTokenPage.routeName,
             permanent: true,
-            arguments: TransactionTokenPageArguments(tokenId: value.token),
+            arguments: TransactionTokenPageArguments(tokenId: value.id!),
           );
         }
       },

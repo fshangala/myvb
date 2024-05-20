@@ -107,19 +107,6 @@ class Dpogroup {
 <API3G>
   <StatusCode>130</StatusCode>
   <ResultExplanation>New invoice</ResultExplanation>
-  <instructions>Dear Customer,
-    <br>  Shortly you will receive an M-PESA prompt on your phone requesting you to enter your M-PESA PIN to complete your payment. Please ensure your phone is on and unlocked to enable you to complete the process. Thank you.
-    <br>
-    <br> You can also pay using Lipa na MPESA by using the following instructions:
-    <br> 1.Go to the M-PESA menu
-    <br> 2. Select Lipa na M-PESA
-    <br> 3. Select the Paybill option
-    <br> 4. Enter business number 927633
-    <br> 5. Enter your account number 2257FB0D1
-    <br> 6. Enter the amount 1
-    <br> 7. Enter PIN and press OK to send
-    <br> 8. You will receive a confirmation SMS with your payment reference number.
-  </instructions>
   <RedirectOption>0</RedirectOption>
 </API3G>''';
       return XmlDocument.parse(response);
@@ -165,10 +152,10 @@ class Dpogroup {
   <CustomerCredit>4432</CustomerCredit>
   <TransactionApproval>938204312</TransactionApproval>
   <TransactionCurrency>ZMW</TransactionCurrency>
-  <TransactionAmount>${transactionToken!.amount.toString()}</TransactionAmount>
+  <TransactionAmount>${transactionToken.amount.toString()}</TransactionAmount>
   <FraudAlert>000</FraudAlert>
   <FraudExplnation>No Fraud detected</FraudExplnation>
-  <TransactionNetAmount>945</TransactionNetAmount>
+  <TransactionNetAmount>${(transactionToken.amount - 5).toString()}</TransactionNetAmount>
   <TransactionSettlementDate>${DateTime.now()}</TransactionSettlementDate>
   <TransactionRollingReserveAmount>5</TransactionRollingReserveAmount>
   <TransactionRollingReserveDate>${DateTime.now()}</TransactionRollingReserveDate>

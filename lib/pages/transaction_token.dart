@@ -243,6 +243,11 @@ class _TransactionTokenPage extends AuthState<TransactionTokenPage> {
             ),
           );
           await transaction.save();
+          transactionToken.paid = true;
+          await transactionToken.save();
+          setState(() {
+            transactionTokenFuture = Future.value(transactionToken);
+          });
         } else if (transactionToken.type == "loan") {
           var repayAmount = -1 * transactionToken.amount;
           var bankingGroupMember = await VBGroupMember().getObject(
@@ -261,12 +266,25 @@ class _TransactionTokenPage extends AuthState<TransactionTokenPage> {
               period: latestLoan.period,
               issuedAt: latestLoan.issuedAt,
               timestamp: DateTime.now(),
+              approved: true,
             ),
           );
           await repayment.save();
+          var transaction =
+              VBGroupTransaction().create(VBGroupTransactionModelArguments(
+            bankingGroupId: bankingGroupMember.bankingGroupId,
+            userId: bankingGroupMember.userId,
+            email: bankingGroupMember.email,
+            amount: transactionToken.amount,
+            approved: true,
+          ));
+          await transaction.save();
+          transactionToken.paid = true;
+          await transactionToken.save();
+          setState(() {
+            transactionTokenFuture = Future.value(transactionToken);
+          });
         }
-        transactionToken.paid = true;
-        await transactionToken.save();
       }
       return verification;
     }
