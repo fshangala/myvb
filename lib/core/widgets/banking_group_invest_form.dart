@@ -56,8 +56,8 @@ class _BankingGroupInvestFormState extends State<BankingGroupInvestForm> {
               Container(
                 padding: const EdgeInsets.all(8),
                 child: TextFormField(
-                  decoration:
-                      const InputDecoration(label: Text('Account Number')),
+                  decoration: const InputDecoration(
+                      label: Text('Account Number'), hintText: "260"),
                   controller: accountNumber,
                 ),
               ),
