@@ -1,15 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:myvb/core/datatypes/user.dart';
-import 'package:myvb/core/functions/display_regular_snackbar.dart';
-import 'package:myvb/core/functions/go_to.dart';
+import 'package:go_router/go_router.dart';
 import 'package:myvb/core/functions/resolve_future.dart';
-import 'package:myvb/users/register.dart';
+import 'package:myvb/pages/signup.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginForm extends StatefulWidget {
   final void Function(User luser)? setUser;
-  final bool permanetGoTo;
-  const LoginForm({super.key, this.setUser, this.permanetGoTo = true});
+  final String next;
+  const LoginForm({super.key, required this.next, this.setUser});
 
   @override
   State<StatefulWidget> createState() {
@@ -18,9 +18,32 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  var supabase = Supabase.instance.client;
   final _formKey = GlobalKey<FormState>();
   var emailController = TextEditingController(text: '');
   var passwordController = TextEditingController(text: '');
+
+  Future<AuthResponse> _loginWithPassword() async {
+    return await supabase.auth.signInWithPassword(
+      email: emailController.text,
+      password: passwordController.text,
+    );
+  }
+
+  void _login() {
+    resolveFuture(
+      context,
+      _loginWithPassword(),
+      (value) {
+        log(value.user.toString(), name: 'Logged In');
+        if (value.user == null) {
+          //
+        } else {
+          context.go(widget.next);
+        }
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,39 +74,27 @@ class _LoginFormState extends State<LoginForm> {
             ),
           ),
           Container(
-              padding: const EdgeInsets.all(8),
-              child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _login();
-                    }
-                  },
-                  child: const Text('Login'))),
+            padding: const EdgeInsets.all(8),
+            child: ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _login();
+                }
+              },
+              child: const Text('Login'),
+            ),
+          ),
           Container(
-              padding: const EdgeInsets.all(8),
-              child: TextButton(
-                  onPressed: () {
-                    /* goTo(
-                        context: context,
-                        routeName: RegisterScreen.routeName,
-                        permanent: widget.permanetGoTo); */
-                  },
-                  child: const Text('Create Account'))),
+            padding: const EdgeInsets.all(8),
+            child: TextButton(
+              onPressed: () {
+                context.go(SignupPage.routeName);
+              },
+              child: const Text('Create Account'),
+            ),
+          ),
         ],
       ),
     );
-  }
-
-  void _login() {
-    resolveFuture(
-        context, AppUser().login(emailController.text, passwordController.text),
-        (value) {
-      if (value == null) {
-        displayRegularSnackBar(context, 'Login failed');
-      } else {
-        // displayRegularSnackBar(context, 'Welcome ${value.displayName}');
-      }
-      widget.setUser!(value!);
-    });
   }
 }

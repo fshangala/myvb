@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myvb/core/functions/go_to.dart';
-import 'package:myvb/users/login.dart';
+import 'package:myvb/pages/login.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class AuthState<T extends StatefulWidget> extends State<T> {

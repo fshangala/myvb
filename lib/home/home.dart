@@ -16,7 +16,18 @@ class HomeScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _HomeState2();
+    return _HomeState();
+  }
+}
+
+class _HomeState extends State<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('MyVB: Home'),
+      ),
+    );
   }
 }
 

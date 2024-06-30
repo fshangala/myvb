@@ -3,7 +3,7 @@ import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/functions/resolve_future.dart';
 import 'package:myvb/home/home.dart';
-import 'package:myvb/users/login.dart';
+import 'package:myvb/pages/login.dart';
 
 class RegisterForm extends StatefulWidget {
   final void Function(dynamic user)? setUser;
