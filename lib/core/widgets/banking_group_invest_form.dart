@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/datatypes/transaction_token.dart';
@@ -7,6 +6,7 @@ import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/functions/resolve_future.dart';
 import 'package:http/http.dart' as http;
 import 'package:myvb/pages/transaction_token.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class BankingGroupInvestForm extends StatefulWidget {
   final User user;
@@ -188,7 +188,7 @@ class _BankingGroupInvestFormState extends State<BankingGroupInvestForm> {
         context,
         requestPayment(
           bankingGroupId: widget.bankingGroup.id!,
-          userId: widget.user.uid,
+          userId: widget.user.id,
           amount: double.parse(investmentAmount.text),
           email: widget.user.email!,
           type: "investment",

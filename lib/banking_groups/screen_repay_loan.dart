@@ -33,7 +33,7 @@ class _RepayLoanScreen extends AuthState<RepayLoanScreen> {
               .getObject(QueryBuilder().where('id', args.bankingGroupId)),
           futureRenderer: (bankingGroup) {
             return NullFutureRenderer(
-                future: bankingGroup.groupMember(user!.uid),
+                future: bankingGroup.groupMember(user!.id),
                 futureRenderer: (groupMember) {
                   return Column(
                     children: [

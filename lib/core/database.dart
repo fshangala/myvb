@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 List<Database> databases = [
@@ -109,23 +108,24 @@ abstract class Database {
 class LocalDatabase extends Database {}
 
 class FirebaseDatabase extends Database {
-  FirebaseFirestore db = FirebaseFirestore.instance;
+  // FirebaseFirestore db = FirebaseFirestore.instance;
 
   @override
   Future<Map<String, dynamic>> setItem(
       String collection, Map<String, dynamic> data) async {
-    var doc = db.collection(collection).doc();
+    /* var doc = db.collection(collection).doc();
     data.update('id', (value) => doc.id);
     await doc.set(data);
     var response = await doc.get();
-    log(response.data()!.toString(),name: 'new doc');
-    return response.data()!;
+    log(response.data()!.toString(), name: 'new doc');
+    return response.data()!; */
+    return {};
   }
 
   @override
   Future<List<Map<String, dynamic>>> getItems(
       String collection, Map<String, dynamic> query) async {
-    if (query.isEmpty) {
+    /* if (query.isEmpty) {
       var items = await db.collection(collection).get();
       return items.docs.map((e) => e.data()).toList();
     } else {
@@ -135,13 +135,14 @@ class FirebaseDatabase extends Database {
       });
       var items = await firequery.get();
       return items.docs.map((e) => e.data()).toList();
-    }
+    } */
+    return [];
   }
 
   @override
   Future<Map<String, dynamic>?> getItem(
       String collection, Map<String, dynamic> query) async {
-    if (query.containsKey('id')) {
+    /* if (query.containsKey('id')) {
       var item = await db.collection(collection).doc(query['id']).get();
       return item.data();
     }
@@ -154,23 +155,23 @@ class FirebaseDatabase extends Database {
         firequery = firequery.where(key, isEqualTo: value);
       });
       var items = await firequery.get();
-      if(items.size > 0){
+      if (items.size > 0) {
         return items.docs[0].data();
       } else {
         return null;
       }
-    }
+    } */
   }
 
   @override
   Future<Map<String, dynamic>?> createOrUpdateItem(
       String collection, Map<String, dynamic> data) async {
-    if (data['id'] != null) {
+    /* if (data['id'] != null) {
       var doc = db.collection(collection).doc(data['id']);
       await doc.update(data);
       return await getItem(collection, data);
     } else {
       return setItem(collection, data);
-    }
+    } */
   }
 }

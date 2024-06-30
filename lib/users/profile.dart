@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+/* import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/model.dart';
 import 'package:myvb/core/datatypes/user.dart';
@@ -10,7 +10,7 @@ import 'package:myvb/home/home.dart';
 import 'package:myvb/pages/dashboard/admin_dashboard_page.dart';
 import 'package:myvb/pages/transaction_tokens.dart';
 
-class ProfileScreen extends StatefulWidget { 
+class ProfileScreen extends StatefulWidget {
   static const routeName = '/profile';
   const ProfileScreen({super.key});
 
@@ -25,8 +25,7 @@ class _ProfileScreenState2 extends AuthState<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return userWidget((luser) {
-      appUserFuture = 
-          AppUser().getObject(QueryBuilder().where("id", luser.uid));
+      appUserFuture = AppUser().getObject(QueryBuilder().where("id", luser.id));
       return Scaffold(
         appBar: appBar(context, '${luser.email}'),
         body: RefreshIndicator(
@@ -50,7 +49,7 @@ class _ProfileScreenState2 extends AuthState<ProfileScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(luser.displayName!),
+                              Text(luser.email!),
                               Text(luser.email!),
                             ],
                           ),
@@ -132,3 +131,4 @@ class _ProfileScreenState2 extends AuthState<ProfileScreen> {
     });
   }
 }
+ */

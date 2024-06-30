@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/user.dart';
-import 'package:myvb/core/extensions/auth_state.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter/material.dart';
+import 'package:myvb/core/extensions/auth_state.dart' as app_auth_state;
 import 'package:myvb/core/functions/display_regular_snackbar.dart';
 import 'package:myvb/core/functions/show_loading.dart';
 
@@ -16,7 +16,7 @@ class UserProfile extends StatefulWidget {
   }
 }
 
-class _UserProfile extends AuthState<UserProfile> {
+class _UserProfile extends app_auth_state.AuthState<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -28,10 +28,7 @@ class _UserProfile extends AuthState<UserProfile> {
           ],
         ),
         Row(
-          children: [
-            const Expanded(child: Text('Name')),
-            Text(user!.displayName!)
-          ],
+          children: [const Expanded(child: Text('Name')), Text(user!.email!)],
         ),
         _ownerWidgets(user!),
       ],
@@ -39,7 +36,7 @@ class _UserProfile extends AuthState<UserProfile> {
   }
 
   Column _ownerWidgets(User profile) {
-    if (profile.uid == widget.user.uid) {
+    if (profile.id == widget.user.id) {
       return Column(
         children: [
           ElevatedButton(

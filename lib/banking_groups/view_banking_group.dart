@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/invest_banking_group.dart';
 import 'package:myvb/banking_groups/screen_repay_loan.dart';
 import 'package:myvb/banking_groups/screen_request_loan.dart';
@@ -93,7 +93,7 @@ class _ViewBankingGroupState2 extends AuthState<ViewBankingGroupScreen> {
                         child: ListView(
                           children: [
                             NullFutureRenderer(
-                              future: bankingGroup.groupMember(luser.uid),
+                              future: bankingGroup.groupMember(luser.id),
                               futureRenderer: (bankingGroupMember) {
                                 return Row(
                                   children: [
@@ -194,7 +194,7 @@ class _ViewBankingGroupState2 extends AuthState<ViewBankingGroupScreen> {
                                                     bankingGroupId:
                                                         bankingGroup.id!,
                                                     bankingGroupMemberId:
-                                                        luser.uid,
+                                                        luser.id,
                                                   ),
                                                 );
                                               },
@@ -219,7 +219,7 @@ class _ViewBankingGroupState2 extends AuthState<ViewBankingGroupScreen> {
                     RefreshIndicator(
                       child: ListView(
                         children: [
-                          luser.uid == bankingGroup.owner
+                          luser.id == bankingGroup.owner
                               ? Form(
                                   key: _formKey,
                                   child: Column(
@@ -341,7 +341,7 @@ class _ViewBankingGroupState2 extends AuthState<ViewBankingGroupScreen> {
                         children: [
                           NullFutureRenderer(
                             future: bankingGroup
-                                .getGroupMemberLoanBalance(luser.uid),
+                                .getGroupMemberLoanBalance(luser.id),
                             futureRenderer: (groupMemberLoanBalance) {
                               return ListTile(
                                 leading: const Icon(Icons.money),
@@ -365,7 +365,7 @@ class _ViewBankingGroupState2 extends AuthState<ViewBankingGroupScreen> {
                             padding: const EdgeInsets.all(16),
                             child: NotNullFutureRenderer(
                               future:
-                                  bankingGroup.getGroupMemberLoans(luser.uid),
+                                  bankingGroup.getGroupMemberLoans(luser.id),
                               futureRenderer: (bankingGroupMember) {
                                 bankingGroupMember.sort((a, b) {
                                   return -a.issuedAt.compareTo(b.issuedAt);
@@ -423,3 +423,4 @@ class _ViewBankingGroupState2 extends AuthState<ViewBankingGroupScreen> {
     });
   }
 }
+ */

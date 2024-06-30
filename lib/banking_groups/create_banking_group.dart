@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/view_banking_group.dart';
 import 'package:myvb/core/datatypes/view_banking_group_screen_arguments.dart';
 import 'package:myvb/core/extensions/auth_state.dart';
@@ -47,3 +47,4 @@ class _CreateBankingGroupState extends AuthState<CreateBankingGroup> {
     );
   }
 }
+ */

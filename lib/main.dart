@@ -1,21 +1,11 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:myvb/pages/dashboard/admin_dashboard_page.dart';
-import 'package:myvb/pages/transaction_token.dart';
-import 'package:myvb/pages/transaction_tokens.dart';
-import 'package:myvb/users/profile.dart';
-import 'firebase_options.dart';
+import 'package:go_router/go_router.dart';
+import 'package:myvb/pages/home.dart';
+import 'package:myvb/pages/login.dart';
+import 'package:myvb/pages/signup.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:flutter/material.dart';
-import 'package:myvb/banking_groups/create_banking_group.dart';
-import 'package:myvb/banking_groups/invest_banking_group.dart';
-import 'package:myvb/banking_groups/join_banking_group.dart';
-import 'package:myvb/banking_groups/screen_repay_loan.dart';
-import 'package:myvb/banking_groups/screen_request_loan.dart';
-import 'package:myvb/banking_groups/view_banking_group.dart';
-import 'package:myvb/banking_groups/view_banking_group_member.dart';
 import 'package:myvb/home/home.dart';
-import 'package:myvb/users/login.dart';
-import 'package:myvb/users/register.dart';
 
 class MyThemes {
   static const primary = Colors.blue;
@@ -36,10 +26,38 @@ class MyThemes {
   );
 }
 
+var router = GoRouter(
+  initialLocation: HomeScreen.routeName,
+  redirect: (context, state) async {
+    if (Supabase.instance.client.auth.currentUser == null &&
+        state.matchedLocation != LoginPage.routeName &&
+        state.matchedLocation != SignupPage.routeName) {
+      return LoginPage.routeName;
+    }
+    return null;
+  },
+  routes: [
+    GoRoute(
+      path: HomePage.routeName,
+      builder: (context, state) => const HomePage(),
+    ),
+    GoRoute(
+      path: LoginPage.routeName,
+      builder: (context, state) => const LoginPage(),
+    ),
+    GoRoute(
+      path: SignupPage.routeName,
+      builder: (context, state) => const SignupPage(),
+    ),
+  ],
+);
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+  await Supabase.initialize(
+    url: "https://blbrfoqmvcxvbfgdrzxh.supabase.co",
+    anonKey:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJsYnJmb3FtdmN4dmJmZ2RyenhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTgwNTg3NDUsImV4cCI6MjAzMzYzNDc0NX0.4NVBnGus28TxwhdEwTDNB8mrzlsUS7UU5bXGjYIG6UU",
   );
 
   runApp(const MyApp());
@@ -49,7 +67,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: const ColorScheme.light(
@@ -65,27 +83,7 @@ class MyApp extends StatelessWidget {
       ),
       darkTheme: MyThemes.darkTheme,
       title: 'MyVB',
-      routes: {
-        HomeScreen.routeName: (context) => const HomeScreen(),
-        LoginScreen.routeName: (context) => const LoginScreen(),
-        RegisterScreen.routeName: (context) => const RegisterScreen(),
-        CreateBankingGroup.routeName: (context) => const CreateBankingGroup(),
-        JoinBankingGroup.routeName: (context) => const JoinBankingGroup(),
-        ViewBankingGroupScreen.routeName: (context) =>
-            const ViewBankingGroupScreen(),
-        ProfileScreen.routeName: (context) => const ProfileScreen(),
-        ViewBankingGroupMemberScreen.routeName: (context) =>
-            const ViewBankingGroupMemberScreen(),
-        InvestBankingGroup.routeName: (context) => const InvestBankingGroup(),
-        ScreenRequestLoan.routeName: (context) => const ScreenRequestLoan(),
-        RepayLoanScreen.routeName: (context) => const RepayLoanScreen(),
-        TransactionTokensPage.routeName: (context) =>
-            const TransactionTokensPage(),
-        TransactionTokenPage.routeName: (context) =>
-            const TransactionTokenPage(),
-        AdminDashboardPage.routeName: (context) => const AdminDashboardPage(),
-      },
-      initialRoute: '/',
+      routerConfig: router,
     );
   }
 }

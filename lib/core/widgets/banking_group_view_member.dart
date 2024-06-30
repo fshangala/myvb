@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:myvb/banking_groups/invest_banking_group.dart';
@@ -13,6 +12,7 @@ import 'package:myvb/core/widgets/banking_group_member_loans.dart';
 import 'package:myvb/core/widgets/banking_group_member_transactions.dart';
 import 'package:myvb/core/widgets/not_null_future_renderer.dart';
 import 'package:myvb/core/widgets/null_future_renderer.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class BankingGroupViewMember extends StatefulWidget {
   final User luser;
@@ -47,7 +47,8 @@ class _BankingGroupViewMember extends State<BankingGroupViewMember> {
           subtitle: Text(widget.bankingGroup.id!),
           trailing: Text(widget.bankingGroup.name),
           onTap: () {
-            Clipboard.setData(ClipboardData(text: widget.bankingGroup.id!)).then((value) {
+            Clipboard.setData(ClipboardData(text: widget.bankingGroup.id!))
+                .then((value) {
               displayRegularSnackBar(context, 'ID copied to clipboard!');
             });
           },
@@ -60,7 +61,7 @@ class _BankingGroupViewMember extends State<BankingGroupViewMember> {
               //approved member
               if (groupMember.approved) {
                 //member is viewing their own
-                if (widget.luser.uid == widget.userId) {
+                if (widget.luser.id == widget.userId) {
                   userWidget = Column(
                     children: [
                       Row(
@@ -69,13 +70,13 @@ class _BankingGroupViewMember extends State<BankingGroupViewMember> {
                             padding: const EdgeInsets.all(8),
                             child: ElevatedButton(
                                 onPressed: () {
-                                  goTo(
+                                  /* goTo(
                                       context: context,
                                       routeName: InvestBankingGroup.routeName,
                                       arguments:
                                           ArgumentsBankingGroupInvestScreen(
                                               widget.bankingGroup.id!),
-                                      permanent: false);
+                                      permanent: false); */
                                 },
                                 child: const Text('Invest')),
                           ),
@@ -86,7 +87,8 @@ class _BankingGroupViewMember extends State<BankingGroupViewMember> {
                                     routeName: ScreenRequestLoan.routeName,
                                     arguments: ArgumentsScreenRequestLoan(
                                         bankingGroupId: widget.bankingGroup.id!,
-                                        bankingGroupMemberId: groupMember.userId),
+                                        bankingGroupMemberId:
+                                            groupMember.userId),
                                     permanent: false);
                               },
                               child: const Text('Request loan')),
@@ -98,7 +100,7 @@ class _BankingGroupViewMember extends State<BankingGroupViewMember> {
                   );
                 }
               } else {
-                if (widget.luser.uid == widget.bankingGroup.owner) {
+                if (widget.luser.id == widget.bankingGroup.owner) {
                   userWidget = Column(
                     children: [
                       ElevatedButton(

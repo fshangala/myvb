@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:myvb/core/datatypes/model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserModelArguments {
   String? id;
@@ -74,7 +74,7 @@ class AppUser extends Model<AppUser, UserModelArguments> {
       required String firstName,
       required String lastName,
       required String password}) async {
-    var userCredentials = await FirebaseAuth.instance
+    /* var userCredentials = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
     await userCredentials.user?.updateDisplayName('$firstName $lastName');
     var appUser = create(UserModelArguments(
@@ -83,20 +83,20 @@ class AppUser extends Model<AppUser, UserModelArguments> {
         firstName: firstName,
         lastName: lastName));
     await appUser.save();
-    return userCredentials.user!;
+    return userCredentials.user!; */
   }
 
   Future<User?> login(String email, String password) async {
-    try {
+    /* try {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       return credential.user;
     } catch (e) {
       return null;
-    }
+    } */
   }
 
   Future<void> logout() async {
-    await FirebaseAuth.instance.signOut();
+    // await FirebaseAuth.instance.signOut();
   }
 }

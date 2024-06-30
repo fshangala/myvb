@@ -16,7 +16,18 @@ class HomeScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _HomeState2();
+    return _HomeState();
+  }
+}
+
+class _HomeState extends State<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('MyVB: Home'),
+      ),
+    );
   }
 }
 
@@ -49,12 +60,12 @@ class _HomeState2 extends AuthState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return userWidget((luser) {
-      userBankingGroupsFuture = userBankingGroups(luser.uid);
+      userBankingGroupsFuture = userBankingGroups(luser.id);
       return Scaffold(
         appBar: appBar(context, 'Home'),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, CreateBankingGroup.routeName);
+            // Navigator.pushNamed(context, CreateBankingGroup.routeName);
           },
           tooltip: 'Create Banking Group',
           child: const Icon(Icons.add),
@@ -62,7 +73,7 @@ class _HomeState2 extends AuthState<HomeScreen> {
         body: RefreshIndicator(
           onRefresh: () async {
             setState(() {
-              userBankingGroupsFuture = userBankingGroups(luser.uid);
+              userBankingGroupsFuture = userBankingGroups(luser.id);
             });
           },
           child: ListView(
@@ -99,10 +110,10 @@ class BankingGroups extends StatelessWidget {
                 margin: const EdgeInsets.only(top: 8, left: 8, right: 8),
                 child: ListTile(
                   onTap: () {
-                    goTo(
+                    /* goTo(
                         context: context,
                         routeName: ViewBankingGroupScreen.routeName,
-                        arguments: ArgumentsViewBankingGroup(id: e.id!));
+                        arguments: ArgumentsViewBankingGroup(id: e.id!)); */
                   },
                   leading: const Icon(Icons.group),
                   title: Text(e.name),
