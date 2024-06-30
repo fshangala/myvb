@@ -1,10 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/user.dart';
 import 'package:myvb/core/functions/display_regular_snackbar.dart';
 import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/functions/resolve_future.dart';
 import 'package:myvb/users/register.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginForm extends StatefulWidget {
   final void Function(User luser)? setUser;
@@ -63,10 +63,10 @@ class _LoginFormState extends State<LoginForm> {
               padding: const EdgeInsets.all(8),
               child: TextButton(
                   onPressed: () {
-                    goTo(
+                    /* goTo(
                         context: context,
                         routeName: RegisterScreen.routeName,
-                        permanent: widget.permanetGoTo);
+                        permanent: widget.permanetGoTo); */
                   },
                   child: const Text('Create Account'))),
         ],
@@ -75,11 +75,13 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _login() {
-    resolveFuture(context, AppUser().login(emailController.text, passwordController.text), (value) {
+    resolveFuture(
+        context, AppUser().login(emailController.text, passwordController.text),
+        (value) {
       if (value == null) {
         displayRegularSnackBar(context, 'Login failed');
       } else {
-        displayRegularSnackBar(context, 'Welcome ${value.displayName}');
+        // displayRegularSnackBar(context, 'Welcome ${value.displayName}');
       }
       widget.setUser!(value!);
     });

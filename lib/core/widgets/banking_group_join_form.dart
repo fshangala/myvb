@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myvb/banking_groups/view_banking_group.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
@@ -6,6 +5,7 @@ import 'package:myvb/core/datatypes/model.dart';
 import 'package:myvb/core/datatypes/view_banking_group_screen_arguments.dart';
 import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/functions/resolve_future.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class BankingGroupJoinForm extends StatefulWidget {
   final User user;
@@ -82,10 +82,11 @@ class _BankingGroupJoinForm extends State<BankingGroupJoinForm> {
             if (value != null) {
               ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('${value.email} Joined!')));
-              goTo(
+              /* goTo(
                   context: context,
                   routeName: ViewBankingGroupScreen.routeName,
-                  arguments: ArgumentsViewBankingGroup(id: value.bankingGroupId));
+                  arguments:
+                      ArgumentsViewBankingGroup(id: value.bankingGroupId)); */
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Could not join group!')));

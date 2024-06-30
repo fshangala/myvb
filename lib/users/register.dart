@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+/* import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
 import 'package:myvb/core/widgets/register_form.dart';
@@ -33,3 +33,4 @@ class _RegisterState extends State<RegisterScreen> {
     Navigator.pushNamed(context, HomeScreen.routeName);
   }
 }
+ */

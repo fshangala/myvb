@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+/* import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myvb/core/functions/go_to.dart';
 import 'package:myvb/core/widgets/app_bar.dart';
@@ -37,3 +37,4 @@ class _LoginState extends State<LoginScreen> {
     goTo(context: context, routeName: HomeScreen.routeName, permanent: true);
   }
 }
+ */

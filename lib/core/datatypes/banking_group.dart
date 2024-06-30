@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:myvb/core/datatypes/banking_group_loan.dart';
 import 'package:myvb/core/datatypes/banking_group_member.dart';
 import 'package:myvb/core/datatypes/banking_group_transaction.dart';
 import 'package:myvb/core/datatypes/model.dart';
 import 'package:myvb/core/datatypes/user.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class VBGroupModelArguments {
   String? id;
@@ -123,11 +123,11 @@ class VBGroup extends Model<VBGroup, VBGroupModelArguments> {
 
   Future<VBGroupMember?> joinGroup(User user) async {
     var bankingGroupMember = await VBGroupMember().getObject(
-        QueryBuilder().where('userId', user.uid).where('bankingGroupId', id));
+        QueryBuilder().where('userId', user.id).where('bankingGroupId', id));
     if (bankingGroupMember == null) {
       bankingGroupMember = VBGroupMember().create(VBGroupMemberModelArguments(
         bankingGroupId: id!,
-        userId: user.uid,
+        userId: user.id,
         email: user.email!,
       ));
       var saved = await bankingGroupMember.save();

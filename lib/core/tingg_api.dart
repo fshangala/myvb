@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+/* import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TinggExpressCheckout {
   FirebaseFirestore db = FirebaseFirestore.instance;
@@ -10,3 +10,4 @@ class TinggExpressCheckout {
     return documentSnapshot.data();
   }
 }
+ */

@@ -1,21 +1,8 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:myvb/pages/dashboard/admin_dashboard_page.dart';
-import 'package:myvb/pages/transaction_token.dart';
-import 'package:myvb/pages/transaction_tokens.dart';
-import 'package:myvb/users/profile.dart';
-import 'firebase_options.dart';
+import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:flutter/material.dart';
-import 'package:myvb/banking_groups/create_banking_group.dart';
-import 'package:myvb/banking_groups/invest_banking_group.dart';
-import 'package:myvb/banking_groups/join_banking_group.dart';
-import 'package:myvb/banking_groups/screen_repay_loan.dart';
-import 'package:myvb/banking_groups/screen_request_loan.dart';
-import 'package:myvb/banking_groups/view_banking_group.dart';
-import 'package:myvb/banking_groups/view_banking_group_member.dart';
 import 'package:myvb/home/home.dart';
-import 'package:myvb/users/login.dart';
-import 'package:myvb/users/register.dart';
 
 class MyThemes {
   static const primary = Colors.blue;
@@ -38,8 +25,10 @@ class MyThemes {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+  await Supabase.initialize(
+    url: "urlhttps://blbrfoqmvcxvbfgdrzxh.supabase.co",
+    anonKey:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJsYnJmb3FtdmN4dmJmZ2RyenhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTgwNTg3NDUsImV4cCI6MjAzMzYzNDc0NX0.4NVBnGus28TxwhdEwTDNB8mrzlsUS7UU5bXGjYIG6UU",
   );
 
   runApp(const MyApp());
@@ -49,7 +38,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    /* return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: const ColorScheme.light(
@@ -86,6 +75,31 @@ class MyApp extends StatelessWidget {
         AdminDashboardPage.routeName: (context) => const AdminDashboardPage(),
       },
       initialRoute: '/',
+    ); */
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: const ColorScheme.light(
+          primary: Colors.blue,
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+        ),
+        tabBarTheme: const TabBarTheme(
+          labelColor: Colors.white,
+        ),
+      ),
+      darkTheme: MyThemes.darkTheme,
+      title: 'MyVB',
+      routerConfig: GoRouter(
+        routes: [
+          GoRoute(
+            path: "/",
+            builder: (context, state) => const HomeScreen(),
+          ),
+        ],
+      ),
     );
   }
 }

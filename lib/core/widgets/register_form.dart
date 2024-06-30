@@ -92,7 +92,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 child: TextButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      Navigator.pushNamed(context, LoginScreen.routeName);
+                      // Navigator.pushNamed(context, LoginScreen.routeName);
                     },
                     child: const Text('Already have an account? Login'))),
           ],

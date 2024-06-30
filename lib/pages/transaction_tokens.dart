@@ -26,13 +26,13 @@ class _TransactionTokensPage extends AuthState<TransactionTokensPage> {
   Widget build(BuildContext context) {
     return userWidget((luser) {
       transactionTokensFuture = TransactionToken()
-          .getObjects(QueryBuilder().where("userId", luser.uid));
+          .getObjects(QueryBuilder().where("userId", luser.id));
       return AppScaffold(
         title: "Transaction Tokens",
         onRefresh: () {
           setState(() {
             transactionTokensFuture = TransactionToken()
-                .getObjects(QueryBuilder().where("userId", luser.uid));
+                .getObjects(QueryBuilder().where("userId", luser.id));
           });
         },
         children: [

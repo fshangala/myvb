@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myvb/core/datatypes/banking_group.dart';
 import 'package:myvb/core/functions/resolve_future.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class BankingGroupForm extends StatefulWidget {
   final User user;
@@ -103,7 +103,7 @@ class _BankingGroupFormState extends State<BankingGroupForm> {
 
   void _createBankingGroup() {
     var bankingGroup = VBGroup().create(VBGroupModelArguments(
-        owner: widget.user.uid,
+        owner: widget.user.id,
         name: groupName.text,
         investmentInterest: int.parse(groupInvestmentInterest.text),
         loanPeriod: int.parse(groupLoanPeriod.text),

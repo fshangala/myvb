@@ -57,11 +57,11 @@ class _BankingGroupJoinedState extends State<BankingGroupsJoined> {
         .map((e) => ListTile(
               title: Text(e.name),
               onTap: () {
-                goTo(
+                /* goTo(
                     context: context,
                     routeName: ViewBankingGroupScreen.routeName,
                     permanent: false,
-                    arguments: ArgumentsViewBankingGroup(id: e.id!));
+                    arguments: ArgumentsViewBankingGroup(id: e.id!)); */
               },
             ))
         .toList();

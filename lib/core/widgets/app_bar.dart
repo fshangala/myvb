@@ -18,10 +18,10 @@ AppBar appBar(BuildContext context, String title) {
       ),
       IconButton(
         onPressed: () {
-          goTo(
+          /* goTo(
               context: context,
               routeName: ProfileScreen.routeName,
-              permanent: false);
+              permanent: false); */
         },
         icon: const Icon(Icons.person),
       )
